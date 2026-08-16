@@ -4,6 +4,10 @@
 
 DeepSeek Harness（`dsh`）的 Wallpaper Engine 面板、背景层和 Windows 桌面壳。
 
+## 插件介绍
+
+`dsh-wallpaper-engine` 是一个 DeepSeek Harness Web 插件，为 `dsh web` 增加“桌面与壁纸”设置面板和全屏背景层。插件通过标准 `dsh plugin add` 安装，网页版提供安全的本地壁纸预览；与 `desktop/` 桌面壳一起使用时，解锁完整的 Steam 小红车（Wallpaper Engine）壁纸导入、原生 Scene 运行和 Windows 桌面模式。
+
 ## 支持导入 Steam 小红车（Wallpaper Engine）壁纸
 
 桌面壳会自动发现 Steam 上 Wallpaper Engine（小红车）的创意工坊订阅壁纸和本地项目，并在 设置 → **桌面与壁纸** 中展示。你还可以手动导入任意包含 `project.json` 的壁纸目录，或单个 `project.json` / 场景包（`.pkg` / `.pak`）。

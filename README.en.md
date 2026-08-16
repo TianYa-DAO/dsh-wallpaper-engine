@@ -11,6 +11,10 @@ desktop/                         Electron desktop shell for Windows
 
 The plugin alone provides the Settings → **Desktop & Wallpaper** panel and a web-safe preview mode. Run it inside the desktop shell to unlock local library discovery, the `dsh-wallpaper://` media protocol, native Wallpaper Engine Scene playback, and M5 desktop mode (WorkerW wallpaper, desktop embed, desktop-icon visibility).
 
+## About the plugin
+
+`dsh-wallpaper-engine` is a DeepSeek Harness web plugin that adds a "Desktop & Wallpaper" settings section and a full-viewport background layer to `dsh web`. It installs with the standard `dsh plugin add` command and provides safe web previews on its own; paired with the `desktop/` shell it unlocks Steam Wallpaper Engine imports, native Scene playback, and Windows desktop mode.
+
 ## Quick start for Windows users
 
 Prerequisite: install DeepSeek Harness so the `dsh` command is available. The desktop app starts `dsh web` automatically when port 3080 is idle.
