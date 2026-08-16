@@ -3,5 +3,5 @@ desktop/node_modules/
 desktop/lib/
 *.log
 *.tgz
-release/
+desktop/release/
 .DS_Store

@@ -8,6 +8,7 @@
     "desktop:install": "pnpm --dir desktop install",
     "desktop:build": "pnpm --dir desktop run build",
     "desktop": "pnpm --dir desktop run start",
-    "plugin:pack": "npm pack packages/dsh-wallpaper-engine --pack-destination release"
+    "plugin:pack": "npm pack packages/dsh-wallpaper-engine --pack-destination release",
+    "desktop:package": "pnpm --dir desktop run package:win"
   }
 }

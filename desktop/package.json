@@ -15,14 +15,16 @@
     "watch": "tsdown --watch",
     "start": "electron .",
     "dev": "electron . --dev",
-    "build:types": "tsc -b tsconfig.json"
+    "build:types": "tsc -b tsconfig.json",
+    "package:win": "node scripts/package-win.mjs"
   },
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.0.0",
     "electron": "^37.0.0",
     "tsdown": "^0.22.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "@electron/packager": "^20.3.0"
   },
   "files": [
     "dist",

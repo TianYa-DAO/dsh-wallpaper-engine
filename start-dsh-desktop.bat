@@ -37,6 +37,13 @@ if not defined LISTEN_PID (
 )
 :web-ready
 
+set "PACKAGED_EXE=%~dp0desktop\release\DeepSeek Harness桌面版-win32-x64\DeepSeek Harness桌面版.exe"
+if exist "%PACKAGED_EXE%" (
+  echo [info] Launching packaged desktop...
+  start "" "%PACKAGED_EXE%"
+  exit /b 0
+)
+
 cd /d "%~dp0desktop"
 if not exist node_modules\electron\dist\electron.exe (
   echo [info] Installing desktop dependencies...
