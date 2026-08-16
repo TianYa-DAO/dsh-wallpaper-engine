@@ -1,0 +1,6 @@
+{
+  "name": "dsh-icon-render",
+  "version": "0.0.0",
+  "private": true,
+  "main": "main.cjs"
+}

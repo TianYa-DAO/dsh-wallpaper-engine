@@ -6,7 +6,7 @@ const DSH_HOME_DIR_NAME = '.dsh'
 /**
  * Join path segments onto the DeepSeek Harness home. The standalone desktop
  * shell does not depend on the harness workspace, so it resolves the same
- * default as `dsh`: `$DSH_HOME` or `~/.dsh`.
+ * default as dsh: $DSH_HOME or ~/.dsh.
  * @param segments - path segments appended to the harness home.
  * @returns the normalized absolute joined path.
  */

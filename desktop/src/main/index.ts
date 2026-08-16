@@ -28,6 +28,7 @@ const ALLOWED_ORIGINS = new Set(['http://127.0.0.1:3080', 'http://localhost:3080
 // Software rendering avoids GPU compositor black windows on remote desktops
 // and virtual machines while keeping the chat UI and desktop capture working.
 app.disableHardwareAcceleration()
+app.setAppUserModelId('com.deepseek.dsh.desktop')
 
 let mainWindow: BrowserWindow | null = null
 let library: WallpaperEngineLibrary | null = null
@@ -118,6 +119,7 @@ function createMainWindow(): void {
     show: false,
     backgroundColor: '#0f1115',
     title: 'DSH',
+    icon: join(__dirname, '..', 'assets', 'icon.ico'),
     autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, 'preload.mjs'),

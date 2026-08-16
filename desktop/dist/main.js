@@ -12,7 +12,7 @@ const DSH_HOME_DIR_NAME = ".dsh";
 /**
 * Join path segments onto the DeepSeek Harness home. The standalone desktop
 * shell does not depend on the harness workspace, so it resolves the same
-* default as `dsh`: `$DSH_HOME` or `~/.dsh`.
+* default as dsh: $DSH_HOME or ~/.dsh.
 * @param segments - path segments appended to the harness home.
 * @returns the normalized absolute joined path.
 */
@@ -2032,6 +2032,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const DESKTOP_WEB_URL = process.env.DSH_DESKTOP_URL ?? "http://127.0.0.1:3080";
 const ALLOWED_ORIGINS = new Set(["http://127.0.0.1:3080", "http://localhost:3080"]);
 app.disableHardwareAcceleration();
+app.setAppUserModelId("com.deepseek.dsh.desktop");
 let mainWindow = null;
 let library = null;
 let runtime = null;
@@ -2125,6 +2126,7 @@ function createMainWindow() {
 		show: false,
 		backgroundColor: "#0f1115",
 		title: "DSH",
+		icon: join(__dirname, "..", "assets", "icon.ico"),
 		autoHideMenuBar: true,
 		webPreferences: {
 			preload: join(__dirname, "preload.mjs"),
