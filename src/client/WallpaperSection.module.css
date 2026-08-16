@@ -1,0 +1,245 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.title {
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.button {
+  padding: 6px 10px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--dsw-alias-bg-hover, rgb(0 0 0 / 5%));
+}
+
+.danger {
+  color: var(--dsw-specific-danger, #c0392b);
+}
+
+.notice {
+  padding: 16px;
+  border: 1px dashed var(--dsw-alias-border-l2);
+  border-radius: 12px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.status {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.error {
+  color: var(--dsw-specific-danger, #c0392b);
+}
+
+.roots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.rootsLabel {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.rootChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.rootRemove {
+  border: 0;
+  background: transparent;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 14px;
+  line-height: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--dsw-alias-bg-base);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardSelected {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 1px var(--dsw-alias-brand-primary);
+}
+
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: rgb(0 0 0 / 12%);
+  overflow: hidden;
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.badge {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 62%);
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.cardOpen {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  padding: 2px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 84%);
+  color: #0f1115;
+  font-size: 10px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.cardBody {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cardTitle {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardMeta {
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.cardActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 12px;
+}
+
+.control {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.control input[type='range'] {
+  width: 140px;
+}
+
+.control select {
+  padding: 4px 8px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+}

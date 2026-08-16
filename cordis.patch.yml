@@ -1,0 +1,7 @@
+# Installable bundle manifest for `dsh plugin add`.
+# Adds the Wallpaper Engine settings panel and background layer to the Web UI.
+# The Electron desktop shell (which exposes window.desktopWindow) is a separate
+# desktop application; without it the panel shows the "desktop version" hint.
+- insert:
+    - id: wallpaper-engine
+      name: dsh-wallpaper-engine
