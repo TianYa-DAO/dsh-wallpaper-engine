@@ -2125,7 +2125,7 @@ function createMainWindow() {
 		minHeight: 600,
 		show: false,
 		backgroundColor: "#0f1115",
-		title: "DSH",
+		title: "DeepSeek Harness桌面版",
 		icon: join(__dirname, "..", "assets", "icon.ico"),
 		autoHideMenuBar: true,
 		webPreferences: {
@@ -2144,6 +2144,9 @@ function createMainWindow() {
 		windowShown = true;
 		window.show();
 	};
+	window.on("page-title-updated", (event) => {
+		event.preventDefault();
+	});
 	window.once("ready-to-show", () => {
 		if (process.env.DSH_DESKTOP_SMOKE === "1") {
 			const marker = process.env.DSH_DESKTOP_SMOKE_FILE;
