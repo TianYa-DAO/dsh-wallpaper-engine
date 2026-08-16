@@ -37,10 +37,6 @@ pnpm run build   # tsc + tsdown；生成 lib/client.js
 
 官方 `@deepseek-ai/*` 包都声明为 `peerDependencies`，由 DSH 运行时提供。
 
-## 来源声明
-
-本地库识别与导入 UX 参考 Mineradio 的 GPL-3.0 Wallpaper Engine 实现（仅参考设计）。本包是独立编写的 TypeScript 实现：只索引本地 `project.json` 元数据，不执行导入的 Web/Application 项目，不读取项目根目录之外的文件。
-
 ## License
 
 MIT
