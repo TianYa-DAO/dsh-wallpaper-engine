@@ -1513,7 +1513,8 @@ function workerWDetachScript(input) {
 * but is moved to the 1px strip past the virtual desktop's bottom-right
 * corner, so it never covers the user's work. The expected title and
 * executable are validated before any move so a stray window with the same
-* handle cannot be relocated.
+* handle cannot be relocated. The window's extended style is switched to a
+* tool window so no taskbar button appears for the parked scene.
 */
 function windowParkScript(input) {
 	const sourceId = textOf(input.sourceId);
@@ -1554,7 +1555,15 @@ function windowParkScript(input) {
 		"$visibleHeight = [Math]::Max(0, [Math]::Min($after.Bottom, $virtualTop + $virtualHeight) - [Math]::Max($after.Top, $virtualTop))",
 		"$parked = ($visibleWidth -le 1 -and $visibleHeight -le 1)",
 		"if (-not $parked) { throw \"DSH_DESKTOP_WINDOW_PARK_UNVERIFIED\" }",
-		"[pscustomobject]@{ ok = $true; parked = $true; sourceId = \"" + sourceId + "\"; targetWindowId = $target.ToInt64().ToString(); x = $after.Left; y = $after.Top; width = $width; height = $height } | ConvertTo-Json -Compress"
+		"# Hide the taskbar button: drop WS_EX_APPWINDOW, add WS_EX_TOOLWINDOW.",
+		"$GWL_EXSTYLE = -20",
+		"$WS_EX_APPWINDOW = [Int64]0x00040000",
+		"$WS_EX_TOOLWINDOW = [Int64]0x00000080",
+		"$exStyle = [DshDesktopWin32]::GetWindowLongPtr($target, $GWL_EXSTYLE).ToInt64()",
+		"$toolStyle = ($exStyle -band (-bnot $WS_EX_APPWINDOW)) -bor $WS_EX_TOOLWINDOW",
+		"[DshDesktopWin32]::SetWindowLongPtr($target, $GWL_EXSTYLE, [IntPtr]::new([Int64]$toolStyle)) | Out-Null",
+		"[DshDesktopWin32]::SetWindowPos($target, [IntPtr]::Zero, $parkX, $parkY, $width, $height, 0x0414) | Out-Null",
+		"[pscustomobject]@{ ok = $true; parked = $true; taskbarHidden = $true; sourceId = \"" + sourceId + "\"; targetWindowId = $target.ToInt64().ToString(); x = $after.Left; y = $after.Top; width = $width; height = $height } | ConvertTo-Json -Compress"
 	].join("\n"));
 }
 /** Find Explorer's desktop icon host (top-level window -> SHELLDLL_DefView -> SysListView32). */
@@ -3013,6 +3022,7 @@ app.whenReady().then(async () => {
 				return {
 					ok: ack.ok === true,
 					parked: ack.parked === true,
+					taskbarHidden: ack.taskbarHidden === true,
 					targetWindowId: typeof ack.targetWindowId === "string" ? ack.targetWindowId : "",
 					x: Number(ack.x) || 0,
 					y: Number(ack.y) || 0,
@@ -3024,6 +3034,7 @@ app.whenReady().then(async () => {
 				return {
 					ok: false,
 					parked: false,
+					taskbarHidden: false,
 					targetWindowId: "",
 					x: 0,
 					y: 0,

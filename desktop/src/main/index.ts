@@ -755,6 +755,7 @@ void app.whenReady().then(async () => {
         return {
           ok: ack.ok === true,
           parked: ack.parked === true,
+          taskbarHidden: ack.taskbarHidden === true,
           targetWindowId: typeof ack.targetWindowId === 'string' ? ack.targetWindowId : '',
           x: Number(ack.x) || 0,
           y: Number(ack.y) || 0,
@@ -766,6 +767,7 @@ void app.whenReady().then(async () => {
         return {
           ok: false,
           parked: false,
+          taskbarHidden: false,
           targetWindowId: '',
           x: 0,
           y: 0,

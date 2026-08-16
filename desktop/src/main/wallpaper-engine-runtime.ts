@@ -64,6 +64,7 @@ interface ActiveSession {
 export interface WindowParkResult {
   ok: boolean
   parked: boolean
+  taskbarHidden: boolean
   targetWindowId: string
   x: number
   y: number

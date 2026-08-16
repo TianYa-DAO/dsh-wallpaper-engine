@@ -31,6 +31,11 @@ describe('windowParkScript', () => {
     expect(script).toContain('0x0414')
     expect(script).toContain('DSH_DESKTOP_WINDOW_PARK_UNVERIFIED')
     expect(script).toContain('window:42:0')
+    // The parked scene must not raise a taskbar button.
+    expect(script).toContain('$GWL_EXSTYLE = -20')
+    expect(script).toContain('$WS_EX_APPWINDOW')
+    expect(script).toContain('$WS_EX_TOOLWINDOW')
+    expect(script).toContain('taskbarHidden = $true')
   })
 
   test('wraps through the standard desktop PowerShell shell', () => {
@@ -61,7 +66,7 @@ describe('WallpaperEngineRuntime park seam', () => {
   }
 
   interface ParkInput { sourceId: string; title: string; executable: string }
-  type ParkResult = { ok: boolean; parked: boolean; targetWindowId: string; x: number; y: number; width: number; height: number; error: string }
+  type ParkResult = { ok: boolean; parked: boolean; taskbarHidden: boolean; targetWindowId: string; x: number; y: number; width: number; height: number; error: string }
 
   async function makeRuntime(options: { parkWindow?: (input: ParkInput) => Promise<ParkResult> }): Promise<{ runtime: WallpaperEngineRuntime; base: string; executable: string }> {
     const base = await mkdtemp(join(tmpdir(), 'dsh-we-park-'))
@@ -110,7 +115,7 @@ describe('WallpaperEngineRuntime park seam', () => {
         expect(input.sourceId).toBe('window:42:0')
         expect(input.title).toMatch(/^DSH Wallpaper [a-f0-9]{24}$/)
         expect(input.executable).toContain('wallpaper64.exe')
-        return { ok: true, parked: true, targetWindowId: '42', x: 3839, y: 2159, width: 1280, height: 720, error: '' }
+        return { ok: true, parked: true, taskbarHidden: true, targetWindowId: '42', x: 3839, y: 2159, width: 1280, height: 720, error: '' }
       },
     })
     try {
@@ -127,7 +132,7 @@ describe('WallpaperEngineRuntime park seam', () => {
 
   test('reports park failure without failing the scene', async () => {
     const { runtime, base } = await makeRuntime({
-      parkWindow: async () => ({ ok: false, parked: false, targetWindowId: '', x: 0, y: 0, width: 0, height: 0, error: 'DSH_DESKTOP_WINDOW_PARK_FAILED' }),
+      parkWindow: async () => ({ ok: false, parked: false, taskbarHidden: false, targetWindowId: '', x: 0, y: 0, width: 0, height: 0, error: 'DSH_DESKTOP_WINDOW_PARK_FAILED' }),
     })
     try {
       const started = await runtime.start('abcdef0123456789abcdef01', { width: 1280, height: 720 })
