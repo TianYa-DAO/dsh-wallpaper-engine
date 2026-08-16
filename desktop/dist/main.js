@@ -1,5 +1,6 @@
 import { execFile, spawn } from "node:child_process";
 import { createReadStream, readFileSync, writeFileSync } from "node:fs";
+import { connect } from "node:net";
 import { BrowserWindow, Menu, app, desktopCapturer, dialog, ipcMain, nativeTheme, protocol, screen, shell } from "electron";
 import { basename, dirname, extname, isAbsolute, join, parse, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -2067,6 +2068,51 @@ function failUntrusted() {
 		error: "DESKTOP_UNTRUSTED_CALLER"
 	};
 }
+function isPortListening(port) {
+	return new Promise((resolvePromise) => {
+		const socket = connect({
+			port,
+			host: "127.0.0.1",
+			timeout: 1200
+		});
+		const finish = (listening) => {
+			socket.destroy();
+			resolvePromise(listening);
+		};
+		socket.once("connect", () => {
+			finish(true);
+		});
+		socket.once("timeout", () => {
+			finish(false);
+		});
+		socket.once("error", () => {
+			finish(false);
+		});
+	});
+}
+/**
+* Make the packaged desktop exe novice-friendly: when `dsh web` is not
+* already listening, start it detached and wait for the port. If the dsh CLI
+* is not installed, the window still opens and its normal load retry path
+* shows the web failure instead of silently doing nothing.
+*/
+async function ensureDshWebRunning() {
+	const port = Number(new URL(DESKTOP_WEB_URL).port || 3080);
+	if (await isPortListening(port)) return;
+	try {
+		const child = spawn("dsh", ["web"], {
+			detached: true,
+			windowsHide: true,
+			stdio: "ignore"
+		});
+		child.on("error", () => {});
+		child.unref();
+	} catch {}
+	for (let attempt = 0; attempt < 60; attempt += 1) {
+		if (await isPortListening(port)) return;
+		await new Promise((resolvePromise) => setTimeout(resolvePromise, 1e3));
+	}
+}
 /** Send a debounced host-bounds update so the renderer can freeze/recover. */
 function scheduleHostBoundsChanged() {
 	if (boundsTimer !== null) clearTimeout(boundsTimer);
@@ -2623,7 +2669,7 @@ async function runDesktopModeSmoke() {
 	if (marker !== void 0) writeFileSync(marker, JSON.stringify(result));
 	app.quit();
 }
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 	Menu.setApplicationMenu(null);
 	const lib = new WallpaperEngineLibrary({ configPath: dshHomePath("wallpaper-engine-library.json") });
 	library = lib;
@@ -2649,6 +2695,7 @@ app.whenReady().then(() => {
 	registerWindowIpc();
 	registerWallpaperIpc();
 	registerDesktopModeIpc();
+	await ensureDshWebRunning();
 	createMainWindow();
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createMainWindow();

@@ -9,6 +9,7 @@
 
 import { spawn } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
+import { connect } from 'node:net'
 import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, Menu, nativeTheme, protocol, screen, shell, type IpcMainInvokeEvent, type IpcMainEvent } from 'electron'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -57,6 +58,41 @@ function stringArg(value: unknown): string { return typeof value === 'string' ? 
 
 function failUntrusted(): { ok: false; error: string } {
   return { ok: false, error: 'DESKTOP_UNTRUSTED_CALLER' }
+}
+
+function isPortListening(port: number): Promise<boolean> {
+  return new Promise((resolvePromise) => {
+    const socket = connect({ port, host: '127.0.0.1', timeout: 1200 })
+    const finish = (listening: boolean): void => {
+      socket.destroy()
+      resolvePromise(listening)
+    }
+    socket.once('connect', () => { finish(true) })
+    socket.once('timeout', () => { finish(false) })
+    socket.once('error', () => { finish(false) })
+  })
+}
+
+/**
+ * Make the packaged desktop exe novice-friendly: when `dsh web` is not
+ * already listening, start it detached and wait for the port. If the dsh CLI
+ * is not installed, the window still opens and its normal load retry path
+ * shows the web failure instead of silently doing nothing.
+ */
+async function ensureDshWebRunning(): Promise<void> {
+  const port = Number(new URL(DESKTOP_WEB_URL).port || 3080)
+  if (await isPortListening(port)) return
+  try {
+    const child = spawn('dsh', ['web'], { detached: true, windowsHide: true, stdio: 'ignore' })
+    child.on('error', () => {})
+    child.unref()
+  } catch {
+    // dsh CLI unavailable; keep the normal load path.
+  }
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    if (await isPortListening(port)) return
+    await new Promise(resolvePromise => setTimeout(resolvePromise, 1000))
+  }
 }
 
 /** Send a debounced host-bounds update so the renderer can freeze/recover. */
@@ -482,7 +518,7 @@ async function runDesktopModeSmoke(): Promise<void> {
   app.quit()
 }
 
-void app.whenReady().then(() => {
+void app.whenReady().then(async () => {
   Menu.setApplicationMenu(null)
   const lib = new WallpaperEngineLibrary({ configPath: dshHomePath('wallpaper-engine-library.json') })
   library = lib
@@ -505,6 +541,7 @@ void app.whenReady().then(() => {
   registerWindowIpc()
   registerWallpaperIpc()
   registerDesktopModeIpc()
+  await ensureDshWebRunning()
   createMainWindow()
 
   app.on('activate', () => {
