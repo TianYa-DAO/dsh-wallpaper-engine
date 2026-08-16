@@ -32,6 +32,15 @@ export const zh = {
   manualRoots: '手动导入',
   nativeSceneFailed: 'WE Scene 启动失败，已回退到预览图',
   desktopHint: '桌面版支持',
+  desktopMode: '桌面模式',
+  desktopModeOn: '嵌入桌面',
+  desktopModeOff: '退出桌面',
+  wallpaperModeOn: '开启桌面壁纸',
+  wallpaperModeOff: '关闭桌面壁纸',
+  desktopIconsShow: '显示桌面图标',
+  desktopIconsHide: '隐藏桌面图标',
+  desktopModeFocus: '聚焦桌面',
+  desktopModeUnsupported: '当前系统不支持桌面模式（仅 Windows）',
 } as const
 
 export const en = {
@@ -66,6 +75,15 @@ export const en = {
   manualRoots: 'Manual imports',
   nativeSceneFailed: 'WE Scene failed to start, fell back to the preview image',
   desktopHint: 'Desktop version',
+  desktopMode: 'Desktop mode',
+  desktopModeOn: 'Embed desktop',
+  desktopModeOff: 'Exit desktop',
+  wallpaperModeOn: 'Enable desktop wallpaper',
+  wallpaperModeOff: 'Disable desktop wallpaper',
+  desktopIconsShow: 'Show desktop icons',
+  desktopIconsHide: 'Hide desktop icons',
+  desktopModeFocus: 'Focus desktop',
+  desktopModeUnsupported: 'Desktop mode is unsupported on this system (Windows only)',
 } as const
 
 export type WallpaperKey = keyof typeof zh

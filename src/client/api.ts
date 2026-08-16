@@ -89,8 +89,44 @@ export interface DesktopWindowApi {
   }): Promise<WallpaperSceneStartResult>
   reportWallpaperEngineCaptureResult(payload: { sessionId: string; ok: boolean }): Promise<{ ok: boolean; captureReady: boolean }>
   stopWallpaperEngineScene(payload?: { sessionId?: string; all?: boolean }): Promise<{ ok: boolean; stopped?: boolean }>
+  getWallpaperModeStatus(): Promise<WallpaperModeStatus>
+  setWallpaperMode(payload: { enabled: boolean; url?: string; kind?: 'image' | 'video' }): Promise<WallpaperModeStatus>
+  updateWallpaperMode(payload: { url: string; kind: 'image' | 'video' }): Promise<WallpaperModeStatus>
+  getDesktopModeStatus(): Promise<DesktopModeStatus>
+  setDesktopMode(payload: { enabled: boolean; interactive?: boolean }): Promise<DesktopModeStatus>
+  setDesktopIconsVisible(visible: boolean): Promise<{ ok: boolean; visible: boolean; error: string }>
+  probeDesktopIcons(): Promise<{ ok: boolean; found: boolean; visible: boolean; desktopListWindowId: string; error: string }>
+  setDesktopSoftwareLocked(locked: boolean): Promise<DesktopModeStatus>
+  requestDesktopKeyboardFocus(): Promise<{ ok: boolean; focused: boolean }>
+  updateDesktopPointerRoute(payload: { overSoftwareUi: boolean; overDesktopControls: boolean }): void
+  onWallpaperModeState(callback: (payload: DesktopModeStatus) => void): () => void
   onWallpaperEngineHostBoundsChanged(callback: (payload: HostBoundsPayload) => void): () => void
   onStateChange(callback: (payload: unknown) => void): () => void
+}
+
+export interface WallpaperModeStatus {
+  ok: boolean
+  supported: boolean
+  enabled: boolean
+  active: boolean
+  windowId: number | null
+  nativeWindowId: string
+  parentWindowId: string
+  parentClassName: string
+  bounds: HostBoundsPayload | null
+  error: string
+}
+
+export interface DesktopModeStatus {
+  ok: boolean
+  supported: boolean
+  enabled: boolean
+  interactive: boolean
+  attached: boolean
+  desktopIconsVisible: boolean
+  softwareInteractionLocked: boolean
+  ignoreMouseEvents: boolean
+  error: string
 }
 
 export interface HostBoundsPayload {

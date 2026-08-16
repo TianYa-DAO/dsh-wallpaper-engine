@@ -9,7 +9,7 @@ This is the installable plugin package. It registers a **Desktop & Wallpaper** s
 From a GitHub repo:
 
 ```sh
-dsh plugin --profile web add <your-git-repo-url>
+dsh plugin --profile web add https://github.com/TianYa-DAO/dsh-wallpaper-engine
 ```
 
 From a local checkout:
@@ -18,7 +18,7 @@ From a local checkout:
 dsh plugin --profile web add ./plugin-package/dsh-wallpaper-engine
 ```
 
-Then open Settings → **Desktop & Wallpaper**.
+Then open Settings → **Desktop & Wallpaper**. Inside the desktop shell the panel also exposes desktop-mode controls: WorkerW wallpaper window, desktop embed, and desktop-icon visibility.
 
 ## Desktop bridge
 

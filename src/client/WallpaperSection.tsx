@@ -132,6 +132,8 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
               onFill={(fill) => { controller.store.actions.setSelection({ ...state.selection, fill }) }}
             />
           )}
+
+          {controller.isDesktop ? <DesktopModeControls controller={controller} t={t} /> : null}
         </>
       )}
     </div>
@@ -165,6 +167,90 @@ function BackgroundControls({ t, opacity, blur, fill, onOpacity, onBlur, onFill 
           <option value="fill">{t('fillFill')}</option>
         </select>
       </label>
+    </div>
+  )
+}
+
+function DesktopModeControls({ controller, t }: {
+  controller: WallpaperEngineController
+  t: (key: WallpaperKey) => string
+}): ReactNode {
+  const [wallpaperActive, setWallpaperActive] = useState(false)
+  const [desktopActive, setDesktopActive] = useState(false)
+  const [iconsVisible, setIconsVisible] = useState(true)
+  const [supported, setSupported] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    void controller.getWallpaperModeStatus().then((status) => {
+      if (status !== null && typeof status === 'object') {
+        setWallpaperActive((status as { enabled?: boolean }).enabled === true)
+        setSupported((status as { supported?: boolean }).supported !== false)
+      }
+    }).catch(() => {})
+    void controller.getDesktopModeStatus().then((status) => {
+      if (status !== null && typeof status === 'object') {
+        setDesktopActive((status as { enabled?: boolean }).enabled === true)
+        setSupported((status as { supported?: boolean }).supported !== false)
+      }
+    }).catch(() => {})
+    void controller.probeDesktopIcons().then((probe) => {
+      if (probe !== null && typeof probe === 'object') {
+        setIconsVisible((probe as { visible?: boolean }).visible !== false)
+      }
+    }).catch(() => {})
+  }, [controller])
+
+  const toggleWallpaper = async (): Promise<void> => {
+    setError('')
+    const result = await controller.setWallpaperMode(!wallpaperActive)
+    if (result !== null && typeof result === 'object') {
+      const value = result as { ok?: boolean; enabled?: boolean; error?: string }
+      setWallpaperActive(value.enabled === true || value.ok === true)
+      if (value.error !== undefined && value.error !== '') setError(value.error)
+    }
+  }
+
+  const toggleDesktop = async (): Promise<void> => {
+    setError('')
+    const result = await controller.setDesktopMode(!desktopActive)
+    if (result !== null && typeof result === 'object') {
+      const value = result as { ok?: boolean; enabled?: boolean; error?: string }
+      setDesktopActive(value.enabled === true)
+      if (value.error !== undefined && value.error !== '') setError(value.error)
+    }
+  }
+
+  const toggleIcons = async (): Promise<void> => {
+    setError('')
+    const result = await controller.setDesktopIconsVisible(!iconsVisible)
+    if (result !== null && typeof result === 'object') {
+      const value = result as { ok?: boolean; visible?: boolean; error?: string }
+      setIconsVisible(value.visible === true)
+      if (value.error !== undefined && value.error !== '') setError(value.error)
+    }
+  }
+
+  if (!supported) return <div className={css.notice}>{t('desktopModeUnsupported')}</div>
+
+  return (
+    <div className={css.desktopMode}>
+      <div className={css.desktopModeTitle}>{t('desktopMode')}</div>
+      <div className={css.cardActions}>
+        <button className={css.button} type="button" onClick={() => { void toggleWallpaper() }}>
+          {wallpaperActive ? t('wallpaperModeOff') : t('wallpaperModeOn')}
+        </button>
+        <button className={css.button} type="button" onClick={() => { void toggleDesktop() }}>
+          {desktopActive ? t('desktopModeOff') : t('desktopModeOn')}
+        </button>
+        <button className={css.button} type="button" onClick={() => { void toggleIcons() }}>
+          {iconsVisible ? t('desktopIconsHide') : t('desktopIconsShow')}
+        </button>
+        <button className={css.button} type="button" onClick={() => { void controller.requestDesktopKeyboardFocus() }}>
+          {t('desktopModeFocus')}
+        </button>
+      </div>
+      {error !== '' && <div className={css.error}>{error}</div>}
     </div>
   )
 }

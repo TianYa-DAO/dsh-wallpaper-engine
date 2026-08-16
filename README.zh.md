@@ -18,7 +18,7 @@ dsh plugin --profile web add <你的仓库地址>
 dsh plugin --profile web add ./plugin-package/dsh-wallpaper-engine
 ```
 
-然后打开 设置 → **桌面与壁纸**。
+然后打开 设置 → **桌面与壁纸**。在桌面壳中，面板还提供桌面模式控件：WorkerW 壁纸窗口、桌面嵌入和桌面图标可见性。
 
 ## 桌面桥接
 

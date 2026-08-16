@@ -6,7 +6,7 @@
 
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-ui-slots'
 import { bindSnapshotSelector } from '@deepseek-ai/dsh-client-web-react'
-import type { DesktopWindowApi, WallpaperProjectItem, WallpaperSceneStartResult } from './api.ts'
+import { wallpaperMediaUrl, type DesktopWindowApi, type WallpaperProjectItem, type WallpaperSceneStartResult } from './api.ts'
 import { createWallpaperEngineStore, type WallpaperEngineState } from './store.ts'
 import { emptyWallpaperSelection, type WallpaperSelection, type WallpaperSelectionKind } from './selection.ts'
 
@@ -185,6 +185,60 @@ export class WallpaperEngineController {
       }
     }
     this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: '', freeze: false })
+  }
+
+  /** Compute the current wallpaper URL for the WorkerW desktop window. */
+  private desktopWallpaperPayload(): { url: string; kind: 'image' | 'video' } {
+    const state = this.store.getSnapshot()
+    const project = state.projects.find(item => item.id === state.selection.id) ?? null
+    const kind = state.selection.mediaType === 'video' ? 'video' as const : 'image' as const
+    const url = wallpaperMediaUrl(project?.playable === true ? 'media' : 'preview', project, state.mediaToken)
+    return { url, kind }
+  }
+
+  /** Get the WorkerW wallpaper-window status. */
+  async getWallpaperModeStatus(): Promise<unknown> {
+    return this.api === null ? { ok: false, supported: false, enabled: false } : this.api.getWallpaperModeStatus()
+  }
+
+  /** Enable or disable the WorkerW wallpaper window. */
+  async setWallpaperMode(enabled: boolean): Promise<unknown> {
+    if (this.api === null) return { ok: false, enabled: false }
+    if (enabled) {
+      const payload = this.desktopWallpaperPayload()
+      if (payload.url === '') return { ok: false, enabled: false, error: 'WALLPAPER_SELECTION_REQUIRED' }
+      return this.api.setWallpaperMode({ enabled: true, ...payload })
+    }
+    return this.api.setWallpaperMode({ enabled: false })
+  }
+
+  /** Get the full-desktop embed status. */
+  async getDesktopModeStatus(): Promise<unknown> {
+    return this.api === null ? { ok: false, supported: false, enabled: false } : this.api.getDesktopModeStatus()
+  }
+
+  /** Embed the main window into the desktop icon host. */
+  async setDesktopMode(enabled: boolean, interactive = true): Promise<unknown> {
+    if (this.api === null) return { ok: false, enabled: false }
+    return this.api.setDesktopMode({ enabled, interactive })
+  }
+
+  async setDesktopIconsVisible(visible: boolean): Promise<unknown> {
+    return this.api === null ? { ok: false } : this.api.setDesktopIconsVisible(visible)
+  }
+
+  async probeDesktopIcons(): Promise<unknown> {
+    return this.api === null ? { ok: false, found: false } : this.api.probeDesktopIcons()
+  }
+
+  async setDesktopSoftwareLocked(locked: boolean): Promise<unknown> {
+    return this.api === null ? { ok: false } : this.api.setDesktopSoftwareLocked(locked)
+  }
+
+  requestDesktopKeyboardFocus(): Promise<unknown> {
+    return this.api === null
+      ? Promise.resolve({ ok: false })
+      : this.api.requestDesktopKeyboardFocus()
   }
 
   /** Open the WE/Steam workshop page for one project. */
