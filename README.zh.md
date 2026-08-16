@@ -1,41 +1,49 @@
 # dsh-wallpaper-engine
 
-DeepSeek Harness（`dsh`）Web UI 的 Wallpaper Engine 面板和背景层。
+DeepSeek Harness（`dsh`）的 Wallpaper Engine 面板、背景层和 Windows 桌面壳。
 
-这是可安装的插件包。它注册一个 **桌面与壁纸** 设置区，包含懒加载的本地 Wallpaper Engine 库（Steam 创意工坊/本地项目和手动导入）、搜索、导入/移除、设为背景（支持不透明度/模糊/填充方式），以及全屏背景层。当 DSH 桌面壳暴露 `window.desktopWindow` 桥接时，Scene 项目可以通过原生 Wallpaper Engine 运行时运行；在普通浏览器中，面板显示“桌面版支持”提示，网页版行为不变。
+本仓库包含两部分：
 
-## 安装
-
-从 GitHub 仓库安装：
-
-```sh
-dsh plugin --profile web add <你的仓库地址>
+```
+packages/dsh-wallpaper-engine/   dsh 可安装 Web 插件（dsh.bundle + dsh.client）
+desktop/                         Windows Electron 桌面壳
 ```
 
-从本地目录安装：
+插件单独安装即可在 设置 → **桌面与壁纸** 使用网页版安全预览。在桌面壳中运行插件可解锁本地库识别、`dsh-wallpaper://` 媒体协议、原生 Wallpaper Engine Scene 播放，以及 M5 桌面模式（WorkerW 壁纸、桌面嵌入、桌面图标可见性）。
+
+## 安装插件
 
 ```sh
-dsh plugin --profile web add ./plugin-package/dsh-wallpaper-engine
+dsh plugin --profile web add github:TianYa-DAO/dsh-wallpaper-engine
 ```
 
-然后打开 设置 → **桌面与壁纸**。在桌面壳中，面板还提供桌面模式控件：WorkerW 壁纸窗口、桌面嵌入和桌面图标可见性。
+然后打开 设置 → **桌面与壁纸**。
 
-## 桌面桥接
+## 安装并运行桌面壳
 
-媒体发现、导入对话框、`dsh-wallpaper://` 媒体协议和原生 Scene 启停运行在 DSH 桌面壳中（主仓库的 `apps/desktop`）。请单独安装桌面壳，并让它加载运行中的 `dsh web`：
+前置条件：Windows、Node 22、pnpm，且 `dsh web` 已在 `http://127.0.0.1:3080` 运行。
 
 ```bat
-pnpm --filter @deepseek-ai/dsh-desktop run start
+pnpm run desktop:install
+pnpm run desktop
 ```
 
-## 开发
+或者双击仓库根目录的 `start-dsh-desktop.bat`；它会等待 `dsh web` 就绪后再显示窗口。
 
-```sh
+## 从源码构建
+
+```bat
+pnpm --dir desktop install
+pnpm --dir desktop run build
+```
+
+插件包自带预构建的 `lib/client.js`；可用自包含 prepare 脚本重建：
+
+```bat
+cd packages\dsh-wallpaper-engine
 pnpm install
-pnpm run build   # tsc + tsdown；生成 lib/client.js
+pnpm run prepare
 ```
-
-官方 `@deepseek-ai/*` 包都声明为 `peerDependencies`，由 DSH 运行时提供。
 
 ## License
 

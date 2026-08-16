@@ -1,0 +1,33 @@
+{
+  "name": "dsh-wallpaper-engine-desktop",
+  "description": "DSH Windows desktop shell: Electron window over the dsh web UI plus Wallpaper Engine local-library and native-scene bridge",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TianYa-DAO/dsh-wallpaper-engine.git",
+    "directory": "desktop"
+  },
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "pnpm run build:types && pnpm run bundle",
+    "bundle": "tsdown && node scripts/rename-preload-mjs.mjs",
+    "watch": "tsdown --watch",
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:types": "tsc -b tsconfig.json"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "electron": "^37.0.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3"
+  },
+  "files": [
+    "dist",
+    "lib/types/src/**/*.d.ts",
+    "lib/types/src/preload.d.mts"
+  ],
+  "private": true
+}

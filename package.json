@@ -1,93 +1,13 @@
 {
-  "name": "dsh-wallpaper-engine",
-  "description": "Wallpaper Engine local library, background layer, and native-scene panel for the DSH desktop shell",
+  "name": "dsh-wallpaper-engine-repo",
   "version": "0.1.0",
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": true,
+  "description": "Monorepo for dsh-wallpaper-engine: the installable DSH plugin and the DSH Windows desktop shell",
   "license": "MIT",
-  "type": "module",
-  "main": "lib/index.js",
-  "types": "lib/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/types/index.d.ts",
-      "default": "./lib/index.js"
-    },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
-    "./client": {
-      "types": "./lib/types/client/index.d.ts",
-      "default": "./lib/client.js"
-    },
-    "./src/*": "./src/*",
-    "./package.json": "./package.json"
-  },
-  "dsh": {
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    },
-    "client": {
-      "inject": [
-        "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-ui-settings",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-slots"
-      ],
-      "platform": "web"
-    }
-  },
   "scripts": {
-    "prepare": "tsdown --config scripts/tsdown.lib.ts && tsdown --config scripts/tsdown.client.config.ts",
-    "build": "pnpm run prepare",
-    "bundle": "tsdown --config scripts/tsdown.lib.ts && tsdown --config scripts/tsdown.client.config.ts"
-  },
-  "dependencies": {
-    "clsx": "^2.0.0"
-  },
-  "peerDependencies": {
-    "@deepseek-ai/dsh-client-locale": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-layout": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-web-react": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-invariants": "^0.1.0-rc.5",
-    "@deepseek-ai/cordis": "^4.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "@deepseek-ai/dsh-client-locale": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-layout": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-client-web-react": "^0.1.0-rc.5",
-    "@deepseek-ai/dsh-invariants": "^0.1.0-rc.5",
-    "@deepseek-ai/cordis": "^4.0.1",
-    "@types/react": "~18.3.1",
-    "@types/react-dom": "~18.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tsdown": "^0.22.2",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.8",
-    "lightningcss": "^1.29.0"
-  },
-  "files": [
-    "lib/index.js",
-    "lib/invariant.js",
-    "lib/client.js",
-    "lib/types/**/*.d.ts",
-    "src",
-    "cordis.patch.yml",
-    "README.md",
-    "README.zh.md",
-    "LICENSE"
-  ]
+    "desktop:install": "pnpm --dir desktop install",
+    "desktop:build": "pnpm --dir desktop run build",
+    "desktop": "pnpm --dir desktop run start",
+    "plugin:pack": "npm pack packages/dsh-wallpaper-engine --pack-destination release"
+  }
 }

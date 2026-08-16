@@ -1,25 +1,24 @@
 # HOW TO SUBMIT to github.com/awesome-dsh-plugin/awesome-dsh-plugin
 #
-# 1. Upload this repository to GitHub and add the topic `dsh-plugin`.
+# 1. Add the topic `dsh-plugin` to this repository.
 # 2. Fork awesome-dsh-plugin and add ONE file:
-#      data/plugins/<owner>__<repo>.yml
-#    (replace <owner> and <repo> with your GitHub owner/repository).
-# 3. Copy the block below into that file, after replacing the url and name.
+#      data/plugins/TianYa-DAO__dsh-wallpaper-engine--packages-dsh-wallpaper-engine.yml
+# 3. Copy the block below into that file.
 # 4. In the awesome repo run:
 #      npm ci
 #      node scripts/generate-readme.mjs
-#    and commit the regenerated README.md + README.zh.md with your YAML.
+#    and commit the regenerated README.md + README.zh.md.
 #
-# CI additionally requires: the repo declares `dsh.bundle` (it does),
-# the repo is at least 1 day old, and has at least 10 commits.
+# CI requires the dsh.bundle manifest (declared by packages/dsh-wallpaper-engine),
+# repo age >= 1 day, and >= 10 commits.
 #
-# Optional: attach `dsh-wallpaper-engine-0.1.0.tgz` (built with `npm pack`)
-# to a GitHub Release and add the `tarball:` line below.
+# Optional: attach packages/dsh-wallpaper-engine/dsh-wallpaper-engine-0.1.0.tgz
+# to a GitHub Release and add the tarball line below.
 
-url: https://github.com/<owner>/<repo>
-name: <owner>/<repo>
+url: https://github.com/TianYa-DAO/dsh-wallpaper-engine/tree/main/packages/dsh-wallpaper-engine
+name: TianYa-DAO/dsh-wallpaper-engine#plugin
 category: ui
 description:
-  en: Wallpaper Engine local library, background layer, and native Scene panel for the DSH desktop shell.
-  zh: 面向 DSH 桌面壳的 Wallpaper Engine 本地库、背景层与原生 Scene 面板。
-# tarball: https://github.com/<owner>/<repo>/releases/latest/download/dsh-wallpaper-engine-0.1.0.tgz
+  en: Wallpaper Engine local library, background layer, native Scene panel, and desktop-mode controls for the DSH desktop shell.
+  zh: 面向 DSH 桌面壳的 Wallpaper Engine 本地库、背景层、原生 Scene 面板与桌面模式控件。
+# tarball: https://github.com/TianYa-DAO/dsh-wallpaper-engine/releases/latest/download/dsh-wallpaper-engine-0.1.0.tgz

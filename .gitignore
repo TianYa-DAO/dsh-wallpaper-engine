@@ -1,4 +1,7 @@
 node_modules/
+desktop/node_modules/
+desktop/lib/
 *.log
 *.tgz
-lib/types/tsconfig.tsbuildinfo
+release/
+.DS_Store

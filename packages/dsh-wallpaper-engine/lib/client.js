@@ -390,7 +390,7 @@ window.__ModuleLoader__.load({
 			return (0, _deepseek_ai_dsh_client_web_react.bindSnapshotSelector)(controller.store);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/dist/clsx.mjs
+		//#region ../../../../../node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/dist/clsx.mjs
 		function r(e) {
 			var t, f, n = "";
 			if ("string" == typeof e || "number" == typeof e) n += e;
@@ -405,8 +405,8 @@ window.__ModuleLoader__.load({
 			return n;
 		}
 		//#endregion
-		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".AbN9rW_section{flex-direction:column;gap:16px;min-width:0;display:flex}.AbN9rW_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.AbN9rW_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.AbN9rW_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.AbN9rW_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.AbN9rW_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.AbN9rW_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.AbN9rW_danger{color:var(--dsw-specific-danger,#c0392b)}.AbN9rW_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.AbN9rW_toolbar{align-items:center;gap:8px;display:flex}.AbN9rW_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.AbN9rW_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.AbN9rW_error{color:var(--dsw-specific-danger,#c0392b)}.AbN9rW_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.AbN9rW_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.AbN9rW_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.AbN9rW_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.AbN9rW_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.AbN9rW_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.AbN9rW_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.AbN9rW_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.AbN9rW_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.AbN9rW_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.AbN9rW_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.AbN9rW_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.AbN9rW_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.AbN9rW_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.AbN9rW_cardActions{gap:8px;margin-top:2px;display:flex}.AbN9rW_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.AbN9rW_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.AbN9rW_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.AbN9rW_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.AbN9rW_control input[type=range]{width:140px}.AbN9rW_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
+		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -416,37 +416,37 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"rootsLabel": "AbN9rW_rootsLabel",
-			"title": "AbN9rW_title",
-			"desktopMode": "AbN9rW_desktopMode",
-			"search": "AbN9rW_search",
-			"cardSelected": "AbN9rW_cardSelected",
-			"notice": "AbN9rW_notice",
-			"head": "AbN9rW_head",
-			"toolbar": "AbN9rW_toolbar",
-			"card": "AbN9rW_card",
-			"cardBody": "AbN9rW_cardBody",
-			"section": "AbN9rW_section",
-			"grid": "AbN9rW_grid",
-			"thumb": "AbN9rW_thumb",
-			"badge": "AbN9rW_badge",
-			"status": "AbN9rW_status",
-			"rootChip": "AbN9rW_rootChip",
-			"subtitle": "AbN9rW_subtitle",
-			"actions": "AbN9rW_actions",
-			"cardMeta": "AbN9rW_cardMeta",
-			"control": "AbN9rW_control",
-			"roots": "AbN9rW_roots",
-			"thumbImage": "AbN9rW_thumbImage",
-			"error": "AbN9rW_error",
-			"button": "AbN9rW_button",
-			"rootRemove": "AbN9rW_rootRemove",
-			"desktopModeTitle": "AbN9rW_desktopModeTitle",
-			"danger": "AbN9rW_danger",
-			"cardOpen": "AbN9rW_cardOpen",
-			"controls": "AbN9rW_controls",
-			"cardTitle": "AbN9rW_cardTitle",
-			"cardActions": "AbN9rW_cardActions"
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"cardOpen": "O_XpsG_cardOpen",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"card": "O_XpsG_card",
+			"danger": "O_XpsG_danger",
+			"thumb": "O_XpsG_thumb",
+			"cardTitle": "O_XpsG_cardTitle",
+			"desktopMode": "O_XpsG_desktopMode",
+			"badge": "O_XpsG_badge",
+			"rootRemove": "O_XpsG_rootRemove",
+			"actions": "O_XpsG_actions",
+			"status": "O_XpsG_status",
+			"search": "O_XpsG_search",
+			"title": "O_XpsG_title",
+			"subtitle": "O_XpsG_subtitle",
+			"cardActions": "O_XpsG_cardActions",
+			"control": "O_XpsG_control",
+			"button": "O_XpsG_button",
+			"controls": "O_XpsG_controls",
+			"error": "O_XpsG_error",
+			"toolbar": "O_XpsG_toolbar",
+			"head": "O_XpsG_head",
+			"roots": "O_XpsG_roots",
+			"cardSelected": "O_XpsG_cardSelected",
+			"thumbImage": "O_XpsG_thumbImage",
+			"section": "O_XpsG_section",
+			"cardBody": "O_XpsG_cardBody",
+			"grid": "O_XpsG_grid",
+			"notice": "O_XpsG_notice",
+			"cardMeta": "O_XpsG_cardMeta",
+			"rootChip": "O_XpsG_rootChip"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -859,8 +859,8 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\src\client\WallpaperBackground.module.css.mjs
-		const css = "._aQFpa_host{z-index:-1;pointer-events:none;position:fixed;inset:0;overflow:hidden}._aQFpa_layer{transition:opacity var(--ds-transition-duration-slow,.2s) var(--ds-ease-in-out,ease-in-out);position:absolute;inset:0;overflow:hidden}._aQFpa_image,._aQFpa_video{border:0;width:100%;height:100%;position:absolute;inset:0}._aQFpa_image{background-position:50%;background-repeat:no-repeat}._aQFpa_video{object-fit:cover}._aQFpa_fill_cover._aQFpa_image{background-size:cover}._aQFpa_fill_contain._aQFpa_image{background-size:contain}._aQFpa_fill_fill._aQFpa_image{background-size:100% 100%}._aQFpa_fill_cover._aQFpa_video{object-fit:cover}._aQFpa_fill_contain._aQFpa_video{object-fit:contain}._aQFpa_fill_fill._aQFpa_video{object-fit:fill}._aQFpa_fallbackNote{color:#fff;pointer-events:none;background:#0000008c;border-radius:8px;max-width:480px;padding:6px 10px;font-size:12px;line-height:18px;position:absolute;bottom:12px;left:12px}";
+		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperBackground.module.css.mjs
+		const css = ".mm6n-q_host{z-index:-1;pointer-events:none;position:fixed;inset:0;overflow:hidden}.mm6n-q_layer{transition:opacity var(--ds-transition-duration-slow,.2s) var(--ds-ease-in-out,ease-in-out);position:absolute;inset:0;overflow:hidden}.mm6n-q_image,.mm6n-q_video{border:0;width:100%;height:100%;position:absolute;inset:0}.mm6n-q_image{background-position:50%;background-repeat:no-repeat}.mm6n-q_video{object-fit:cover}.mm6n-q_fill_cover.mm6n-q_image{background-size:cover}.mm6n-q_fill_contain.mm6n-q_image{background-size:contain}.mm6n-q_fill_fill.mm6n-q_image{background-size:100% 100%}.mm6n-q_fill_cover.mm6n-q_video{object-fit:cover}.mm6n-q_fill_contain.mm6n-q_video{object-fit:contain}.mm6n-q_fill_fill.mm6n-q_video{object-fit:fill}.mm6n-q_fallbackNote{color:#fff;pointer-events:none;background:#0000008c;border-radius:8px;max-width:480px;padding:6px 10px;font-size:12px;line-height:18px;position:absolute;bottom:12px;left:12px}";
 		const tagId = "dsh-wallpaper-engine/WallpaperBackground.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -870,14 +870,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fill_contain": "_aQFpa_fill_contain",
-			"fill_fill": "_aQFpa_fill_fill",
-			"host": "_aQFpa_host",
-			"image": "_aQFpa_image",
-			"layer": "_aQFpa_layer",
-			"fallbackNote": "_aQFpa_fallbackNote",
-			"video": "_aQFpa_video",
-			"fill_cover": "_aQFpa_fill_cover"
+			"fill_contain": "mm6n-q_fill_contain",
+			"fill_fill": "mm6n-q_fill_fill",
+			"fill_cover": "mm6n-q_fill_cover",
+			"video": "mm6n-q_video",
+			"image": "mm6n-q_image",
+			"host": "mm6n-q_host",
+			"fallbackNote": "mm6n-q_fallbackNote",
+			"layer": "mm6n-q_layer"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx

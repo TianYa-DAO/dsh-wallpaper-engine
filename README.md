@@ -1,41 +1,49 @@
 # dsh-wallpaper-engine
 
-Wallpaper Engine panel and background layer for the DeepSeek Harness (`dsh`) Web UI.
+Wallpaper Engine panel, background layer, and Windows desktop shell for DeepSeek Harness (`dsh`).
 
-This is the installable plugin package. It registers a **Desktop & Wallpaper** settings section with a lazy-loaded local Wallpaper Engine library (Steam workshop/local projects and manual imports), search, import/remove, set-as-background with opacity/blur/fill controls, and a full-viewport background layer. Scene projects can run through the native Wallpaper Engine runtime when the DSH desktop shell exposes its `window.desktopWindow` bridge; in a plain browser the panel shows the "desktop version" hint and the web app is unchanged.
+This repository contains both pieces:
 
-## Install
-
-From a GitHub repo:
-
-```sh
-dsh plugin --profile web add https://github.com/TianYa-DAO/dsh-wallpaper-engine
+```
+packages/dsh-wallpaper-engine/   Installable DSH web plugin (dsh.bundle + dsh.client)
+desktop/                         Electron desktop shell for Windows
 ```
 
-From a local checkout:
+The plugin alone provides the Settings → **Desktop & Wallpaper** panel and a web-safe preview mode. Run it inside the desktop shell to unlock local library discovery, the `dsh-wallpaper://` media protocol, native Wallpaper Engine Scene playback, and M5 desktop mode (WorkerW wallpaper, desktop embed, desktop-icon visibility).
+
+## Install the plugin
 
 ```sh
-dsh plugin --profile web add ./plugin-package/dsh-wallpaper-engine
+dsh plugin --profile web add github:TianYa-DAO/dsh-wallpaper-engine
 ```
 
-Then open Settings → **Desktop & Wallpaper**. Inside the desktop shell the panel also exposes desktop-mode controls: WorkerW wallpaper window, desktop embed, and desktop-icon visibility.
+Then open Settings → **Desktop & Wallpaper**.
 
-## Desktop bridge
+## Install and run the desktop shell
 
-Media discovery, import dialogs, the `dsh-wallpaper://` media protocol, and native Scene start/stop run in the DSH desktop shell (`apps/desktop` of the main repository). Install the shell separately and launch it over a running `dsh web`:
+Prerequisites: Node 22, pnpm, Windows, and a running `dsh web` on `http://127.0.0.1:3080`.
 
 ```bat
-pnpm --filter @deepseek-ai/dsh-desktop run start
+pnpm run desktop:install
+pnpm run desktop
 ```
 
-## Development
+Or double-click `start-dsh-desktop.bat` at the repository root; it waits for `dsh web` to be ready before showing the window.
 
-```sh
+## Build from source
+
+```bat
+pnpm --dir desktop install
+pnpm --dir desktop run build
+```
+
+The plugin package ships prebuilt `lib/client.js`; rebuild it with the self-contained prepare script:
+
+```bat
+cd packages\dsh-wallpaper-engine
 pnpm install
-pnpm run build   # tsc + tsdown; emits lib/client.js
+pnpm run prepare
 ```
-
-Official `@deepseek-ai/*` packages are `peerDependencies`; the DSH runtime provides them.
 
 ## License
 
