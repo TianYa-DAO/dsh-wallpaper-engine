@@ -86,6 +86,13 @@
   color: var(--dsw-alias-label-secondary);
 }
 
+.sceneNote {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--dsw-alias-label-secondary);
+}
+
 .error {
   color: var(--dsw-specific-danger, #c0392b);
 }

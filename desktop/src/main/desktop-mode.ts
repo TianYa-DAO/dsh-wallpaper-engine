@@ -71,6 +71,8 @@ interface NativeExecOptions {
 function desktopWin32Class(): string {
   return [
     'using System;',
+    'using System.Diagnostics;',
+    'using System.IO;',
     'using System.Runtime.InteropServices;',
     'using System.Text;',
     'public static class DshDesktopWin32 {',
@@ -89,6 +91,9 @@ function desktopWin32Class(): string {
     '  [DllImport("user32.dll", SetLastError=true)] [return: MarshalAs(UnmanagedType.Bool)] public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);',
     '  [DllImport("user32.dll", SetLastError=true)] [return: MarshalAs(UnmanagedType.Bool)] public static extern bool ScreenToClient(IntPtr hWnd, ref POINT point);',
     '  [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetClassName(IntPtr hWnd, StringBuilder value, int maxCount);',
+    '  [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern int GetWindowText(IntPtr hWnd, StringBuilder value, int maxCount);',
+    '  [DllImport("user32.dll", SetLastError=true)] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);',
+    '  [DllImport("user32.dll")] public static extern int GetSystemMetrics(int index);',
     '  [DllImport("user32.dll", SetLastError=true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam, uint flags, uint timeout, out IntPtr result);',
     '  [DllImport("user32.dll", EntryPoint="GetWindowLongPtrW", SetLastError=true)] private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int index);',
     '  [DllImport("user32.dll", EntryPoint="GetWindowLongW", SetLastError=true)] private static extern IntPtr GetWindowLong32(IntPtr hWnd, int index);',
@@ -97,6 +102,31 @@ function desktopWin32Class(): string {
     '  [DllImport("user32.dll")] public static extern IntPtr SetThreadDpiAwarenessContext(IntPtr context);',
     '  public static IntPtr GetWindowLongPtr(IntPtr hWnd, int index) { return IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, index) : GetWindowLong32(hWnd, index); }',
     '  public static IntPtr SetWindowLongPtr(IntPtr hWnd, int index, IntPtr value) { return IntPtr.Size == 8 ? SetWindowLongPtr64(hWnd, index, value) : SetWindowLong32(hWnd, index, value); }',
+    '  public static string WindowTitle(IntPtr hWnd) {',
+    '    StringBuilder text = new StringBuilder(1024);',
+    '    GetWindowText(hWnd, text, text.Capacity);',
+    '    return text.ToString();',
+    '  }',
+    '  public static uint WindowProcessId(IntPtr hWnd) {',
+    '    uint processId;',
+    '    GetWindowThreadProcessId(hWnd, out processId);',
+    '    return processId;',
+    '  }',
+    '  public static string ProcessExecutable(uint processId) {',
+    '    if (processId == 0) return "";',
+    '    try {',
+    '      using (Process process = Process.GetProcessById((int)processId)) {',
+    '        try { return Path.GetFullPath(process.MainModule.FileName); } catch { return ""; }',
+    '      }',
+    '    } catch { return ""; }',
+    '  }',
+    '  public static IntPtr ParseWindowHandle(string sourceId) {',
+    '    string[] parts = (sourceId ?? "").Split(\':\');',
+    '    if (parts.Length != 3 || !String.Equals(parts[0], "window", StringComparison.Ordinal)) return IntPtr.Zero;',
+    '    ulong raw;',
+    '    if (!UInt64.TryParse(parts[1], out raw) || raw == 0) return IntPtr.Zero;',
+    '    return IntPtr.Size == 8 ? new IntPtr(unchecked((long)raw)) : new IntPtr(unchecked((int)raw));',
+    '  }',
     '}',
   ].join('\n')
 }
@@ -197,6 +227,53 @@ export function workerWDetachScript(input: { hwnd: string } & DesktopBounds): st
     '[DshDesktopWin32]::SetWindowLongPtr($target, $GWL_STYLE, [IntPtr]::new([Int64]$topStyle)) | Out-Null',
     'if (-not [DshDesktopWin32]::SetWindowPos($target, [IntPtr]::Zero, ' + String(bounds.x) + ', ' + String(bounds.y) + ', ' + String(bounds.width) + ', ' + String(bounds.height) + ', 0x0030)) { throw "DSH_DESKTOP_DETACH_POSITION_FAILED" }',
     '[pscustomobject]@{ ok = $true; targetWindowId = $target.ToInt64().ToString(); parentWindowId = "0"; parentClassName = ""; child = $false; popup = $true; x = ' + String(bounds.x) + '; y = ' + String(bounds.y) + '; width = ' + String(bounds.width) + '; height = ' + String(bounds.height) + ' } | ConvertTo-Json -Compress',
+  ].join('\n')
+  return desktopPowerShellScript(body)
+}
+
+/**
+ * Park a Wallpaper Engine playback window off the virtual screen. The window
+ * keeps rendering (the renderer still captures it through desktopCapturer)
+ * but is moved to the 1px strip past the virtual desktop's bottom-right
+ * corner, so it never covers the user's work. The expected title and
+ * executable are validated before any move so a stray window with the same
+ * handle cannot be relocated.
+ */
+export function windowParkScript(input: { sourceId: string; title: string; executable: string }): string {
+  const sourceId = textOf(input.sourceId)
+  const title = textOf(input.title)
+  const executable = textOf(input.executable)
+  if (!/^window:\d+:\d+$/.test(sourceId)) throw new Error('DSH_DESKTOP_WINDOW_SOURCE_INVALID')
+  if (title === '') throw new Error('DSH_DESKTOP_WINDOW_TITLE_INVALID')
+  if (executable === '') throw new Error('DSH_DESKTOP_WINDOW_EXECUTABLE_INVALID')
+  const body = [
+    '$target = [DshDesktopWin32]::ParseWindowHandle("' + sourceId.replace(/"/g, '') + '")',
+    'if ($target -eq [IntPtr]::Zero) { throw "DSH_DESKTOP_WINDOW_SOURCE_INVALID" }',
+    'if (-not [DshDesktopWin32]::IsWindow($target)) { throw "DSH_DESKTOP_WINDOW_MISSING" }',
+    'if (-not [string]::Equals([DshDesktopWin32]::WindowTitle($target), "' + title.replace(/"/g, '""') + '", [StringComparison]::Ordinal)) { throw "DSH_DESKTOP_WINDOW_TITLE_MISMATCH" }',
+    '$processId = [DshDesktopWin32]::WindowProcessId($target)',
+    'if ($processId -eq 0) { throw "DSH_DESKTOP_WINDOW_PROCESS_UNAVAILABLE" }',
+    '$actualExe = [DshDesktopWin32]::ProcessExecutable($processId)',
+    'if ([string]::IsNullOrWhiteSpace($actualExe)) { throw "DSH_DESKTOP_WINDOW_PROCESS_UNAVAILABLE" }',
+    'if (-not [string]::Equals($actualExe, "' + executable.replace(/"/g, '""') + '", [StringComparison]::OrdinalIgnoreCase)) { throw "DSH_DESKTOP_WINDOW_PROCESS_MISMATCH" }',
+    '$rect = New-Object DshDesktopWin32+RECT',
+    'if (-not [DshDesktopWin32]::GetWindowRect($target, [ref]$rect)) { throw "DSH_DESKTOP_WINDOW_BOUNDS_FAILED" }',
+    '$width = [Math]::Max(1, $rect.Right - $rect.Left)',
+    '$height = [Math]::Max(1, $rect.Bottom - $rect.Top)',
+    '$virtualLeft = [DshDesktopWin32]::GetSystemMetrics(76)',
+    '$virtualTop = [DshDesktopWin32]::GetSystemMetrics(77)',
+    '$virtualWidth = [DshDesktopWin32]::GetSystemMetrics(78)',
+    '$virtualHeight = [DshDesktopWin32]::GetSystemMetrics(79)',
+    '$parkX = $virtualLeft + $virtualWidth - 1',
+    '$parkY = $virtualTop + $virtualHeight - 1',
+    'if (-not [DshDesktopWin32]::SetWindowPos($target, [IntPtr]::Zero, $parkX, $parkY, $width, $height, 0x0414)) { throw "DSH_DESKTOP_WINDOW_PARK_FAILED" }',
+    '$after = New-Object DshDesktopWin32+RECT',
+    '[DshDesktopWin32]::GetWindowRect($target, [ref]$after) | Out-Null',
+    '$visibleWidth = [Math]::Max(0, [Math]::Min($after.Right, $virtualLeft + $virtualWidth) - [Math]::Max($after.Left, $virtualLeft))',
+    '$visibleHeight = [Math]::Max(0, [Math]::Min($after.Bottom, $virtualTop + $virtualHeight) - [Math]::Max($after.Top, $virtualTop))',
+    '$parked = ($visibleWidth -le 1 -and $visibleHeight -le 1)',
+    'if (-not $parked) { throw "DSH_DESKTOP_WINDOW_PARK_UNVERIFIED" }',
+    '[pscustomobject]@{ ok = $true; parked = $true; sourceId = "' + sourceId + '"; targetWindowId = $target.ToInt64().ToString(); x = $after.Left; y = $after.Top; width = $width; height = $height } | ConvertTo-Json -Compress',
   ].join('\n')
   return desktopPowerShellScript(body)
 }

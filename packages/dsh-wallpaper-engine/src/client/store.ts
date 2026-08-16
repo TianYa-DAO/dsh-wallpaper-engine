@@ -17,6 +17,8 @@ export interface WallpaperSceneState {
   sourceId: string
   error: string
   freeze: boolean
+  windowParked: boolean
+  parkError: string
 }
 
 export interface WallpaperEngineState {
@@ -63,7 +65,7 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
       runtimeAvailable: false,
       search: '',
       selection: readWallpaperSelection(),
-      scene: { active: false, sessionId: '', sourceId: '', error: '', freeze: false },
+      scene: { active: false, sessionId: '', sourceId: '', error: '', freeze: false, windowParked: false, parkError: '' },
       error: '',
     }),
     actions: {

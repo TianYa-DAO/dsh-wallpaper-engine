@@ -16,7 +16,8 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "build:types": "tsc -b tsconfig.json",
-    "package:win": "node scripts/package-win.mjs"
+    "package:win": "node scripts/package-win.mjs",
+    "test": "vitest run"
   },
   "license": "MIT",
   "devDependencies": {
@@ -24,7 +25,8 @@
     "electron": "^37.0.0",
     "tsdown": "^0.22.2",
     "typescript": "^6.0.3",
-    "@electron/packager": "^20.3.0"
+    "@electron/packager": "^20.3.0",
+    "vitest": "^4.1.8"
   },
   "files": [
     "dist",

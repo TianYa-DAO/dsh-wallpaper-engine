@@ -156,9 +156,11 @@ export class WallpaperEngineController {
         sessionId: result.sessionId,
         sourceId: result.sourceId ?? '',
         error: '',
+        windowParked: result.windowParked === true,
+        parkError: result.parkError ?? '',
       })
     } else {
-      this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: result.error ?? 'WALLPAPER_ENGINE_SCENE_START_FAILED' })
+      this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: result.error ?? 'WALLPAPER_ENGINE_SCENE_START_FAILED', windowParked: false, parkError: '' })
     }
     return result
   }
@@ -171,7 +173,7 @@ export class WallpaperEngineController {
     } catch {
       // The main process stops the scene on a failed ACK; nothing else to do here.
     }
-    if (!ok) this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: 'WALLPAPER_ENGINE_CAPTURE_CONFIRM_FAILED' })
+    if (!ok) this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: 'WALLPAPER_ENGINE_CAPTURE_CONFIRM_FAILED', windowParked: false, parkError: '' })
   }
 
   /** Stop the active native scene. */
@@ -184,7 +186,7 @@ export class WallpaperEngineController {
         // The WE window may already be gone; local state still resets below.
       }
     }
-    this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: '', freeze: false })
+    this.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: '', freeze: false, windowParked: false, parkError: '' })
   }
 
   /** Compute the current wallpaper URL for the WorkerW desktop window. */

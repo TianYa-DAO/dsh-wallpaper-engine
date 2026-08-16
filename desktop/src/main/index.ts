@@ -19,7 +19,12 @@ import {
   WallpaperEngineLibrary,
 } from './wallpaper-engine-library.ts'
 import { WallpaperEngineRuntime } from './wallpaper-engine-runtime.ts'
-import { DesktopModeRuntime, DesktopWallpaperRuntime } from './desktop-mode.ts'
+import {
+  DesktopModeRuntime,
+  DesktopWallpaperRuntime,
+  runDesktopNativeScript,
+  windowParkScript,
+} from './desktop-mode.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -744,6 +749,32 @@ void app.whenReady().then(async () => {
     library: lib,
     desktopCapturer,
     spawn,
+    parkWindow: async ({ sourceId, title, executable }) => {
+      try {
+        const ack = await runDesktopNativeScript(windowParkScript({ sourceId, title, executable }))
+        return {
+          ok: ack.ok === true,
+          parked: ack.parked === true,
+          targetWindowId: typeof ack.targetWindowId === 'string' ? ack.targetWindowId : '',
+          x: Number(ack.x) || 0,
+          y: Number(ack.y) || 0,
+          width: Math.max(1, Number(ack.width) || 1),
+          height: Math.max(1, Number(ack.height) || 1),
+          error: '',
+        }
+      } catch (error) {
+        return {
+          ok: false,
+          parked: false,
+          targetWindowId: '',
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+          error: error instanceof Error ? error.message : 'WALLPAPER_ENGINE_WINDOW_PARK_FAILED',
+        }
+      }
+    },
   })
   desktopWallpaper = new DesktopWallpaperRuntime({ BrowserWindow, screen })
   desktopMode = new DesktopModeRuntime({ screen })

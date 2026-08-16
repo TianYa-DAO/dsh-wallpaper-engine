@@ -56,6 +56,8 @@ export interface WallpaperSceneStartResult {
   width?: number
   height?: number
   fps?: number
+  windowParked?: boolean
+  parkError?: string
   error?: string
 }
 
@@ -77,7 +79,7 @@ export interface DesktopWindowApi {
   chooseWallpaperEngineProjectFile(): Promise<WallpaperLibrarySnapshot & { canceled?: boolean; error?: string }>
   removeWallpaperEngineDirectory(rootId: string): Promise<WallpaperLibrarySnapshot>
   getWallpaperEngineRuntimeStatus(payload?: { force?: boolean }): Promise<
-    WallpaperRuntimeProbe & { active: boolean; sessionId: string; sourceId: string }
+    WallpaperRuntimeProbe & { active: boolean; sessionId: string; sourceId: string; windowParked: boolean; parkError: string }
   >
   startWallpaperEngineScene(payload: {
     id: string

@@ -5,3 +5,5 @@ desktop/lib/
 *.tgz
 desktop/release/
 .DS_Store
+*.tsbuildinfo
+release/

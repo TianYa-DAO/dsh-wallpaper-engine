@@ -56,6 +56,20 @@ interface ActiveSession {
   muteProperties: Record<string, string | number | boolean>
   launched: boolean
   stopping: boolean
+  windowParked: boolean
+  parkError: string
+}
+
+/** Result of parking the playback window off the virtual screen. */
+export interface WindowParkResult {
+  ok: boolean
+  parked: boolean
+  targetWindowId: string
+  x: number
+  y: number
+  width: number
+  height: number
+  error: string
 }
 
 /** Public renderer-facing status shape. */
@@ -69,6 +83,8 @@ export interface WallpaperRuntimeStatus {
   height: number
   fps: number
   audioMuted: boolean
+  windowParked: boolean
+  parkError: string
 }
 
 function clampInteger(value: unknown, minimum: number, maximum: number, fallback: number): number {
@@ -108,6 +124,7 @@ interface RuntimeOptions {
   platform?: NodeJS.Platform
   arch?: string
   sleep?: (milliseconds: number) => Promise<void>
+  parkWindow?: (input: { sourceId: string; title: string; executable: string }) => Promise<WindowParkResult>
 }
 
 interface InstallationProbe {
@@ -129,6 +146,7 @@ export class WallpaperEngineRuntime {
   private readonly platform: NodeJS.Platform
   private readonly arch: string
   private readonly sleepImpl: (milliseconds: number) => Promise<void>
+  private readonly parkWindowImpl: ((input: { sourceId: string; title: string; executable: string }) => Promise<WindowParkResult>) | null
   private executableCache: { executable: string; available: true } | { available: false; reason: string } | null = null
   private active: ActiveSession | null = null
   private generation = 0
@@ -142,6 +160,7 @@ export class WallpaperEngineRuntime {
     this.platform = options.platform ?? process.platform
     this.arch = options.arch ?? process.arch
     this.sleepImpl = options.sleep ?? (milliseconds => new Promise(resolvePromise => setTimeout(resolvePromise, milliseconds)))
+    this.parkWindowImpl = options.parkWindow ?? null
   }
 
   /** Candidate WE executables for one Steam library, in architecture order. */
@@ -210,7 +229,19 @@ export class WallpaperEngineRuntime {
   getStatus(): WallpaperRuntimeStatus {
     const session = this.active
     if (session === null) {
-      return { ok: true, active: false, id: '', sessionId: '', sourceId: '', width: 0, height: 0, fps: 0, audioMuted: false }
+      return {
+        ok: true,
+        active: false,
+        id: '',
+        sessionId: '',
+        sourceId: '',
+        width: 0,
+        height: 0,
+        fps: 0,
+        audioMuted: false,
+        windowParked: false,
+        parkError: '',
+      }
     }
     return {
       ok: true,
@@ -222,6 +253,8 @@ export class WallpaperEngineRuntime {
       height: session.height,
       fps: session.fps,
       audioMuted: true,
+      windowParked: session.windowParked,
+      parkError: session.parkError,
     }
   }
 
@@ -334,6 +367,8 @@ export class WallpaperEngineRuntime {
       muteProperties: sanitizeMuteProperties(target.muteProperties),
       launched: false,
       stopping: false,
+      windowParked: false,
+      parkError: '',
     }
 
     try {
@@ -360,6 +395,20 @@ export class WallpaperEngineRuntime {
       const source = await this.findWindowSource(session.locationTitle)
       if (generation !== this.generation) throw new Error('WALLPAPER_ENGINE_START_SUPERSEDED')
       session.sourceId = source.id
+      if (this.parkWindowImpl !== null) {
+        try {
+          const parked = await this.parkWindowImpl({
+            sourceId: source.id,
+            title: session.locationTitle,
+            executable: session.executable,
+          })
+          session.windowParked = parked.ok === true && parked.parked === true
+          if (!session.windowParked) session.parkError = parked.error || 'WALLPAPER_ENGINE_WINDOW_PARK_FAILED'
+        } catch (error) {
+          session.windowParked = false
+          session.parkError = error instanceof Error ? error.message : 'WALLPAPER_ENGINE_WINDOW_PARK_FAILED'
+        }
+      }
       await this.muteSession(session)
       this.active = session
       return this.getStatus()

@@ -133,6 +133,14 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
             />
           )}
 
+          {state.scene.active && (
+            <div className={state.scene.windowParked ? css.sceneNote : clsx(css.sceneNote, css.error)}>
+              {state.scene.windowParked
+                ? t('windowParked')
+                : (state.scene.parkError !== '' ? `${t('windowParkFailed')}（${state.scene.parkError}）` : t('engineRun'))}
+            </div>
+          )}
+
           {controller.isDesktop ? <DesktopModeControls controller={controller} t={t} /> : null}
         </>
       )}

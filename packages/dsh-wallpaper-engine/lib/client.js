@@ -120,7 +120,9 @@ window.__ModuleLoader__.load({
 						sessionId: "",
 						sourceId: "",
 						error: "",
-						freeze: false
+						freeze: false,
+						windowParked: false,
+						parkError: ""
 					},
 					error: ""
 				}),
@@ -267,13 +269,17 @@ window.__ModuleLoader__.load({
 					active: true,
 					sessionId: result.sessionId,
 					sourceId: result.sourceId ?? "",
-					error: ""
+					error: "",
+					windowParked: result.windowParked === true,
+					parkError: result.parkError ?? ""
 				});
 				else this.store.actions.setScene({
 					active: false,
 					sessionId: "",
 					sourceId: "",
-					error: result.error ?? "WALLPAPER_ENGINE_SCENE_START_FAILED"
+					error: result.error ?? "WALLPAPER_ENGINE_SCENE_START_FAILED",
+					windowParked: false,
+					parkError: ""
 				});
 				return result;
 			}
@@ -290,7 +296,9 @@ window.__ModuleLoader__.load({
 					active: false,
 					sessionId: "",
 					sourceId: "",
-					error: "WALLPAPER_ENGINE_CAPTURE_CONFIRM_FAILED"
+					error: "WALLPAPER_ENGINE_CAPTURE_CONFIRM_FAILED",
+					windowParked: false,
+					parkError: ""
 				});
 			}
 			/** Stop the active native scene. */
@@ -304,7 +312,9 @@ window.__ModuleLoader__.load({
 					sessionId: "",
 					sourceId: "",
 					error: "",
-					freeze: false
+					freeze: false,
+					windowParked: false,
+					parkError: ""
 				});
 			}
 			/** Compute the current wallpaper URL for the WorkerW desktop window. */
@@ -406,7 +416,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -416,37 +426,38 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"actions": "O_XpsG_actions",
-			"search": "O_XpsG_search",
-			"cardMeta": "O_XpsG_cardMeta",
-			"error": "O_XpsG_error",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"danger": "O_XpsG_danger",
-			"roots": "O_XpsG_roots",
-			"cardOpen": "O_XpsG_cardOpen",
-			"thumbImage": "O_XpsG_thumbImage",
-			"rootChip": "O_XpsG_rootChip",
-			"head": "O_XpsG_head",
-			"rootRemove": "O_XpsG_rootRemove",
-			"toolbar": "O_XpsG_toolbar",
-			"grid": "O_XpsG_grid",
-			"cardSelected": "O_XpsG_cardSelected",
-			"title": "O_XpsG_title",
-			"notice": "O_XpsG_notice",
-			"section": "O_XpsG_section",
-			"thumb": "O_XpsG_thumb",
-			"controls": "O_XpsG_controls",
 			"button": "O_XpsG_button",
-			"subtitle": "O_XpsG_subtitle",
-			"badge": "O_XpsG_badge",
-			"card": "O_XpsG_card",
 			"cardTitle": "O_XpsG_cardTitle",
+			"card": "O_XpsG_card",
+			"toolbar": "O_XpsG_toolbar",
+			"badge": "O_XpsG_badge",
+			"control": "O_XpsG_control",
+			"cardSelected": "O_XpsG_cardSelected",
+			"error": "O_XpsG_error",
+			"sceneNote": "O_XpsG_sceneNote",
+			"grid": "O_XpsG_grid",
+			"title": "O_XpsG_title",
+			"head": "O_XpsG_head",
 			"cardBody": "O_XpsG_cardBody",
-			"desktopMode": "O_XpsG_desktopMode",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"cardActions": "O_XpsG_cardActions",
 			"status": "O_XpsG_status",
-			"control": "O_XpsG_control"
+			"section": "O_XpsG_section",
+			"cardMeta": "O_XpsG_cardMeta",
+			"thumbImage": "O_XpsG_thumbImage",
+			"controls": "O_XpsG_controls",
+			"rootChip": "O_XpsG_rootChip",
+			"cardOpen": "O_XpsG_cardOpen",
+			"roots": "O_XpsG_roots",
+			"subtitle": "O_XpsG_subtitle",
+			"rootRemove": "O_XpsG_rootRemove",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"cardActions": "O_XpsG_cardActions",
+			"search": "O_XpsG_search",
+			"actions": "O_XpsG_actions",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"danger": "O_XpsG_danger",
+			"thumb": "O_XpsG_thumb",
+			"desktopMode": "O_XpsG_desktopMode",
+			"notice": "O_XpsG_notice"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -615,6 +626,10 @@ window.__ModuleLoader__.load({
 									fill
 								});
 							}
+						}),
+						state.scene.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+							className: state.scene.windowParked ? WallpaperSection_module_css_default.sceneNote : clsx(WallpaperSection_module_css_default.sceneNote, WallpaperSection_module_css_default.error),
+							children: state.scene.windowParked ? t("windowParked") : state.scene.parkError !== "" ? `${t("windowParkFailed")}（${state.scene.parkError}）` : t("engineRun")
 						}),
 						controller.isDesktop ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(DesktopModeControls, {
 							controller,
@@ -870,14 +885,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fill_fill": "mm6n-q_fill_fill",
 			"video": "mm6n-q_video",
-			"fill_cover": "mm6n-q_fill_cover",
-			"fallbackNote": "mm6n-q_fallbackNote",
 			"fill_contain": "mm6n-q_fill_contain",
+			"layer": "mm6n-q_layer",
 			"image": "mm6n-q_image",
+			"fill_fill": "mm6n-q_fill_fill",
+			"fallbackNote": "mm6n-q_fallbackNote",
 			"host": "mm6n-q_host",
-			"layer": "mm6n-q_layer"
+			"fill_cover": "mm6n-q_fill_cover"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1110,6 +1125,8 @@ window.__ModuleLoader__.load({
 			runtimeMissing: "未检测到 Wallpaper Engine 本体，Scene 项目将以预览图显示",
 			manualRoots: "手动导入",
 			nativeSceneFailed: "WE Scene 启动失败，已回退到预览图",
+			windowParked: "播放窗口已移出屏幕，不遮挡桌面",
+			windowParkFailed: "播放窗口未能移出屏幕",
 			desktopHint: "桌面版支持",
 			desktopMode: "桌面模式",
 			desktopModeOn: "嵌入桌面",
@@ -1152,6 +1169,8 @@ window.__ModuleLoader__.load({
 			runtimeMissing: "Wallpaper Engine not detected; Scene projects use their preview image",
 			manualRoots: "Manual imports",
 			nativeSceneFailed: "WE Scene failed to start, fell back to the preview image",
+			windowParked: "Playback window moved off-screen so it never covers the desktop",
+			windowParkFailed: "Could not move the playback window off-screen",
 			desktopHint: "Desktop version",
 			desktopMode: "Desktop mode",
 			desktopModeOn: "Embed desktop",
