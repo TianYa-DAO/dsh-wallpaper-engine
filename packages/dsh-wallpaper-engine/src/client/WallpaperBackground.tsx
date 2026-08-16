@@ -92,7 +92,6 @@ function LoadedBackground({
     return host
   })
   const [engineStream, setEngineStream] = useState<MediaStream | null>(null)
-  const [engineVideoReady, setEngineVideoReady] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
   const selection = state.selection
@@ -125,7 +124,6 @@ function LoadedBackground({
   useEffect(() => {
     if (selection.kind !== 'engine' || !selection.active) {
       setEngineStream(null)
-      setEngineVideoReady(false)
       void controller.stopScene()
       return
     }
@@ -133,7 +131,6 @@ function LoadedBackground({
     const isCancelled = (): boolean => cancelled.value
     let stream: MediaStream | null = null
     setEngineStream(null)
-    setEngineVideoReady(false)
 
     const run = async (): Promise<void> => {
       const started = await controller.startScene(selection.id)
@@ -149,17 +146,13 @@ function LoadedBackground({
         return
       }
       setEngineStream(stream)
-      // First-frame confirmation: wait for video dimensions, then ACK.
-      const video = videoRef.current
-      if (video !== null) {
-        video.srcObject = stream
-        await video.play().catch(() => {})
-      }
+      // First-frame confirmation: wait for video dimensions, then ACK. The
+      // video element renders as soon as the stream is set, so the loop below
+      // observes the ref once React has committed the element.
       const deadline = Date.now() + 6000
       while (Date.now() < deadline && !isCancelled()) {
-        const ready = videoRef.current !== null && videoRef.current.videoWidth > 0
-        if (ready) {
-          setEngineVideoReady(true)
+        const video = videoRef.current
+        if (video !== null && video.videoWidth > 0) {
           await controller.reportCapture(started.sessionId, true)
           return
         }
@@ -173,7 +166,6 @@ function LoadedBackground({
       cancelled.value = true
       stopStream(stream)
       setEngineStream(null)
-      setEngineVideoReady(false)
       if (selection.active) void controller.stopScene()
     }
   }, [controller, selection.active, selection.id, selection.kind])
@@ -199,6 +191,17 @@ function LoadedBackground({
     }
   }, [controller])
 
+  // Attach the captured stream to the rendered video element once the
+  // engine stream is set; the element commits after the effect above starts
+  // the scene, so the ref is only read here, after commit.
+  useEffect(() => {
+    const video = videoRef.current
+    if (video === null || engineStream === null) return
+    if (video.srcObject === engineStream) return
+    video.srcObject = engineStream
+    void video.play().catch(() => {})
+  }, [engineStream])
+
   // Cleanup the body host on unmount.
   useEffect(() => () => {
     portalHost.remove()
@@ -206,7 +209,7 @@ function LoadedBackground({
 
   if (!selection.active) return createPortal(null, portalHost)
 
-  const showEngineVideo = selection.kind === 'engine' && engineStream !== null && engineVideoReady
+  const showEngineVideo = selection.kind === 'engine' && engineStream !== null
   const fallbackUrl = wallpaperMediaUrl(
     project?.hasPreview === true || project?.playable !== true ? 'preview' : 'media',
     project,

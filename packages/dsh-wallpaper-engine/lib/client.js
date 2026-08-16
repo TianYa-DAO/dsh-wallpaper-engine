@@ -416,37 +416,37 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"cardOpen": "O_XpsG_cardOpen",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"card": "O_XpsG_card",
-			"danger": "O_XpsG_danger",
-			"thumb": "O_XpsG_thumb",
-			"cardTitle": "O_XpsG_cardTitle",
-			"desktopMode": "O_XpsG_desktopMode",
-			"badge": "O_XpsG_badge",
-			"rootRemove": "O_XpsG_rootRemove",
 			"actions": "O_XpsG_actions",
-			"status": "O_XpsG_status",
 			"search": "O_XpsG_search",
-			"title": "O_XpsG_title",
-			"subtitle": "O_XpsG_subtitle",
-			"cardActions": "O_XpsG_cardActions",
-			"control": "O_XpsG_control",
-			"button": "O_XpsG_button",
-			"controls": "O_XpsG_controls",
-			"error": "O_XpsG_error",
-			"toolbar": "O_XpsG_toolbar",
-			"head": "O_XpsG_head",
-			"roots": "O_XpsG_roots",
-			"cardSelected": "O_XpsG_cardSelected",
-			"thumbImage": "O_XpsG_thumbImage",
-			"section": "O_XpsG_section",
-			"cardBody": "O_XpsG_cardBody",
-			"grid": "O_XpsG_grid",
-			"notice": "O_XpsG_notice",
 			"cardMeta": "O_XpsG_cardMeta",
-			"rootChip": "O_XpsG_rootChip"
+			"error": "O_XpsG_error",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"danger": "O_XpsG_danger",
+			"roots": "O_XpsG_roots",
+			"cardOpen": "O_XpsG_cardOpen",
+			"thumbImage": "O_XpsG_thumbImage",
+			"rootChip": "O_XpsG_rootChip",
+			"head": "O_XpsG_head",
+			"rootRemove": "O_XpsG_rootRemove",
+			"toolbar": "O_XpsG_toolbar",
+			"grid": "O_XpsG_grid",
+			"cardSelected": "O_XpsG_cardSelected",
+			"title": "O_XpsG_title",
+			"notice": "O_XpsG_notice",
+			"section": "O_XpsG_section",
+			"thumb": "O_XpsG_thumb",
+			"controls": "O_XpsG_controls",
+			"button": "O_XpsG_button",
+			"subtitle": "O_XpsG_subtitle",
+			"badge": "O_XpsG_badge",
+			"card": "O_XpsG_card",
+			"cardTitle": "O_XpsG_cardTitle",
+			"cardBody": "O_XpsG_cardBody",
+			"desktopMode": "O_XpsG_desktopMode",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"cardActions": "O_XpsG_cardActions",
+			"status": "O_XpsG_status",
+			"control": "O_XpsG_control"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -870,13 +870,13 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fill_contain": "mm6n-q_fill_contain",
 			"fill_fill": "mm6n-q_fill_fill",
-			"fill_cover": "mm6n-q_fill_cover",
 			"video": "mm6n-q_video",
+			"fill_cover": "mm6n-q_fill_cover",
+			"fallbackNote": "mm6n-q_fallbackNote",
+			"fill_contain": "mm6n-q_fill_contain",
 			"image": "mm6n-q_image",
 			"host": "mm6n-q_host",
-			"fallbackNote": "mm6n-q_fallbackNote",
 			"layer": "mm6n-q_layer"
 		};
 		//#endregion
@@ -941,7 +941,6 @@ window.__ModuleLoader__.load({
 				return host;
 			});
 			const [engineStream, setEngineStream] = (0, react.useState)(null);
-			const [engineVideoReady, setEngineVideoReady] = (0, react.useState)(false);
 			const videoRef = (0, react.useRef)(null);
 			const selection = state.selection;
 			const scene = state.scene;
@@ -971,7 +970,6 @@ window.__ModuleLoader__.load({
 			(0, react.useEffect)(() => {
 				if (selection.kind !== "engine" || !selection.active) {
 					setEngineStream(null);
-					setEngineVideoReady(false);
 					controller.stopScene();
 					return;
 				}
@@ -979,7 +977,6 @@ window.__ModuleLoader__.load({
 				const isCancelled = () => cancelled.value;
 				let stream = null;
 				setEngineStream(null);
-				setEngineVideoReady(false);
 				const run = async () => {
 					const started = await controller.startScene(selection.id);
 					if (isCancelled() || !started.ok || started.sourceId === void 0 || started.sessionId === void 0) return;
@@ -994,15 +991,10 @@ window.__ModuleLoader__.load({
 						return;
 					}
 					setEngineStream(stream);
-					const video = videoRef.current;
-					if (video !== null) {
-						video.srcObject = stream;
-						await video.play().catch(() => {});
-					}
 					const deadline = Date.now() + 6e3;
 					while (Date.now() < deadline && !isCancelled()) {
-						if (videoRef.current !== null && videoRef.current.videoWidth > 0) {
-							setEngineVideoReady(true);
+						const video = videoRef.current;
+						if (video !== null && video.videoWidth > 0) {
 							await controller.reportCapture(started.sessionId, true);
 							return;
 						}
@@ -1015,7 +1007,6 @@ window.__ModuleLoader__.load({
 					cancelled.value = true;
 					stopStream(stream);
 					setEngineStream(null);
-					setEngineVideoReady(false);
 					if (selection.active) controller.stopScene();
 				};
 			}, [
@@ -1042,11 +1033,18 @@ window.__ModuleLoader__.load({
 					unsubscribe();
 				};
 			}, [controller]);
+			(0, react.useEffect)(() => {
+				const video = videoRef.current;
+				if (video === null || engineStream === null) return;
+				if (video.srcObject === engineStream) return;
+				video.srcObject = engineStream;
+				video.play().catch(() => {});
+			}, [engineStream]);
 			(0, react.useEffect)(() => () => {
 				portalHost.remove();
 			}, [portalHost]);
 			if (!selection.active) return (0, react_dom.createPortal)(null, portalHost);
-			const showEngineVideo = selection.kind === "engine" && engineStream !== null && engineVideoReady;
+			const showEngineVideo = selection.kind === "engine" && engineStream !== null;
 			const fallbackUrl = wallpaperMediaUrl(project?.hasPreview === true || project?.playable !== true ? "preview" : "media", project, token);
 			const mediaUrl = wallpaperMediaUrl("media", project, token);
 			const sourceUrl = showEngineVideo ? "" : selection.kind === "media" && mediaUrl !== "" ? mediaUrl : fallbackUrl;
