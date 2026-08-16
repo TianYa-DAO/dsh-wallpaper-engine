@@ -428,7 +428,8 @@ async function directProjectDirectories(container) {
 /**
 * Find project directories under a manually chosen root. A root that is
 * itself a project wins; known WE containers are scanned directly; otherwise
-* a bounded BFS walks at most two directory levels below the root.
+* a bounded BFS walks up to three directory levels below the root, matching
+* the reference implementation's reach.
 */
 async function manualProjectDirectories(root) {
 	const normalized = normalizeAbsolutePath(root);
@@ -469,7 +470,7 @@ async function manualProjectDirectories(root) {
 			seen.add(key);
 			const projectFile = await statSafe(join(child, "project.json"));
 			if (projectFile !== null && projectFile.isFile()) output.push(child);
-			else if (entryDepth < 2) queue.push({
+			else if (current.depth < 2) queue.push({
 				dir: child,
 				depth: entryDepth
 			});
