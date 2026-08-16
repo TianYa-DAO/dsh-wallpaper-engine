@@ -1,5 +1,5 @@
 import { execFile, spawn } from "node:child_process";
-import { createReadStream, readFileSync, writeFileSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { connect } from "node:net";
 import { BrowserWindow, Menu, app, desktopCapturer, dialog, ipcMain, nativeTheme, protocol, screen, shell } from "electron";
 import { basename, dirname, extname, isAbsolute, join, parse, relative, resolve, sep } from "node:path";
@@ -2090,17 +2090,190 @@ function isPortListening(port) {
 		});
 	});
 }
+let installerWindow = null;
+let installCancelRequested = false;
+function emitInstallProgress(payload) {
+	if (installerWindow !== null && !installerWindow.isDestroyed()) installerWindow.webContents.send("dsh-install-progress", payload);
+}
+function runCommand(file, args, timeoutMs = 12e4) {
+	return new Promise((resolvePromise) => {
+		execFile(file, args, {
+			encoding: "utf8",
+			windowsHide: true,
+			timeout: timeoutMs,
+			maxBuffer: 4 * 1024 * 1024
+		}, (error, stdout, stderr) => {
+			resolvePromise({
+				code: error === null ? 0 : Number(error.code) || 1,
+				stdout: stdout || "",
+				stderr: stderr || ""
+			});
+		});
+	});
+}
+function findDshCommand() {
+	const candidates = [join(process.env.APPDATA ?? "", "npm", "dsh.cmd"), "dsh"];
+	for (const candidate of candidates) {
+		if (candidate === "dsh") continue;
+		if (existsSync(candidate)) return candidate;
+	}
+	return "dsh";
+}
+async function dshCommandWorks(command) {
+	if (command === "dsh") return (await runCommand("dsh", ["--version"], 1e4)).code === 0;
+	return existsSync(command);
+}
+function setupWindowHtml(initialPhase) {
+	return "data:text/html;charset=utf-8," + encodeURIComponent(`<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>DeepSeek Harness桌面版安装</title>
+<style>
+  body{margin:0;font-family:"Segoe UI","Microsoft YaHei UI",sans-serif;background:#f6f7f9;color:#1a1b1f;display:flex;align-items:center;justify-content:center;height:100vh}
+  .card{width:460px;padding:28px;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.08)}
+  h1{font-size:20px;margin:0 0 8px}
+  p{font-size:14px;line-height:22px;color:#555}
+  .status{margin:14px 0;padding:10px 12px;background:#f0f4ff;border-radius:8px;font-size:13px;line-height:20px}
+  .error{background:#fff0f0;color:#b42318}
+  button{border:0;padding:10px 16px;border-radius:8px;background:#3964fe;color:#fff;font-size:14px;cursor:pointer}
+  button.ghost{background:#eef0f3;color:#333;margin-left:8px}
+  button:disabled{opacity:.5;cursor:default}
+</style></head>
+<body><div class="card">
+  <h1>DeepSeek Harness桌面版</h1>
+  <p id="title">首次使用需要安装 DeepSeek Harness 运行环境。</p>
+  <div class="status" id="status">${initialPhase === "missing-dsh" ? "未检测到 dsh，点击下方按钮开始一键安装。" : "正在检查运行环境…"}</div>
+  <div>
+    <button id="install" type="button">一键安装</button>
+    <button id="manual" class="ghost" type="button">手动安装说明</button>
+    <button id="quit" class="ghost" type="button">退出</button>
+  </div>
+</div>
+<script>
+  const status = document.getElementById('status')
+  const install = document.getElementById('install')
+  const manual = document.getElementById('manual')
+  const quit = document.getElementById('quit')
+  window.desktopWindow.onDshInstallProgress(payload => {
+    status.className = 'status' + (payload.phase === 'error' ? ' error' : '')
+    status.textContent = payload.message
+    install.disabled = ['installing-node','installing-dsh'].includes(payload.phase)
+    if (payload.phase === 'done') setTimeout(() => window.close(), 700)
+  })
+  install.addEventListener('click', () => window.desktopWindow.startDshInstall())
+  manual.addEventListener('click', () => window.desktopWindow.openDshInstallHelp())
+  quit.addEventListener('click', () => window.desktopWindow.cancelDshInstall())
+<\/script></body></html>`);
+}
+async function showInstallerWindow(initialPhase) {
+	if (installerWindow !== null && !installerWindow.isDestroyed()) {
+		installerWindow.focus();
+		return false;
+	}
+	installCancelRequested = false;
+	const win = new BrowserWindow({
+		width: 560,
+		height: 420,
+		resizable: false,
+		frame: true,
+		title: "DeepSeek Harness桌面版安装",
+		autoHideMenuBar: true,
+		icon: join(__dirname, "..", "assets", "icon.ico"),
+		webPreferences: {
+			preload: join(__dirname, "preload.mjs"),
+			contextIsolation: true,
+			nodeIntegration: false,
+			sandbox: false
+		}
+	});
+	installerWindow = win;
+	win.on("closed", () => {
+		if (installerWindow === win) installerWindow = null;
+	});
+	await win.loadURL(setupWindowHtml(initialPhase));
+	return true;
+}
 /**
-* Make the packaged desktop exe novice-friendly: when `dsh web` is not
-* already listening, start it detached and wait for the port. If the dsh CLI
-* is not installed, the window still opens and its normal load retry path
-* shows the web failure instead of silently doing nothing.
+* Install the dsh CLI when it is missing. The installer uses winget for
+* Node.js (when needed), then `npm install -g @deepseek-ai/dsh`, and finally
+* asks the caller to start `dsh web` again.
 */
-async function ensureDshWebRunning() {
+async function runDshInstall() {
+	emitInstallProgress({
+		phase: "checking",
+		message: "正在检查 Node.js 和 npm…"
+	});
+	let nodeExe = "node";
+	let npmCmd = "npm";
+	const programFiles = process.env.ProgramFiles ?? "C:\\Program Files";
+	const nodeExePath = join(programFiles, "nodejs", "node.exe");
+	const npmCmdPath = join(programFiles, "nodejs", "npm.cmd");
+	if ((await runCommand(nodeExe, ["--version"], 15e3)).code !== 0) if (existsSync(nodeExePath)) nodeExe = nodeExePath;
+	else {
+		emitInstallProgress({
+			phase: "installing-node",
+			message: "未检测到 Node.js，正在用 winget 安装…"
+		});
+		const winget = await runCommand("winget.exe", [
+			"install",
+			"-e",
+			"--id",
+			"OpenJS.NodeJS.LTS",
+			"--scope",
+			"user",
+			"--silent",
+			"--accept-package-agreements",
+			"--accept-source-agreements"
+		], 6e5);
+		if (winget.code !== 0) {
+			emitInstallProgress({
+				phase: "error",
+				message: "Node.js 安装失败。",
+				detail: winget.stderr || winget.stdout
+			});
+			return "";
+		}
+		nodeExe = existsSync(nodeExePath) ? nodeExePath : "node";
+	}
+	if (existsSync(npmCmdPath)) npmCmd = npmCmdPath;
+	emitInstallProgress({
+		phase: "installing-dsh",
+		message: "正在安装 DeepSeek Harness（首次安装需要下载，请稍候）…"
+	});
+	const install = await runCommand(npmCmd, [
+		"install",
+		"-g",
+		"@deepseek-ai/dsh@0.1.0-rc.5"
+	], 6e5);
+	if (install.code !== 0) {
+		emitInstallProgress({
+			phase: "error",
+			message: "DeepSeek Harness 安装失败。",
+			detail: install.stderr || install.stdout
+		});
+		return "";
+	}
+	const dshCmd = join(process.env.APPDATA ?? "", "npm", "dsh.cmd");
+	if (!existsSync(dshCmd)) {
+		emitInstallProgress({
+			phase: "error",
+			message: "安装完成但找不到 dsh 命令，请重启电脑后重试。"
+		});
+		return "";
+	}
+	emitInstallProgress({
+		phase: "done",
+		message: "安装完成，正在启动…"
+	});
+	return dshCmd;
+}
+/**
+* Start `dsh web` with a resolved command and wait for its port.
+* @param command - resolved dsh command path.
+*/
+async function startDshWeb(command) {
 	const port = Number(new URL(DESKTOP_WEB_URL).port || 3080);
 	if (await isPortListening(port)) return;
 	try {
-		const child = spawn("dsh", ["web"], {
+		const child = spawn(command, ["web"], {
 			detached: true,
 			windowsHide: true,
 			stdio: "ignore"
@@ -2112,6 +2285,25 @@ async function ensureDshWebRunning() {
 		if (await isPortListening(port)) return;
 		await new Promise((resolvePromise) => setTimeout(resolvePromise, 1e3));
 	}
+}
+/**
+* Bring up dsh web, installing the CLI first when necessary. Returns the
+* resolved dsh command, an empty string when the installer window took over.
+*/
+async function ensureDshWebRunning() {
+	const port = Number(new URL(DESKTOP_WEB_URL).port || 3080);
+	if (process.env.DSH_DESKTOP_FORCE_INSTALLER === "1") {
+		await showInstallerWindow("missing-dsh");
+		return "";
+	}
+	if (await isPortListening(port)) return "already-running";
+	const command = findDshCommand();
+	if (!await dshCommandWorks(command)) {
+		await showInstallerWindow("missing-dsh");
+		return "";
+	}
+	await startDshWeb(command);
+	return command;
 }
 /** Send a debounced host-bounds update so the renderer can freeze/recover. */
 function scheduleHostBoundsChanged() {
@@ -2669,6 +2861,39 @@ async function runDesktopModeSmoke() {
 	if (marker !== void 0) writeFileSync(marker, JSON.stringify(result));
 	app.quit();
 }
+function registerInstallerIpc() {
+	const isInstallerSender = (event) => installerWindow !== null && !installerWindow.isDestroyed() && event.sender === installerWindow.webContents;
+	ipcMain.handle("dsh-install-start", async (event) => {
+		if (!isInstallerSender(event)) return {
+			ok: false,
+			error: "DESKTOP_INSTALLER_UNTRUSTED"
+		};
+		if (installCancelRequested) return {
+			ok: false,
+			error: "DESKTOP_INSTALL_CANCELLED"
+		};
+		const command = await runDshInstall();
+		if (command === "") return {
+			ok: false,
+			error: "DESKTOP_INSTALL_FAILED"
+		};
+		await startDshWeb(command);
+		if (installerWindow !== null && !installerWindow.isDestroyed()) installerWindow.close();
+		createMainWindow();
+		return { ok: true };
+	});
+	ipcMain.handle("dsh-install-open-help", (event) => {
+		if (!isInstallerSender(event)) return { ok: false };
+		shell.openExternal("https://deepseek-harness.github.io/deepseek-harness/");
+		return { ok: true };
+	});
+	ipcMain.handle("dsh-install-cancel", (event) => {
+		if (!isInstallerSender(event)) return { ok: false };
+		installCancelRequested = true;
+		app.quit();
+		return { ok: true };
+	});
+}
 app.whenReady().then(async () => {
 	Menu.setApplicationMenu(null);
 	const lib = new WallpaperEngineLibrary({ configPath: dshHomePath("wallpaper-engine-library.json") });
@@ -2695,7 +2920,8 @@ app.whenReady().then(async () => {
 	registerWindowIpc();
 	registerWallpaperIpc();
 	registerDesktopModeIpc();
-	await ensureDshWebRunning();
+	registerInstallerIpc();
+	if (await ensureDshWebRunning() === "") return;
 	createMainWindow();
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
