@@ -1,6 +1,6 @@
 import { execFile, spawn } from "node:child_process";
 import { createReadStream, readFileSync, writeFileSync } from "node:fs";
-import { BrowserWindow, Menu, app, desktopCapturer, dialog, ipcMain, protocol, screen, shell } from "electron";
+import { BrowserWindow, Menu, app, desktopCapturer, dialog, ipcMain, nativeTheme, protocol, screen, shell } from "electron";
 import { basename, dirname, extname, isAbsolute, join, parse, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -2033,6 +2033,7 @@ const DESKTOP_WEB_URL = process.env.DSH_DESKTOP_URL ?? "http://127.0.0.1:3080";
 const ALLOWED_ORIGINS = new Set(["http://127.0.0.1:3080", "http://localhost:3080"]);
 app.disableHardwareAcceleration();
 app.setAppUserModelId("com.deepseek.dsh.desktop");
+nativeTheme.themeSource = "light";
 let mainWindow = null;
 let library = null;
 let runtime = null;

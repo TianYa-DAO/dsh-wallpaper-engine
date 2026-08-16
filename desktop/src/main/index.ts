@@ -9,7 +9,7 @@
 
 import { spawn } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
-import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, Menu, protocol, screen, shell, type IpcMainInvokeEvent, type IpcMainEvent } from 'electron'
+import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, Menu, nativeTheme, protocol, screen, shell, type IpcMainInvokeEvent, type IpcMainEvent } from 'electron'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { dshHomePath } from './home-paths.ts'
@@ -29,6 +29,8 @@ const ALLOWED_ORIGINS = new Set(['http://127.0.0.1:3080', 'http://localhost:3080
 // and virtual machines while keeping the chat UI and desktop capture working.
 app.disableHardwareAcceleration()
 app.setAppUserModelId('com.deepseek.dsh.desktop')
+// Keep the native Windows title bar light while the web UI keeps its own theme.
+nativeTheme.themeSource = 'light'
 
 let mainWindow: BrowserWindow | null = null
 let library: WallpaperEngineLibrary | null = null
