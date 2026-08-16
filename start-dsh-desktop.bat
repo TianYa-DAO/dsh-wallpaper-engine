@@ -30,6 +30,10 @@ if not defined LISTEN_PID (
     timeout /t 1 /nobreak >nul
     goto wait-web
   )
+  echo [error] dsh web did not start on port 3080.
+  echo         Install dsh CLI first, or start dsh web manually.
+  pause
+  exit /b 1
 )
 :web-ready
 
