@@ -69,7 +69,8 @@ describe('WallpaperEngineRuntime park seam', () => {
     const executable = join(steamRoot, 'steamapps', 'common', 'wallpaper_engine', 'wallpaper64.exe')
     await mkdir(dirname(executable), { recursive: true })
     await writeFile(executable, 'fake-exe')
-    const spawn = (command: string, args: string[], _options: { windowsHide: boolean; stdio: 'ignore' }): ChildProcess => {
+    let sceneWindowTitle = ''
+    const spawn = (_command: string, args: string[], _options: { windowsHide: boolean; stdio: 'ignore' }): ChildProcess => {
       if (args.includes('openWallpaper')) {
         const locationIndex = args.indexOf('-playInWindow') + 1
         sceneWindowTitle = args[locationIndex] ?? ''
@@ -78,7 +79,6 @@ describe('WallpaperEngineRuntime park seam', () => {
       queueMicrotask(() => child.emit('spawn'))
       return child
     }
-    let sceneWindowTitle = ''
     const library = {
       getNativeSceneTarget: async (id: string) => ({
         id: id.toLowerCase(),
@@ -90,7 +90,7 @@ describe('WallpaperEngineRuntime park seam', () => {
         mutedAudioPropertyCount: 1,
       }),
     } as unknown as WallpaperEngineLibrary
-    const runtime = new WallpaperEngineRuntime({
+    const runtimeOptions: ConstructorParameters<typeof WallpaperEngineRuntime>[0] = {
       library,
       discoverSteamLibraries: async () => [steamRoot],
       desktopCapturer: {
@@ -98,8 +98,9 @@ describe('WallpaperEngineRuntime park seam', () => {
       },
       spawn,
       sleep: async () => {},
-      parkWindow: options.parkWindow,
-    })
+    }
+    if (options.parkWindow !== undefined) runtimeOptions.parkWindow = options.parkWindow
+    const runtime = new WallpaperEngineRuntime(runtimeOptions)
     return { runtime, base, executable }
   }
 
