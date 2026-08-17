@@ -50,6 +50,9 @@ export const zh = {
   nativeSceneFailed: 'WE Scene 启动失败，已回退到预览图',
   windowParked: '播放窗口已移出屏幕，不遮挡桌面',
   windowParkFailed: '播放窗口未能移出屏幕',
+  dedupWorkshop: '创意工坊优先',
+  dedupManual: '手动导入优先',
+  dedupNone: '全部保留',
   desktopHint: '桌面版支持',
 } as const
 
@@ -103,6 +106,9 @@ export const en = {
   nativeSceneFailed: 'WE Scene failed to start, fell back to the preview image',
   windowParked: 'Playback window moved off-screen so it never covers the desktop',
   windowParkFailed: 'Could not move the playback window off-screen',
+  dedupWorkshop: 'Workshop first',
+  dedupManual: 'Manual first',
+  dedupNone: 'Keep all',
   desktopHint: 'Desktop version',
 } as const
 

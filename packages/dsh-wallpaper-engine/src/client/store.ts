@@ -36,6 +36,8 @@ export interface CustomStyle {
   shadowStrength: number
 }
 
+export type DedupStrategy = 'workshop' | 'manual' | 'none'
+
 export interface WallpaperEngineState {
   status: WallpaperLibraryStatus
   projects: WallpaperProjectItem[]
@@ -46,6 +48,7 @@ export interface WallpaperEngineState {
   selection: WallpaperSelection
   scene: WallpaperSceneState
   customStyle: CustomStyle
+  dedupStrategy: DedupStrategy
   error: string
 }
 
@@ -63,6 +66,7 @@ export type WallpaperEngineActions = {
   setSelection: (draft: WallpaperEngineState, selection: WallpaperSelection) => void
   setScene: (draft: WallpaperEngineState, scene: Partial<WallpaperSceneState>) => void
   setCustomStyle: (draft: WallpaperEngineState, style: CustomStyle) => void
+  setDedupStrategy: (draft: WallpaperEngineState, strategy: DedupStrategy) => void
   clearSceneError: (draft: WallpaperEngineState) => void
 }
 
@@ -115,6 +119,19 @@ function hexColor(value: unknown): string {
   return /^#[0-9a-f]{3,8}$/i.test(s) ? s.toLowerCase() : ''
 }
 
+const DEDUP_KEY = 'dsh.wallpaper-engine.dedupStrategy'
+
+function readDedupStrategy(): DedupStrategy {
+  try {
+    const v = localStorage.getItem(DEDUP_KEY)
+    return v === 'manual' ? 'manual' : (v === 'none' ? 'none' : 'workshop')
+  } catch { return 'workshop' }
+}
+
+function writeDedupStrategy(strategy: DedupStrategy): void {
+  try { localStorage.setItem(DEDUP_KEY, strategy) } catch { /* quota */ }
+}
+
 /**
  * Create the wallpaper UI store handle. The handle is constructed in apply
  * world and shared by the desktop-customisation entry, the library entry,
@@ -133,6 +150,7 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
       selection: readWallpaperSelection(),
       scene: { active: false, sessionId: '', sourceId: '', error: '', freeze: false, windowParked: false, parkError: '' },
       customStyle: readCustomStyle(),
+      dedupStrategy: readDedupStrategy(),
       error: '',
     }),
     actions: {
@@ -165,6 +183,10 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
       setCustomStyle: (d, style) => {
         d.customStyle = style
         writeCustomStyle(style)
+      },
+      setDedupStrategy: (d, strategy) => {
+        d.dedupStrategy = strategy
+        writeDedupStrategy(strategy)
       },
       clearSceneError: (d) => {
         d.scene.error = ''

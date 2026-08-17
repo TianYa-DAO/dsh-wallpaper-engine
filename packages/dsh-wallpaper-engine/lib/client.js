@@ -145,6 +145,20 @@ window.__ModuleLoader__.load({
 			const s = String(value ?? "");
 			return /^#[0-9a-f]{3,8}$/i.test(s) ? s.toLowerCase() : "";
 		}
+		const DEDUP_KEY = "dsh.wallpaper-engine.dedupStrategy";
+		function readDedupStrategy() {
+			try {
+				const v = localStorage.getItem(DEDUP_KEY);
+				return v === "manual" ? "manual" : v === "none" ? "none" : "workshop";
+			} catch {
+				return "workshop";
+			}
+		}
+		function writeDedupStrategy(strategy) {
+			try {
+				localStorage.setItem(DEDUP_KEY, strategy);
+			} catch {}
+		}
 		/**
 		* Create the wallpaper UI store handle. The handle is constructed in apply
 		* world and shared by the desktop-customisation entry, the library entry,
@@ -171,6 +185,7 @@ window.__ModuleLoader__.load({
 						parkError: ""
 					},
 					customStyle: readCustomStyle(),
+					dedupStrategy: readDedupStrategy(),
 					error: ""
 				}),
 				actions: {
@@ -206,6 +221,10 @@ window.__ModuleLoader__.load({
 					setCustomStyle: (d, style) => {
 						d.customStyle = style;
 						writeCustomStyle(style);
+					},
+					setDedupStrategy: (d, strategy) => {
+						d.dedupStrategy = strategy;
+						writeDedupStrategy(strategy);
 					},
 					clearSceneError: (d) => {
 						d.scene.error = "";
@@ -477,42 +496,42 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"button": "O_XpsG_button",
-			"sceneNote": "O_XpsG_sceneNote",
-			"roots": "O_XpsG_roots",
-			"badge": "O_XpsG_badge",
-			"cardMeta": "O_XpsG_cardMeta",
-			"grid": "O_XpsG_grid",
-			"rootsLabel": "O_XpsG_rootsLabel",
+			"actions": "O_XpsG_actions",
+			"controlVal": "O_XpsG_controlVal",
+			"toolbar": "O_XpsG_toolbar",
+			"desktopMode": "O_XpsG_desktopMode",
 			"rootRemove": "O_XpsG_rootRemove",
+			"presets": "O_XpsG_presets",
+			"button": "O_XpsG_button",
+			"search": "O_XpsG_search",
+			"roots": "O_XpsG_roots",
+			"subtitle": "O_XpsG_subtitle",
+			"head": "O_XpsG_head",
+			"colorInput": "O_XpsG_colorInput",
+			"thumbImage": "O_XpsG_thumbImage",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"sceneNote": "O_XpsG_sceneNote",
+			"cardTitle": "O_XpsG_cardTitle",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"cardBody": "O_XpsG_cardBody",
+			"rootChip": "O_XpsG_rootChip",
+			"cardMeta": "O_XpsG_cardMeta",
+			"error": "O_XpsG_error",
+			"section": "O_XpsG_section",
+			"status": "O_XpsG_status",
+			"card": "O_XpsG_card",
+			"presetBtn": "O_XpsG_presetBtn",
+			"title": "O_XpsG_title",
+			"danger": "O_XpsG_danger",
 			"thumb": "O_XpsG_thumb",
 			"cardActions": "O_XpsG_cardActions",
-			"desktopMode": "O_XpsG_desktopMode",
-			"rootChip": "O_XpsG_rootChip",
-			"cardBody": "O_XpsG_cardBody",
-			"cardOpen": "O_XpsG_cardOpen",
-			"colorInput": "O_XpsG_colorInput",
-			"controlVal": "O_XpsG_controlVal",
-			"cardSelected": "O_XpsG_cardSelected",
-			"search": "O_XpsG_search",
-			"error": "O_XpsG_error",
-			"toolbar": "O_XpsG_toolbar",
-			"card": "O_XpsG_card",
-			"head": "O_XpsG_head",
-			"presetBtn": "O_XpsG_presetBtn",
-			"notice": "O_XpsG_notice",
-			"section": "O_XpsG_section",
 			"controls": "O_XpsG_controls",
-			"title": "O_XpsG_title",
-			"subtitle": "O_XpsG_subtitle",
-			"danger": "O_XpsG_danger",
-			"presets": "O_XpsG_presets",
-			"cardTitle": "O_XpsG_cardTitle",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"status": "O_XpsG_status",
-			"actions": "O_XpsG_actions",
-			"thumbImage": "O_XpsG_thumbImage",
-			"control": "O_XpsG_control"
+			"notice": "O_XpsG_notice",
+			"cardSelected": "O_XpsG_cardSelected",
+			"badge": "O_XpsG_badge",
+			"control": "O_XpsG_control",
+			"grid": "O_XpsG_grid",
+			"cardOpen": "O_XpsG_cardOpen"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -589,22 +608,46 @@ window.__ModuleLoader__.load({
 					isDesktop && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
 						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: WallpaperSection_module_css_default.toolbar,
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-								className: WallpaperSection_module_css_default.search,
-								type: "search",
-								placeholder: t("searchPlaceholder"),
-								value: state.search,
-								onChange: (event) => {
-									controller.store.actions.setSearch(event.target.value);
-								}
-							}), state.selection.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
-								type: "button",
-								onClick: () => {
-									controller.clearSelection();
-								},
-								children: t("restoreDefault")
-							})]
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									className: WallpaperSection_module_css_default.search,
+									type: "search",
+									placeholder: t("searchPlaceholder"),
+									value: state.search,
+									onChange: (event) => {
+										controller.store.actions.setSearch(event.target.value);
+									}
+								}),
+								state.selection.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
+									type: "button",
+									onClick: () => {
+										controller.clearSelection();
+									},
+									children: t("restoreDefault")
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+									className: WallpaperSection_module_css_default.dedupSelect,
+									value: state.dedupStrategy,
+									onChange: (e) => {
+										controller.store.actions.setDedupStrategy(e.target.value);
+									},
+									children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+											value: "workshop",
+											children: t("dedupWorkshop")
+										}),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+											value: "manual",
+											children: t("dedupManual")
+										}),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+											value: "none",
+											children: t("dedupNone")
+										})
+									]
+								})
+							]
 						}),
 						state.status === "loading" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: WallpaperSection_module_css_default.status,
@@ -1070,14 +1113,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fallbackNote": "mm6n-q_fallbackNote",
-			"video": "mm6n-q_video",
-			"layer": "mm6n-q_layer",
 			"image": "mm6n-q_image",
-			"host": "mm6n-q_host",
 			"fill_fill": "mm6n-q_fill_fill",
-			"fill_contain": "mm6n-q_fill_contain",
-			"fill_cover": "mm6n-q_fill_cover"
+			"video": "mm6n-q_video",
+			"host": "mm6n-q_host",
+			"fallbackNote": "mm6n-q_fallbackNote",
+			"layer": "mm6n-q_layer",
+			"fill_cover": "mm6n-q_fill_cover",
+			"fill_contain": "mm6n-q_fill_contain"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1365,6 +1408,9 @@ window.__ModuleLoader__.load({
 			nativeSceneFailed: "WE Scene 启动失败，已回退到预览图",
 			windowParked: "播放窗口已移出屏幕，不遮挡桌面",
 			windowParkFailed: "播放窗口未能移出屏幕",
+			dedupWorkshop: "创意工坊优先",
+			dedupManual: "手动导入优先",
+			dedupNone: "全部保留",
 			desktopHint: "桌面版支持"
 		};
 		const en = {
@@ -1417,6 +1463,9 @@ window.__ModuleLoader__.load({
 			nativeSceneFailed: "WE Scene failed to start, fell back to the preview image",
 			windowParked: "Playback window moved off-screen so it never covers the desktop",
 			windowParkFailed: "Could not move the playback window off-screen",
+			dedupWorkshop: "Workshop first",
+			dedupManual: "Manual first",
+			dedupNone: "Keep all",
 			desktopHint: "Desktop version"
 		};
 		//#endregion

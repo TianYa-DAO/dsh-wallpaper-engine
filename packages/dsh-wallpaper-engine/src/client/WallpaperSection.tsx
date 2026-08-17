@@ -10,7 +10,7 @@ import type { ReactNode } from 'react'
 import clsx from 'clsx'
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-ui-slots'
 import type { WallpaperEngineController } from './controller.ts'
-import type { WallpaperEngineState } from './store.ts'
+import type { WallpaperEngineState, DedupStrategy } from './store.ts'
 import { wallpaperMediaUrl } from './api.ts'
 import type { WallpaperProjectItem } from './api.ts'
 import type { WallpaperFillMode } from './selection.ts'
@@ -85,6 +85,14 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
             {state.selection.active && (
               <button className={clsx(css.button, css.danger)} type="button" onClick={() => { controller.clearSelection() }}>{t('restoreDefault')}</button>
             )}
+            <select
+              className={css.dedupSelect}
+              value={state.dedupStrategy}
+              onChange={(e) => { controller.store.actions.setDedupStrategy(e.target.value as DedupStrategy) }}
+            ><option value="workshop">{t('dedupWorkshop')}</option>
+              <option value="manual">{t('dedupManual')}</option>
+              <option value="none">{t('dedupNone')}</option>
+            </select>
           </div>
 
           {state.status === 'loading' && <div className={css.status}>{t('loading')}</div>}
