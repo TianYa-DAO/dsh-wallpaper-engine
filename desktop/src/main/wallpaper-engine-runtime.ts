@@ -285,10 +285,19 @@ export class WallpaperEngineRuntime {
 
   /** Make sure the WE main process is up before sending control commands. */
   private async ensureEngineReady(executable: string): Promise<void> {
-    // The reference implementation performs a full process+IPC readiness
-    // probe. M4 keeps the same two-step shape (launch, then wait) but skips
-    // PowerShell process probing; the subsequent openWallpaper command and
-    // window-source poll are the readiness signal.
+    // Probe the WE IPC channel without launching the main UI. The reference
+    // implementation uses getWallpaper as a lightweight readiness probe; if
+    // WE is already running (e.g. wallpaper32 -silent), the command succeeds
+    // without opening the browser. When WE is not running, the empty-spawn
+    // fallback starts it — but the user's machine almost always has it
+    // running already.
+    try {
+      await this.spawnControl(executable, ['-control', 'getWallpaper', '-monitor', '0'])
+      return
+    } catch {
+      // WE is not running: start it from the installation directory so the
+      // core stays quiet (no crash-recovery / browse UI).
+    }
     await this.spawnControl(executable, [])
     await this.sleepImpl(ENGINE_READY_DELAY_MS)
   }

@@ -1151,6 +1151,15 @@ var WallpaperEngineRuntime = class {
 	}
 	/** Make sure the WE main process is up before sending control commands. */
 	async ensureEngineReady(executable) {
+		try {
+			await this.spawnControl(executable, [
+				"-control",
+				"getWallpaper",
+				"-monitor",
+				"0"
+			]);
+			return;
+		} catch {}
 		await this.spawnControl(executable, []);
 		await this.sleepImpl(ENGINE_READY_DELAY_MS);
 	}
