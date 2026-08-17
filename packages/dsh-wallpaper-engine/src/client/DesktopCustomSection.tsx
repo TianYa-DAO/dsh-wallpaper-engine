@@ -4,6 +4,7 @@
  * Registered as the "Desktop" settings section.
  */
 
+import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-ui-slots'
@@ -28,10 +29,7 @@ export function DesktopCustomSection(props: DesktopCustomSectionProps): ReactNod
 }
 
 const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
-  {
-    key: 'presetDefault',
-    style: { ...DEFAULT_CUSTOM_STYLE },
-  },
+  { key: 'presetDefault', style: { ...DEFAULT_CUSTOM_STYLE } },
   {
     key: 'presetGlass',
     style: {
@@ -58,6 +56,19 @@ const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
   },
 ]
 
+function stylesEqual(a: CustomStyle, b: CustomStyle): boolean {
+  return a.panelOpacity === b.panelOpacity
+    && a.panelBlur === b.panelBlur
+    && a.sidebarOpacity === b.sidebarOpacity
+    && a.sidebarBlur === b.sidebarBlur
+    && a.tintColor === b.tintColor
+    && a.accentColor === b.accentColor
+    && a.radius === b.radius
+    && a.borderWidth === b.borderWidth
+    && a.borderColor === b.borderColor
+    && a.shadowStrength === b.shadowStrength
+}
+
 function LoadedDesktop({ controller, useSnapshot, t }: {
   controller: WallpaperEngineController
   useSnapshot: SnapshotSelectorHook<WallpaperEngineState>
@@ -65,6 +76,7 @@ function LoadedDesktop({ controller, useSnapshot, t }: {
 }): ReactNode {
   const state = useSnapshot((s: WallpaperEngineState) => s)
   const cs = state.customStyle
+  const activePreset = PRESETS.findIndex((p) => stylesEqual(p.style, cs))
 
   const set = (patch: Partial<CustomStyle>): void => {
     controller.store.actions.setCustomStyle({ ...cs, ...patch })
@@ -80,10 +92,10 @@ function LoadedDesktop({ controller, useSnapshot, t }: {
       </div>
 
       <div className={css.presets}>
-        {PRESETS.map((preset) => (
+        {PRESETS.map((preset, i) => (
           <button
             key={preset.key}
-            className={css.presetBtn}
+            className={clsx(css.presetBtn, i === activePreset && css.presetBtnActive)}
             type="button"
             onClick={() => { controller.store.actions.setCustomStyle(preset.style) }}
           >{t(preset.key)}</button>
@@ -116,7 +128,7 @@ function SliderRow({ label, value, min, max, step, onChange }: {
 }): ReactNode {
   return (
     <label className={css.control}>
-      <span>{label}</span>
+      <span className={css.controlLabel}>{label}</span>
       <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => { onChange(Number(e.target.value)) }} />
       <span className={css.controlVal}>{value}</span>
     </label>
@@ -132,12 +144,12 @@ function ColorRow({ label, value, onChange }: {
   useEffect(() => { setCurrent(value) }, [value])
   return (
     <label className={css.control}>
-      <span>{label}</span>
+      <span className={css.controlLabel}>{label}</span>
       <input
         type="text"
         className={css.colorInput}
         value={current}
-        placeholder="rgba(255,255,255,0.15) 或 #3964fe"
+        placeholder="rgba(255,255,255,0.15)"
         onChange={(e) => { setCurrent(e.target.value) }}
         onBlur={() => { onChange(current) }}
       />

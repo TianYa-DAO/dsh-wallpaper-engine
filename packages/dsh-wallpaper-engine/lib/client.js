@@ -486,7 +486,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:12px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:5px 12px;font-size:12px;line-height:18px}.O_XpsG_presetBtn:hover{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_controlVal{color:var(--dsw-alias-label-secondary);text-align:right;min-width:36px;font-size:12px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:100%;color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -496,42 +496,45 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"thumbImage": "O_XpsG_thumbImage",
-			"colorInput": "O_XpsG_colorInput",
-			"thumb": "O_XpsG_thumb",
+			"notice": "O_XpsG_notice",
+			"presets": "O_XpsG_presets",
 			"grid": "O_XpsG_grid",
 			"actions": "O_XpsG_actions",
-			"badge": "O_XpsG_badge",
-			"search": "O_XpsG_search",
-			"controlVal": "O_XpsG_controlVal",
-			"cardOpen": "O_XpsG_cardOpen",
-			"presets": "O_XpsG_presets",
-			"section": "O_XpsG_section",
 			"toolbar": "O_XpsG_toolbar",
-			"card": "O_XpsG_card",
-			"cardActions": "O_XpsG_cardActions",
-			"control": "O_XpsG_control",
-			"cardBody": "O_XpsG_cardBody",
 			"head": "O_XpsG_head",
+			"search": "O_XpsG_search",
 			"cardSelected": "O_XpsG_cardSelected",
-			"desktopMode": "O_XpsG_desktopMode",
-			"cardTitle": "O_XpsG_cardTitle",
-			"danger": "O_XpsG_danger",
-			"title": "O_XpsG_title",
-			"cardMeta": "O_XpsG_cardMeta",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"subtitle": "O_XpsG_subtitle",
-			"button": "O_XpsG_button",
+			"controlLabel": "O_XpsG_controlLabel",
 			"sceneNote": "O_XpsG_sceneNote",
-			"status": "O_XpsG_status",
-			"notice": "O_XpsG_notice",
-			"rootChip": "O_XpsG_rootChip",
-			"controls": "O_XpsG_controls",
-			"rootRemove": "O_XpsG_rootRemove",
-			"roots": "O_XpsG_roots",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"control": "O_XpsG_control",
 			"error": "O_XpsG_error",
-			"presetBtn": "O_XpsG_presetBtn"
+			"presetBtnActive": "O_XpsG_presetBtnActive",
+			"title": "O_XpsG_title",
+			"subtitle": "O_XpsG_subtitle",
+			"rootChip": "O_XpsG_rootChip",
+			"cardTitle": "O_XpsG_cardTitle",
+			"presetBtn": "O_XpsG_presetBtn",
+			"cardBody": "O_XpsG_cardBody",
+			"cardActions": "O_XpsG_cardActions",
+			"danger": "O_XpsG_danger",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"dedupSelect": "O_XpsG_dedupSelect",
+			"button": "O_XpsG_button",
+			"cardOpen": "O_XpsG_cardOpen",
+			"cardMeta": "O_XpsG_cardMeta",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"rootRemove": "O_XpsG_rootRemove",
+			"controls": "O_XpsG_controls",
+			"colorInput": "O_XpsG_colorInput",
+			"card": "O_XpsG_card",
+			"status": "O_XpsG_status",
+			"thumbImage": "O_XpsG_thumbImage",
+			"badge": "O_XpsG_badge",
+			"roots": "O_XpsG_roots",
+			"thumb": "O_XpsG_thumb",
+			"section": "O_XpsG_section",
+			"controlVal": "O_XpsG_controlVal",
+			"desktopMode": "O_XpsG_desktopMode"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -945,8 +948,12 @@ window.__ModuleLoader__.load({
 				}
 			}
 		];
+		function stylesEqual(a, b) {
+			return a.panelOpacity === b.panelOpacity && a.panelBlur === b.panelBlur && a.sidebarOpacity === b.sidebarOpacity && a.sidebarBlur === b.sidebarBlur && a.tintColor === b.tintColor && a.accentColor === b.accentColor && a.radius === b.radius && a.borderWidth === b.borderWidth && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength;
+		}
 		function LoadedDesktop({ controller, useSnapshot, t }) {
 			const cs = useSnapshot((s) => s).customStyle;
+			const activePreset = PRESETS.findIndex((p) => stylesEqual(p.style, cs));
 			const set = (patch) => {
 				controller.store.actions.setCustomStyle({
 					...cs,
@@ -968,8 +975,8 @@ window.__ModuleLoader__.load({
 					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: WallpaperSection_module_css_default.presets,
-						children: PRESETS.map((preset) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-							className: WallpaperSection_module_css_default.presetBtn,
+						children: PRESETS.map((preset, i) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							className: clsx(WallpaperSection_module_css_default.presetBtn, i === activePreset && WallpaperSection_module_css_default.presetBtnActive),
 							type: "button",
 							onClick: () => {
 								controller.store.actions.setCustomStyle(preset.style);
@@ -1080,7 +1087,10 @@ window.__ModuleLoader__.load({
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
 				className: WallpaperSection_module_css_default.control,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: label }),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+						className: WallpaperSection_module_css_default.controlLabel,
+						children: label
+					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 						type: "range",
 						min,
@@ -1105,11 +1115,14 @@ window.__ModuleLoader__.load({
 			}, [value]);
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
 				className: WallpaperSection_module_css_default.control,
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: label }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+					className: WallpaperSection_module_css_default.controlLabel,
+					children: label
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 					type: "text",
 					className: WallpaperSection_module_css_default.colorInput,
 					value: current,
-					placeholder: "rgba(255,255,255,0.15) 或 #3964fe",
+					placeholder: "rgba(255,255,255,0.15)",
 					onChange: (e) => {
 						setCurrent(e.target.value);
 					},
@@ -1131,14 +1144,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fill_fill": "mm6n-q_fill_fill",
-			"fallbackNote": "mm6n-q_fallbackNote",
-			"fill_contain": "mm6n-q_fill_contain",
 			"image": "mm6n-q_image",
+			"fill_contain": "mm6n-q_fill_contain",
+			"fill_fill": "mm6n-q_fill_fill",
+			"video": "mm6n-q_video",
+			"fill_cover": "mm6n-q_fill_cover",
 			"host": "mm6n-q_host",
 			"layer": "mm6n-q_layer",
-			"video": "mm6n-q_video",
-			"fill_cover": "mm6n-q_fill_cover"
+			"fallbackNote": "mm6n-q_fallbackNote"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
