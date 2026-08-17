@@ -102,10 +102,16 @@ window.__ModuleLoader__.load({
 		*/
 		const CUSTOM_STYLE_KEY = "dsh.wallpaper-engine.customStyle";
 		const DEFAULT_CUSTOM_STYLE = Object.freeze({
-			panelOpacity: 1,
-			panelBlur: 0,
+			mainOpacity: 1,
+			mainBlur: 0,
 			sidebarOpacity: 1,
 			sidebarBlur: 0,
+			chatOpacity: 1,
+			chatBlur: 0,
+			inputOpacity: 1,
+			inputBlur: 0,
+			panelOpacity: 1,
+			panelBlur: 0,
 			tintColor: "",
 			accentColor: "",
 			radius: 0,
@@ -117,10 +123,16 @@ window.__ModuleLoader__.load({
 			try {
 				const raw = JSON.parse(localStorage.getItem(CUSTOM_STYLE_KEY) ?? "{}");
 				return {
-					panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
-					panelBlur: clamp(raw.panelBlur, 0, 40, 0),
+					mainOpacity: clamp(raw.mainOpacity, 0, 1, 1),
+					mainBlur: clamp(raw.mainBlur, 0, 40, 0),
 					sidebarOpacity: clamp(raw.sidebarOpacity, 0, 1, 1),
 					sidebarBlur: clamp(raw.sidebarBlur, 0, 40, 0),
+					chatOpacity: clamp(raw.chatOpacity, 0, 1, 1),
+					chatBlur: clamp(raw.chatBlur, 0, 40, 0),
+					inputOpacity: clamp(raw.inputOpacity, 0, 1, 1),
+					inputBlur: clamp(raw.inputBlur, 0, 40, 0),
+					panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
+					panelBlur: clamp(raw.panelBlur, 0, 40, 0),
 					tintColor: hexColor(raw.tintColor),
 					accentColor: hexColor(raw.accentColor),
 					radius: clamp(raw.radius, 0, 24, 0),
@@ -496,45 +508,45 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"notice": "O_XpsG_notice",
-			"presets": "O_XpsG_presets",
-			"grid": "O_XpsG_grid",
-			"actions": "O_XpsG_actions",
-			"toolbar": "O_XpsG_toolbar",
-			"head": "O_XpsG_head",
-			"search": "O_XpsG_search",
-			"cardSelected": "O_XpsG_cardSelected",
-			"controlLabel": "O_XpsG_controlLabel",
-			"sceneNote": "O_XpsG_sceneNote",
-			"control": "O_XpsG_control",
-			"error": "O_XpsG_error",
-			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"title": "O_XpsG_title",
-			"subtitle": "O_XpsG_subtitle",
-			"rootChip": "O_XpsG_rootChip",
-			"cardTitle": "O_XpsG_cardTitle",
-			"presetBtn": "O_XpsG_presetBtn",
-			"cardBody": "O_XpsG_cardBody",
-			"cardActions": "O_XpsG_cardActions",
-			"danger": "O_XpsG_danger",
-			"rootsLabel": "O_XpsG_rootsLabel",
 			"dedupSelect": "O_XpsG_dedupSelect",
+			"head": "O_XpsG_head",
+			"control": "O_XpsG_control",
+			"controlLabel": "O_XpsG_controlLabel",
+			"toolbar": "O_XpsG_toolbar",
+			"cardSelected": "O_XpsG_cardSelected",
 			"button": "O_XpsG_button",
-			"cardOpen": "O_XpsG_cardOpen",
+			"thumbImage": "O_XpsG_thumbImage",
+			"presetBtn": "O_XpsG_presetBtn",
+			"rootChip": "O_XpsG_rootChip",
+			"roots": "O_XpsG_roots",
+			"title": "O_XpsG_title",
 			"cardMeta": "O_XpsG_cardMeta",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"subtitle": "O_XpsG_subtitle",
+			"desktopMode": "O_XpsG_desktopMode",
+			"actions": "O_XpsG_actions",
+			"colorInput": "O_XpsG_colorInput",
+			"search": "O_XpsG_search",
+			"thumb": "O_XpsG_thumb",
+			"controlVal": "O_XpsG_controlVal",
 			"rootRemove": "O_XpsG_rootRemove",
 			"controls": "O_XpsG_controls",
-			"colorInput": "O_XpsG_colorInput",
+			"cardOpen": "O_XpsG_cardOpen",
 			"card": "O_XpsG_card",
-			"status": "O_XpsG_status",
-			"thumbImage": "O_XpsG_thumbImage",
+			"notice": "O_XpsG_notice",
+			"grid": "O_XpsG_grid",
 			"badge": "O_XpsG_badge",
-			"roots": "O_XpsG_roots",
-			"thumb": "O_XpsG_thumb",
-			"section": "O_XpsG_section",
-			"controlVal": "O_XpsG_controlVal",
-			"desktopMode": "O_XpsG_desktopMode"
+			"danger": "O_XpsG_danger",
+			"presets": "O_XpsG_presets",
+			"error": "O_XpsG_error",
+			"status": "O_XpsG_status",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"cardBody": "O_XpsG_cardBody",
+			"sceneNote": "O_XpsG_sceneNote",
+			"cardTitle": "O_XpsG_cardTitle",
+			"cardActions": "O_XpsG_cardActions",
+			"presetBtnActive": "O_XpsG_presetBtnActive",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"section": "O_XpsG_section"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -905,10 +917,16 @@ window.__ModuleLoader__.load({
 			{
 				key: "presetGlass",
 				style: {
-					panelOpacity: .55,
-					panelBlur: 24,
-					sidebarOpacity: .4,
+					mainOpacity: .5,
+					mainBlur: 24,
+					sidebarOpacity: .35,
 					sidebarBlur: 16,
+					chatOpacity: .45,
+					chatBlur: 20,
+					inputOpacity: .4,
+					inputBlur: 12,
+					panelOpacity: .5,
+					panelBlur: 18,
 					tintColor: "",
 					accentColor: "",
 					radius: 12,
@@ -920,10 +938,16 @@ window.__ModuleLoader__.load({
 			{
 				key: "presetAcrylic",
 				style: {
-					panelOpacity: .7,
-					panelBlur: 8,
-					sidebarOpacity: .5,
+					mainOpacity: .65,
+					mainBlur: 8,
+					sidebarOpacity: .45,
 					sidebarBlur: 4,
+					chatOpacity: .6,
+					chatBlur: 6,
+					inputOpacity: .5,
+					inputBlur: 4,
+					panelOpacity: .6,
+					panelBlur: 6,
 					tintColor: "",
 					accentColor: "",
 					radius: 8,
@@ -935,10 +959,16 @@ window.__ModuleLoader__.load({
 			{
 				key: "presetTransparent",
 				style: {
-					panelOpacity: .2,
-					panelBlur: 0,
-					sidebarOpacity: .15,
+					mainOpacity: .15,
+					mainBlur: 0,
+					sidebarOpacity: .1,
 					sidebarBlur: 0,
+					chatOpacity: .12,
+					chatBlur: 0,
+					inputOpacity: .1,
+					inputBlur: 0,
+					panelOpacity: .15,
+					panelBlur: 0,
 					tintColor: "",
 					accentColor: "",
 					radius: 0,
@@ -949,7 +979,7 @@ window.__ModuleLoader__.load({
 			}
 		];
 		function stylesEqual(a, b) {
-			return a.panelOpacity === b.panelOpacity && a.panelBlur === b.panelBlur && a.sidebarOpacity === b.sidebarOpacity && a.sidebarBlur === b.sidebarBlur && a.tintColor === b.tintColor && a.accentColor === b.accentColor && a.radius === b.radius && a.borderWidth === b.borderWidth && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength;
+			return a.mainOpacity === b.mainOpacity && a.mainBlur === b.mainBlur && a.sidebarOpacity === b.sidebarOpacity && a.sidebarBlur === b.sidebarBlur && a.chatOpacity === b.chatOpacity && a.chatBlur === b.chatBlur && a.inputOpacity === b.inputOpacity && a.inputBlur === b.inputBlur && a.panelOpacity === b.panelOpacity && a.panelBlur === b.panelBlur && a.tintColor === b.tintColor && a.accentColor === b.accentColor && a.radius === b.radius && a.borderWidth === b.borderWidth && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength;
 		}
 		function LoadedDesktop({ controller, useSnapshot, t }) {
 			const cs = useSnapshot((s) => s).customStyle;
@@ -988,29 +1018,29 @@ window.__ModuleLoader__.load({
 						className: WallpaperSection_module_css_default.controls,
 						children: [
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
-								label: t("panelOpacity"),
-								value: cs.panelOpacity,
-								min: .1,
+								label: t("mainOpacity"),
+								value: cs.mainOpacity,
+								min: .05,
 								max: 1,
 								step: .05,
 								onChange: (v) => {
-									set({ panelOpacity: v });
+									set({ mainOpacity: v });
 								}
 							}),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
-								label: t("panelBlur"),
-								value: cs.panelBlur,
+								label: t("mainBlur"),
+								value: cs.mainBlur,
 								min: 0,
 								max: 40,
 								step: 1,
 								onChange: (v) => {
-									set({ panelBlur: v });
+									set({ mainBlur: v });
 								}
 							}),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
 								label: t("sidebarOpacity"),
 								value: cs.sidebarOpacity,
-								min: .1,
+								min: .05,
 								max: 1,
 								step: .05,
 								onChange: (v) => {
@@ -1025,6 +1055,66 @@ window.__ModuleLoader__.load({
 								step: 1,
 								onChange: (v) => {
 									set({ sidebarBlur: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("chatOpacity"),
+								value: cs.chatOpacity,
+								min: .05,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ chatOpacity: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("chatBlur"),
+								value: cs.chatBlur,
+								min: 0,
+								max: 40,
+								step: 1,
+								onChange: (v) => {
+									set({ chatBlur: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("inputOpacity"),
+								value: cs.inputOpacity,
+								min: .05,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ inputOpacity: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("inputBlur"),
+								value: cs.inputBlur,
+								min: 0,
+								max: 40,
+								step: 1,
+								onChange: (v) => {
+									set({ inputBlur: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("panelOpacity"),
+								value: cs.panelOpacity,
+								min: .05,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ panelOpacity: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("panelBlur"),
+								value: cs.panelBlur,
+								min: 0,
+								max: 40,
+								step: 1,
+								onChange: (v) => {
+									set({ panelBlur: v });
 								}
 							}),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(ColorRow, {
@@ -1144,14 +1234,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"image": "mm6n-q_image",
-			"fill_contain": "mm6n-q_fill_contain",
+			"fallbackNote": "mm6n-q_fallbackNote",
 			"fill_fill": "mm6n-q_fill_fill",
-			"video": "mm6n-q_video",
 			"fill_cover": "mm6n-q_fill_cover",
-			"host": "mm6n-q_host",
+			"fill_contain": "mm6n-q_fill_contain",
+			"image": "mm6n-q_image",
 			"layer": "mm6n-q_layer",
-			"fallbackNote": "mm6n-q_fallbackNote"
+			"host": "mm6n-q_host",
+			"video": "mm6n-q_video"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1249,22 +1339,30 @@ window.__ModuleLoader__.load({
 				if (isDefaultStyle(cs)) return;
 				style = document.createElement("style");
 				style.id = CUSTOM_STYLE_ID;
-				const vars = [];
-				if (cs.panelOpacity < 1) vars.push(`--dsh-custom-panel-opacity: ${cs.panelOpacity}`);
-				if (cs.panelBlur > 0) vars.push(`--dsh-custom-panel-blur: ${cs.panelBlur}px`);
-				if (cs.sidebarOpacity < 1) vars.push(`--dsh-custom-sidebar-opacity: ${cs.sidebarOpacity}`);
-				if (cs.sidebarBlur > 0) vars.push(`--dsh-custom-sidebar-blur: ${cs.sidebarBlur}px`);
-				if (cs.tintColor !== "") vars.push(`--dsh-custom-tint: ${cs.tintColor}`);
-				if (cs.accentColor !== "") vars.push(`--dsh-custom-accent: ${cs.accentColor}`);
-				if (cs.radius > 0) vars.push(`--dsh-custom-radius: ${cs.radius}px`);
-				if (cs.borderWidth > 0 && cs.borderColor !== "") vars.push(`--dsh-custom-border: ${cs.borderWidth}px solid ${cs.borderColor}`);
-				if (cs.shadowStrength > 0) vars.push(`--dsh-custom-shadow: 0 8px 32px rgba(0,0,0,${(cs.shadowStrength * .4).toFixed(2)})`);
-				if (vars.length === 0) return;
-				style.textContent = `#root { ${vars.join("; ")} }
+				const v = [];
+				function addVar(name, value) {
+					v.push(`--dsh-custom-${name}: ${value}`);
+				}
+				addVar("main-opacity", cs.mainOpacity);
+				addVar("main-blur", `${cs.mainBlur}px`);
+				addVar("sidebar-opacity", cs.sidebarOpacity);
+				addVar("sidebar-blur", `${cs.sidebarBlur}px`);
+				addVar("chat-opacity", cs.chatOpacity);
+				addVar("chat-blur", `${cs.chatBlur}px`);
+				addVar("input-opacity", cs.inputOpacity);
+				addVar("input-blur", `${cs.inputBlur}px`);
+				addVar("panel-opacity", cs.panelOpacity);
+				addVar("panel-blur", `${cs.panelBlur}px`);
+				if (cs.tintColor !== "") addVar("tint", cs.tintColor);
+				if (cs.accentColor !== "") addVar("accent", cs.accentColor);
+				if (cs.radius > 0) addVar("radius", `${cs.radius}px`);
+				if (cs.borderWidth > 0 && cs.borderColor !== "") addVar("border", `${cs.borderWidth}px solid ${cs.borderColor}`);
+				if (cs.shadowStrength > 0) addVar("shadow", `0 8px 32px rgba(0,0,0,${(cs.shadowStrength * .4).toFixed(2)})`);
+				style.textContent = `#root { ${v.join("; ")} }
 #root > div {
-  background: rgba(15,17,21, var(--dsh-custom-panel-opacity, 1)) !important;
-  backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
-  -webkit-backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
+  background: rgba(15,17,21, var(--dsh-custom-main-opacity, 1)) !important;
+  backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
   border-radius: var(--dsh-custom-radius, 0px) !important;
   box-shadow: var(--dsh-custom-shadow, none) !important;
   border: var(--dsh-custom-border, none) !important;
@@ -1384,7 +1482,7 @@ window.__ModuleLoader__.load({
 			}), portalHost);
 		}
 		function isDefaultStyle(cs) {
-			return cs.panelOpacity === 1 && cs.panelBlur === 0 && cs.sidebarOpacity === 1 && cs.sidebarBlur === 0 && cs.tintColor === "" && cs.accentColor === "" && cs.radius === 0 && cs.borderWidth === 0 && cs.borderColor === "" && cs.shadowStrength === 0;
+			return cs.mainOpacity === 1 && cs.mainBlur === 0 && cs.sidebarOpacity === 1 && cs.sidebarBlur === 0 && cs.chatOpacity === 1 && cs.chatBlur === 0 && cs.inputOpacity === 1 && cs.inputBlur === 0 && cs.panelOpacity === 1 && cs.panelBlur === 0 && cs.tintColor === "" && cs.accentColor === "" && cs.radius === 0 && cs.borderWidth === 0 && cs.borderColor === "" && cs.shadowStrength === 0;
 		}
 		//#endregion
 		//#region ../src/client/locales.ts
@@ -1398,14 +1496,20 @@ window.__ModuleLoader__.load({
 			presetGlass: "毛玻璃",
 			presetAcrylic: "亚克力",
 			presetTransparent: "透明",
-			panelOpacity: "主面板透明度",
-			panelBlur: "主面板模糊 (px)",
+			mainOpacity: "主框架透明度",
+			mainBlur: "主框架模糊",
 			sidebarOpacity: "侧边栏透明度",
-			sidebarBlur: "侧边栏模糊 (px)",
+			sidebarBlur: "侧边栏模糊",
+			chatOpacity: "对话区透明度",
+			chatBlur: "对话区模糊",
+			inputOpacity: "输入栏透明度",
+			inputBlur: "输入栏模糊",
+			panelOpacity: "设置面板透明度",
+			panelBlur: "设置面板模糊",
 			tintColor: "背景色调",
 			accentColor: "强调色",
-			radius: "全局圆角 (px)",
-			borderWidth: "边框宽度 (px)",
+			radius: "全局圆角",
+			borderWidth: "边框宽度",
 			borderColor: "边框颜色",
 			shadowStrength: "阴影强度",
 			title: "Wallpaper Engine 壁纸库",
@@ -1453,14 +1557,20 @@ window.__ModuleLoader__.load({
 			presetGlass: "Glass",
 			presetAcrylic: "Acrylic",
 			presetTransparent: "Transparent",
-			panelOpacity: "Panel opacity",
-			panelBlur: "Panel blur (px)",
+			mainOpacity: "Frame opacity",
+			mainBlur: "Frame blur",
 			sidebarOpacity: "Sidebar opacity",
-			sidebarBlur: "Sidebar blur (px)",
+			sidebarBlur: "Sidebar blur",
+			chatOpacity: "Chat opacity",
+			chatBlur: "Chat blur",
+			inputOpacity: "Input bar opacity",
+			inputBlur: "Input bar blur",
+			panelOpacity: "Panel opacity",
+			panelBlur: "Panel blur",
 			tintColor: "Tint",
 			accentColor: "Accent",
-			radius: "Corner radius (px)",
-			borderWidth: "Border width (px)",
+			radius: "Corner radius",
+			borderWidth: "Border width",
 			borderColor: "Border colour",
 			shadowStrength: "Shadow",
 			title: "Wallpaper Engine Library",

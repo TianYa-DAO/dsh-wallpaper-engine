@@ -132,26 +132,28 @@ function LoadedBackground({
     if (isDefaultStyle(cs)) return
     style = document.createElement('style')
     style.id = CUSTOM_STYLE_ID
-    const vars: string[] = []
-    if (cs.panelOpacity < 1) vars.push(`--dsh-custom-panel-opacity: ${cs.panelOpacity}`)
-    if (cs.panelBlur > 0) vars.push(`--dsh-custom-panel-blur: ${cs.panelBlur}px`)
-    if (cs.sidebarOpacity < 1) vars.push(`--dsh-custom-sidebar-opacity: ${cs.sidebarOpacity}`)
-    if (cs.sidebarBlur > 0) vars.push(`--dsh-custom-sidebar-blur: ${cs.sidebarBlur}px`)
-    if (cs.tintColor !== '') vars.push(`--dsh-custom-tint: ${cs.tintColor}`)
-    if (cs.accentColor !== '') vars.push(`--dsh-custom-accent: ${cs.accentColor}`)
-    if (cs.radius > 0) vars.push(`--dsh-custom-radius: ${cs.radius}px`)
-    if (cs.borderWidth > 0 && cs.borderColor !== '') {
-      vars.push(`--dsh-custom-border: ${cs.borderWidth}px solid ${cs.borderColor}`)
-    }
-    if (cs.shadowStrength > 0) {
-      vars.push(`--dsh-custom-shadow: 0 8px 32px rgba(0,0,0,${(cs.shadowStrength * 0.4).toFixed(2)})`)
-    }
-    if (vars.length === 0) return
-    style.textContent = `#root { ${vars.join('; ')} }
+    const v: string[] = []
+    function addVar(name: string, value: string | number): void { v.push(`--dsh-custom-${name}: ${value}`) }
+    addVar('main-opacity', cs.mainOpacity)
+    addVar('main-blur', `${cs.mainBlur}px`)
+    addVar('sidebar-opacity', cs.sidebarOpacity)
+    addVar('sidebar-blur', `${cs.sidebarBlur}px`)
+    addVar('chat-opacity', cs.chatOpacity)
+    addVar('chat-blur', `${cs.chatBlur}px`)
+    addVar('input-opacity', cs.inputOpacity)
+    addVar('input-blur', `${cs.inputBlur}px`)
+    addVar('panel-opacity', cs.panelOpacity)
+    addVar('panel-blur', `${cs.panelBlur}px`)
+    if (cs.tintColor !== '') addVar('tint', cs.tintColor)
+    if (cs.accentColor !== '') addVar('accent', cs.accentColor)
+    if (cs.radius > 0) addVar('radius', `${cs.radius}px`)
+    if (cs.borderWidth > 0 && cs.borderColor !== '') addVar('border', `${cs.borderWidth}px solid ${cs.borderColor}`)
+    if (cs.shadowStrength > 0) addVar('shadow', `0 8px 32px rgba(0,0,0,${(cs.shadowStrength * 0.4).toFixed(2)})`)
+    style.textContent = `#root { ${v.join('; ')} }
 #root > div {
-  background: rgba(15,17,21, var(--dsh-custom-panel-opacity, 1)) !important;
-  backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
-  -webkit-backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
+  background: rgba(15,17,21, var(--dsh-custom-main-opacity, 1)) !important;
+  backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
   border-radius: var(--dsh-custom-radius, 0px) !important;
   box-shadow: var(--dsh-custom-shadow, none) !important;
   border: var(--dsh-custom-border, none) !important;
@@ -300,14 +302,12 @@ function LoadedBackground({
 }
 
 function isDefaultStyle(cs: CustomStyle): boolean {
-  return cs.panelOpacity === 1
-    && cs.panelBlur === 0
-    && cs.sidebarOpacity === 1
-    && cs.sidebarBlur === 0
-    && cs.tintColor === ''
-    && cs.accentColor === ''
-    && cs.radius === 0
-    && cs.borderWidth === 0
-    && cs.borderColor === ''
-    && cs.shadowStrength === 0
+  return cs.mainOpacity === 1 && cs.mainBlur === 0
+    && cs.sidebarOpacity === 1 && cs.sidebarBlur === 0
+    && cs.chatOpacity === 1 && cs.chatBlur === 0
+    && cs.inputOpacity === 1 && cs.inputBlur === 0
+    && cs.panelOpacity === 1 && cs.panelBlur === 0
+    && cs.tintColor === '' && cs.accentColor === ''
+    && cs.radius === 0 && cs.borderWidth === 0
+    && cs.borderColor === '' && cs.shadowStrength === 0
 }

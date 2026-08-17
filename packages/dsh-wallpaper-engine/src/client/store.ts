@@ -22,12 +22,18 @@ export interface WallpaperSceneState {
   parkError: string
 }
 
-/** Per-parameter UI customisation — every field maps to a CSS variable. */
+/** Per-panel UI customisation — every field maps to a CSS variable. */
 export interface CustomStyle {
-  panelOpacity: number
-  panelBlur: number
+  mainOpacity: number
+  mainBlur: number
   sidebarOpacity: number
   sidebarBlur: number
+  chatOpacity: number
+  chatBlur: number
+  inputOpacity: number
+  inputBlur: number
+  panelOpacity: number
+  panelBlur: number
   tintColor: string
   accentColor: string
   radius: number
@@ -73,10 +79,16 @@ export type WallpaperEngineActions = {
 const CUSTOM_STYLE_KEY = 'dsh.wallpaper-engine.customStyle'
 
 export const DEFAULT_CUSTOM_STYLE: CustomStyle = Object.freeze({
-  panelOpacity: 1,
-  panelBlur: 0,
+  mainOpacity: 1,
+  mainBlur: 0,
   sidebarOpacity: 1,
   sidebarBlur: 0,
+  chatOpacity: 1,
+  chatBlur: 0,
+  inputOpacity: 1,
+  inputBlur: 0,
+  panelOpacity: 1,
+  panelBlur: 0,
   tintColor: '',
   accentColor: '',
   radius: 0,
@@ -89,10 +101,16 @@ function readCustomStyle(): CustomStyle {
   try {
     const raw = JSON.parse(localStorage.getItem(CUSTOM_STYLE_KEY) ?? '{}') as Partial<CustomStyle>
     return {
-      panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
-      panelBlur: clamp(raw.panelBlur, 0, 40, 0),
+      mainOpacity: clamp(raw.mainOpacity, 0, 1, 1),
+      mainBlur: clamp(raw.mainBlur, 0, 40, 0),
       sidebarOpacity: clamp(raw.sidebarOpacity, 0, 1, 1),
       sidebarBlur: clamp(raw.sidebarBlur, 0, 40, 0),
+      chatOpacity: clamp(raw.chatOpacity, 0, 1, 1),
+      chatBlur: clamp(raw.chatBlur, 0, 40, 0),
+      inputOpacity: clamp(raw.inputOpacity, 0, 1, 1),
+      inputBlur: clamp(raw.inputBlur, 0, 40, 0),
+      panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
+      panelBlur: clamp(raw.panelBlur, 0, 40, 0),
       tintColor: hexColor(raw.tintColor),
       accentColor: hexColor(raw.accentColor),
       radius: clamp(raw.radius, 0, 24, 0),

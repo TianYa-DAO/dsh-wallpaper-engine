@@ -33,7 +33,9 @@ const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
   {
     key: 'presetGlass',
     style: {
-      panelOpacity: 0.55, panelBlur: 24, sidebarOpacity: 0.4, sidebarBlur: 16,
+      mainOpacity: 0.5, mainBlur: 24, sidebarOpacity: 0.35, sidebarBlur: 16,
+      chatOpacity: 0.45, chatBlur: 20, inputOpacity: 0.4, inputBlur: 12,
+      panelOpacity: 0.5, panelBlur: 18,
       tintColor: '', accentColor: '', radius: 12, borderWidth: 1,
       borderColor: 'rgba(255,255,255,0.15)', shadowStrength: 0.3,
     },
@@ -41,7 +43,9 @@ const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
   {
     key: 'presetAcrylic',
     style: {
-      panelOpacity: 0.7, panelBlur: 8, sidebarOpacity: 0.5, sidebarBlur: 4,
+      mainOpacity: 0.65, mainBlur: 8, sidebarOpacity: 0.45, sidebarBlur: 4,
+      chatOpacity: 0.6, chatBlur: 6, inputOpacity: 0.5, inputBlur: 4,
+      panelOpacity: 0.6, panelBlur: 6,
       tintColor: '', accentColor: '', radius: 8, borderWidth: 1,
       borderColor: 'rgba(255,255,255,0.12)', shadowStrength: 0.2,
     },
@@ -49,7 +53,9 @@ const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
   {
     key: 'presetTransparent',
     style: {
-      panelOpacity: 0.2, panelBlur: 0, sidebarOpacity: 0.15, sidebarBlur: 0,
+      mainOpacity: 0.15, mainBlur: 0, sidebarOpacity: 0.1, sidebarBlur: 0,
+      chatOpacity: 0.12, chatBlur: 0, inputOpacity: 0.1, inputBlur: 0,
+      panelOpacity: 0.15, panelBlur: 0,
       tintColor: '', accentColor: '', radius: 0, borderWidth: 0,
       borderColor: '', shadowStrength: 0,
     },
@@ -57,16 +63,14 @@ const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
 ]
 
 function stylesEqual(a: CustomStyle, b: CustomStyle): boolean {
-  return a.panelOpacity === b.panelOpacity
-    && a.panelBlur === b.panelBlur
-    && a.sidebarOpacity === b.sidebarOpacity
-    && a.sidebarBlur === b.sidebarBlur
-    && a.tintColor === b.tintColor
-    && a.accentColor === b.accentColor
-    && a.radius === b.radius
-    && a.borderWidth === b.borderWidth
-    && a.borderColor === b.borderColor
-    && a.shadowStrength === b.shadowStrength
+  return a.mainOpacity === b.mainOpacity && a.mainBlur === b.mainBlur
+    && a.sidebarOpacity === b.sidebarOpacity && a.sidebarBlur === b.sidebarBlur
+    && a.chatOpacity === b.chatOpacity && a.chatBlur === b.chatBlur
+    && a.inputOpacity === b.inputOpacity && a.inputBlur === b.inputBlur
+    && a.panelOpacity === b.panelOpacity && a.panelBlur === b.panelBlur
+    && a.tintColor === b.tintColor && a.accentColor === b.accentColor
+    && a.radius === b.radius && a.borderWidth === b.borderWidth
+    && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength
 }
 
 function LoadedDesktop({ controller, useSnapshot, t }: {
@@ -103,10 +107,16 @@ function LoadedDesktop({ controller, useSnapshot, t }: {
       </div>
 
       <div className={css.controls}>
-        <SliderRow label={t('panelOpacity')} value={cs.panelOpacity} min={0.1} max={1} step={0.05} onChange={(v) => { set({ panelOpacity: v }) }} />
-        <SliderRow label={t('panelBlur')} value={cs.panelBlur} min={0} max={40} step={1} onChange={(v) => { set({ panelBlur: v }) }} />
-        <SliderRow label={t('sidebarOpacity')} value={cs.sidebarOpacity} min={0.1} max={1} step={0.05} onChange={(v) => { set({ sidebarOpacity: v }) }} />
+        <SliderRow label={t('mainOpacity')} value={cs.mainOpacity} min={0.05} max={1} step={0.05} onChange={(v) => { set({ mainOpacity: v }) }} />
+        <SliderRow label={t('mainBlur')} value={cs.mainBlur} min={0} max={40} step={1} onChange={(v) => { set({ mainBlur: v }) }} />
+        <SliderRow label={t('sidebarOpacity')} value={cs.sidebarOpacity} min={0.05} max={1} step={0.05} onChange={(v) => { set({ sidebarOpacity: v }) }} />
         <SliderRow label={t('sidebarBlur')} value={cs.sidebarBlur} min={0} max={40} step={1} onChange={(v) => { set({ sidebarBlur: v }) }} />
+        <SliderRow label={t('chatOpacity')} value={cs.chatOpacity} min={0.05} max={1} step={0.05} onChange={(v) => { set({ chatOpacity: v }) }} />
+        <SliderRow label={t('chatBlur')} value={cs.chatBlur} min={0} max={40} step={1} onChange={(v) => { set({ chatBlur: v }) }} />
+        <SliderRow label={t('inputOpacity')} value={cs.inputOpacity} min={0.05} max={1} step={0.05} onChange={(v) => { set({ inputOpacity: v }) }} />
+        <SliderRow label={t('inputBlur')} value={cs.inputBlur} min={0} max={40} step={1} onChange={(v) => { set({ inputBlur: v }) }} />
+        <SliderRow label={t('panelOpacity')} value={cs.panelOpacity} min={0.05} max={1} step={0.05} onChange={(v) => { set({ panelOpacity: v }) }} />
+        <SliderRow label={t('panelBlur')} value={cs.panelBlur} min={0} max={40} step={1} onChange={(v) => { set({ panelBlur: v }) }} />
         <ColorRow label={t('tintColor')} value={cs.tintColor} onChange={(v) => { set({ tintColor: v }) }} />
         <ColorRow label={t('accentColor')} value={cs.accentColor} onChange={(v) => { set({ accentColor: v }) }} />
         <SliderRow label={t('radius')} value={cs.radius} min={0} max={24} step={1} onChange={(v) => { set({ radius: v }) }} />
