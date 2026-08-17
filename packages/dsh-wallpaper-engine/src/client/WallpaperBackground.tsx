@@ -14,7 +14,7 @@ import { createPortal } from 'react-dom'
 import clsx from 'clsx'
 import type { SnapshotSelectorHook } from '@deepseek-ai/dsh-client-ui-slots'
 import type { WallpaperEngineController } from './controller.ts'
-import type { WallpaperEngineState } from './store.ts'
+import type { WallpaperEngineState, CustomStyle } from './store.ts'
 import { wallpaperMediaUrl } from './api.ts'
 import type { WallpaperProjectItem } from './api.ts'
 import css from './WallpaperBackground.module.css'
@@ -28,7 +28,7 @@ export interface WallpaperBackgroundInjected {
 export type WallpaperBackgroundProps = Partial<WallpaperBackgroundInjected>
 
 const TRANSPARENT_APP_STYLE_ID = 'dsh-wallpaper-transparent-app'
-const GLASS_STYLE_ID = 'dsh-wallpaper-glass-mode'
+const CUSTOM_STYLE_ID = 'dsh-wallpaper-custom-style'
 
 /** Capture one Chromium desktop source id into a MediaStream. */
 async function captureDesktopSource(sourceId: string): Promise<MediaStream> {
@@ -121,34 +121,46 @@ function LoadedBackground({
     }
   }, [selection.active])
 
-  // Glassmorphism mode: apply to the DSH app frame, sidebar, and panels.
-  // Based on the standard backdrop-filter technique (see README Acknowledgements).
+  // Desktop customisation: generate CSS variables from the CustomStyle
+  // object and inject them into #root. Every value is reflected in real
+  // time so the sliders in the "Desktop" settings section have instant
+  // visual feedback.
   useEffect(() => {
-    if (!state.glassMode) {
-      const existing = document.getElementById(GLASS_STYLE_ID)
-      if (existing !== null) existing.remove()
-      return
+    const cs = state.customStyle
+    let style = document.getElementById(CUSTOM_STYLE_ID)
+    if (style !== null) style.remove()
+    if (isDefaultStyle(cs)) return
+    style = document.createElement('style')
+    style.id = CUSTOM_STYLE_ID
+    const vars: string[] = []
+    if (cs.panelOpacity < 1) vars.push(`--dsh-custom-panel-opacity: ${cs.panelOpacity}`)
+    if (cs.panelBlur > 0) vars.push(`--dsh-custom-panel-blur: ${cs.panelBlur}px`)
+    if (cs.sidebarOpacity < 1) vars.push(`--dsh-custom-sidebar-opacity: ${cs.sidebarOpacity}`)
+    if (cs.sidebarBlur > 0) vars.push(`--dsh-custom-sidebar-blur: ${cs.sidebarBlur}px`)
+    if (cs.tintColor !== '') vars.push(`--dsh-custom-tint: ${cs.tintColor}`)
+    if (cs.accentColor !== '') vars.push(`--dsh-custom-accent: ${cs.accentColor}`)
+    if (cs.radius > 0) vars.push(`--dsh-custom-radius: ${cs.radius}px`)
+    if (cs.borderWidth > 0 && cs.borderColor !== '') {
+      vars.push(`--dsh-custom-border: ${cs.borderWidth}px solid ${cs.borderColor}`)
     }
-    let style = document.getElementById(GLASS_STYLE_ID)
-    if (style === null) {
-      style = document.createElement('style')
-      style.id = GLASS_STYLE_ID
-      style.textContent = [
-        '#root > div {',
-        '  background: rgba(15,17,21,0.55) !important;',
-        '  backdrop-filter: blur(24px) !important;',
-        '  -webkit-backdrop-filter: blur(24px) !important;',
-        '}',
-        '#root {',
-        '  --dsw-specific-sidebar-fill: rgba(15,17,21,0.4) !important;',
-        '}',
-      ].join('\n')
-      document.head.appendChild(style)
+    if (cs.shadowStrength > 0) {
+      vars.push(`--dsh-custom-shadow: 0 8px 32px rgba(0,0,0,${(cs.shadowStrength * 0.4).toFixed(2)})`)
     }
-    return () => {
-      style.remove()
-    }
-  }, [state.glassMode])
+    if (vars.length === 0) return
+    style.textContent = `#root { ${vars.join('; ')} }
+#root > div {
+  background: rgba(15,17,21, var(--dsh-custom-panel-opacity, 1)) !important;
+  backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
+  border-radius: var(--dsh-custom-radius, 0px) !important;
+  box-shadow: var(--dsh-custom-shadow, none) !important;
+  border: var(--dsh-custom-border, none) !important;
+}
+#root {
+  --dsw-specific-sidebar-fill: rgba(15,17,21, var(--dsh-custom-sidebar-opacity, 1)) !important;
+}`
+    document.head.appendChild(style)
+  }, [state.customStyle])
 
   // WE native-scene lifecycle: start -> capture -> ACK, stop on cleanup.
   useEffect(() => {
@@ -285,4 +297,17 @@ function LoadedBackground({
     </div>,
     portalHost,
   )
+}
+
+function isDefaultStyle(cs: CustomStyle): boolean {
+  return cs.panelOpacity === 1
+    && cs.panelBlur === 0
+    && cs.sidebarOpacity === 1
+    && cs.sidebarBlur === 0
+    && cs.tintColor === ''
+    && cs.accentColor === ''
+    && cs.radius === 0
+    && cs.borderWidth === 0
+    && cs.borderColor === ''
+    && cs.shadowStrength === 0
 }

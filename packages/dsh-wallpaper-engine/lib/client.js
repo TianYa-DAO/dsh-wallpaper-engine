@@ -95,14 +95,60 @@ window.__ModuleLoader__.load({
 		//#region ../src/client/store.ts
 		/**
 		* Shared viewing/interaction state for the wallpaper UI: library snapshot,
-		* active selection, and the native-scene capture session. Business data
-		* (which files exist on disk, what WE is doing) stays in the desktop main
-		* process; this store only mirrors the renderer-visible projection.
+		* active selection, native-scene capture session, and desktop customisation
+		* (opacity, blur, colour, radius, border, shadow). Business data stays in
+		* the desktop main process; this store only mirrors the renderer-visible
+		* projection.
 		*/
+		const CUSTOM_STYLE_KEY = "dsh.wallpaper-engine.customStyle";
+		const DEFAULT_CUSTOM_STYLE = Object.freeze({
+			panelOpacity: 1,
+			panelBlur: 0,
+			sidebarOpacity: 1,
+			sidebarBlur: 0,
+			tintColor: "",
+			accentColor: "",
+			radius: 0,
+			borderWidth: 0,
+			borderColor: "",
+			shadowStrength: 0
+		});
+		function readCustomStyle() {
+			try {
+				const raw = JSON.parse(localStorage.getItem(CUSTOM_STYLE_KEY) ?? "{}");
+				return {
+					panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
+					panelBlur: clamp(raw.panelBlur, 0, 40, 0),
+					sidebarOpacity: clamp(raw.sidebarOpacity, 0, 1, 1),
+					sidebarBlur: clamp(raw.sidebarBlur, 0, 40, 0),
+					tintColor: hexColor(raw.tintColor),
+					accentColor: hexColor(raw.accentColor),
+					radius: clamp(raw.radius, 0, 24, 0),
+					borderWidth: clamp(raw.borderWidth, 0, 4, 0),
+					borderColor: hexColor(raw.borderColor),
+					shadowStrength: clamp(raw.shadowStrength, 0, 1, 0)
+				};
+			} catch {
+				return { ...DEFAULT_CUSTOM_STYLE };
+			}
+		}
+		function writeCustomStyle(style) {
+			try {
+				localStorage.setItem(CUSTOM_STYLE_KEY, JSON.stringify(style));
+			} catch {}
+		}
+		function clamp(value, min, max, fallback) {
+			const n = Number(value);
+			return Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : fallback;
+		}
+		function hexColor(value) {
+			const s = String(value ?? "");
+			return /^#[0-9a-f]{3,8}$/i.test(s) ? s.toLowerCase() : "";
+		}
 		/**
 		* Create the wallpaper UI store handle. The handle is constructed in apply
-		* world and shared by the settings-section entry and the background entry, so
-		* both read and write the same instance.
+		* world and shared by the desktop-customisation entry, the library entry,
+		* and the background entry, so all three read and write the same instance.
 		* @returns the shared store handle.
 		*/
 		function createWallpaperEngineStore() {
@@ -124,7 +170,7 @@ window.__ModuleLoader__.load({
 						windowParked: false,
 						parkError: ""
 					},
-					glassMode: readGlassMode(),
+					customStyle: readCustomStyle(),
 					error: ""
 				}),
 				actions: {
@@ -157,28 +203,15 @@ window.__ModuleLoader__.load({
 							...scene
 						};
 					},
-					setGlassMode: (d, enabled) => {
-						d.glassMode = enabled;
-						writeGlassMode(enabled);
+					setCustomStyle: (d, style) => {
+						d.customStyle = style;
+						writeCustomStyle(style);
 					},
 					clearSceneError: (d) => {
 						d.scene.error = "";
 					}
 				}
 			});
-		}
-		const GLASS_MODE_KEY = "dsh.wallpaper-engine.glassMode";
-		function readGlassMode() {
-			try {
-				return localStorage.getItem(GLASS_MODE_KEY) === "true";
-			} catch {
-				return false;
-			}
-		}
-		function writeGlassMode(enabled) {
-			try {
-				localStorage.setItem(GLASS_MODE_KEY, enabled ? "true" : "false");
-			} catch {}
 		}
 		//#endregion
 		//#region ../src/client/controller.ts
@@ -434,7 +467,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_buttonActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:12px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:5px 12px;font-size:12px;line-height:18px}.O_XpsG_presetBtn:hover{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_controlVal{color:var(--dsw-alias-label-secondary);text-align:right;min-width:36px;font-size:12px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:100%;color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -445,38 +478,41 @@ window.__ModuleLoader__.load({
 		}
 		var WallpaperSection_module_css_default = {
 			"button": "O_XpsG_button",
+			"sceneNote": "O_XpsG_sceneNote",
+			"roots": "O_XpsG_roots",
+			"badge": "O_XpsG_badge",
+			"cardMeta": "O_XpsG_cardMeta",
+			"grid": "O_XpsG_grid",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"rootRemove": "O_XpsG_rootRemove",
+			"thumb": "O_XpsG_thumb",
+			"cardActions": "O_XpsG_cardActions",
+			"desktopMode": "O_XpsG_desktopMode",
 			"rootChip": "O_XpsG_rootChip",
+			"cardBody": "O_XpsG_cardBody",
+			"cardOpen": "O_XpsG_cardOpen",
+			"colorInput": "O_XpsG_colorInput",
+			"controlVal": "O_XpsG_controlVal",
+			"cardSelected": "O_XpsG_cardSelected",
+			"search": "O_XpsG_search",
+			"error": "O_XpsG_error",
+			"toolbar": "O_XpsG_toolbar",
+			"card": "O_XpsG_card",
+			"head": "O_XpsG_head",
+			"presetBtn": "O_XpsG_presetBtn",
+			"notice": "O_XpsG_notice",
+			"section": "O_XpsG_section",
+			"controls": "O_XpsG_controls",
+			"title": "O_XpsG_title",
+			"subtitle": "O_XpsG_subtitle",
+			"danger": "O_XpsG_danger",
+			"presets": "O_XpsG_presets",
+			"cardTitle": "O_XpsG_cardTitle",
 			"desktopModeTitle": "O_XpsG_desktopModeTitle",
 			"status": "O_XpsG_status",
-			"sceneNote": "O_XpsG_sceneNote",
-			"thumbImage": "O_XpsG_thumbImage",
-			"cardActions": "O_XpsG_cardActions",
-			"title": "O_XpsG_title",
-			"section": "O_XpsG_section",
-			"danger": "O_XpsG_danger",
-			"cardBody": "O_XpsG_cardBody",
-			"buttonActive": "O_XpsG_buttonActive",
-			"notice": "O_XpsG_notice",
-			"head": "O_XpsG_head",
-			"rootRemove": "O_XpsG_rootRemove",
-			"grid": "O_XpsG_grid",
-			"badge": "O_XpsG_badge",
-			"error": "O_XpsG_error",
-			"card": "O_XpsG_card",
-			"cardMeta": "O_XpsG_cardMeta",
-			"control": "O_XpsG_control",
-			"desktopMode": "O_XpsG_desktopMode",
-			"cardTitle": "O_XpsG_cardTitle",
-			"search": "O_XpsG_search",
-			"cardOpen": "O_XpsG_cardOpen",
-			"controls": "O_XpsG_controls",
-			"subtitle": "O_XpsG_subtitle",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"roots": "O_XpsG_roots",
-			"thumb": "O_XpsG_thumb",
-			"toolbar": "O_XpsG_toolbar",
 			"actions": "O_XpsG_actions",
-			"cardSelected": "O_XpsG_cardSelected"
+			"thumbImage": "O_XpsG_thumbImage",
+			"control": "O_XpsG_control"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -486,7 +522,6 @@ window.__ModuleLoader__.load({
 		* sliders, and the native-scene start/stop control. All bridge writes go
 		* through the injected controller; components never touch window directly.
 		*/
-		/** Render the section; return null until every injected share is present. */
 		function WallpaperSection(props) {
 			if (props.controller === void 0 || props.useSnapshot === void 0 || props.t === void 0) return null;
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(LoadedSection, {
@@ -554,33 +589,22 @@ window.__ModuleLoader__.load({
 					isDesktop && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
 						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: WallpaperSection_module_css_default.toolbar,
-							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									className: WallpaperSection_module_css_default.search,
-									type: "search",
-									placeholder: t("searchPlaceholder"),
-									value: state.search,
-									onChange: (event) => {
-										controller.store.actions.setSearch(event.target.value);
-									}
-								}),
-								state.selection.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
-									type: "button",
-									onClick: () => {
-										controller.clearSelection();
-									},
-									children: t("restoreDefault")
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									className: clsx(WallpaperSection_module_css_default.button, state.glassMode && WallpaperSection_module_css_default.buttonActive),
-									type: "button",
-									onClick: () => {
-										controller.store.actions.setGlassMode(!state.glassMode);
-									},
-									children: t("glassMode")
-								})
-							]
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								className: WallpaperSection_module_css_default.search,
+								type: "search",
+								placeholder: t("searchPlaceholder"),
+								value: state.search,
+								onChange: (event) => {
+									controller.store.actions.setSearch(event.target.value);
+								}
+							}), state.selection.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
+								type: "button",
+								onClick: () => {
+									controller.clearSelection();
+								},
+								children: t("restoreDefault")
+							})]
 						}),
 						state.status === "loading" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: WallpaperSection_module_css_default.status,
@@ -660,11 +684,7 @@ window.__ModuleLoader__.load({
 						state.scene.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: state.scene.windowParked ? WallpaperSection_module_css_default.sceneNote : clsx(WallpaperSection_module_css_default.sceneNote, WallpaperSection_module_css_default.error),
 							children: state.scene.windowParked ? t("windowParked") : state.scene.parkError !== "" ? `${t("windowParkFailed")}（${state.scene.parkError}）` : t("engineRun")
-						}),
-						controller.isDesktop ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(DesktopModeControls, {
-							controller,
-							t
-						}) : null
+						})
 					] })
 				]
 			});
@@ -721,111 +741,6 @@ window.__ModuleLoader__.load({
 								})
 							]
 						})]
-					})
-				]
-			});
-		}
-		function DesktopModeControls({ controller, t }) {
-			const [wallpaperActive, setWallpaperActive] = (0, react.useState)(false);
-			const [desktopActive, setDesktopActive] = (0, react.useState)(false);
-			const [iconsVisible, setIconsVisible] = (0, react.useState)(true);
-			const [supported, setSupported] = (0, react.useState)(true);
-			const [error, setError] = (0, react.useState)("");
-			(0, react.useEffect)(() => {
-				controller.getWallpaperModeStatus().then((status) => {
-					if (status !== null && typeof status === "object") {
-						setWallpaperActive(status.enabled === true);
-						setSupported(status.supported !== false);
-					}
-				}).catch(() => {});
-				controller.getDesktopModeStatus().then((status) => {
-					if (status !== null && typeof status === "object") {
-						setDesktopActive(status.enabled === true);
-						setSupported(status.supported !== false);
-					}
-				}).catch(() => {});
-				controller.probeDesktopIcons().then((probe) => {
-					if (probe !== null && typeof probe === "object") setIconsVisible(probe.visible !== false);
-				}).catch(() => {});
-			}, [controller]);
-			const toggleWallpaper = async () => {
-				setError("");
-				const result = await controller.setWallpaperMode(!wallpaperActive);
-				if (result !== null && typeof result === "object") {
-					const value = result;
-					setWallpaperActive(value.enabled === true || value.ok === true);
-					if (value.error !== void 0 && value.error !== "") setError(value.error);
-				}
-			};
-			const toggleDesktop = async () => {
-				setError("");
-				const result = await controller.setDesktopMode(!desktopActive);
-				if (result !== null && typeof result === "object") {
-					const value = result;
-					setDesktopActive(value.enabled === true);
-					if (value.error !== void 0 && value.error !== "") setError(value.error);
-				}
-			};
-			const toggleIcons = async () => {
-				setError("");
-				const result = await controller.setDesktopIconsVisible(!iconsVisible);
-				if (result !== null && typeof result === "object") {
-					const value = result;
-					setIconsVisible(value.visible === true);
-					if (value.error !== void 0 && value.error !== "") setError(value.error);
-				}
-			};
-			if (!supported) return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-				className: WallpaperSection_module_css_default.notice,
-				children: t("desktopModeUnsupported")
-			});
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-				className: WallpaperSection_module_css_default.desktopMode,
-				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-						className: WallpaperSection_module_css_default.desktopModeTitle,
-						children: t("desktopMode")
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-						className: WallpaperSection_module_css_default.cardActions,
-						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								className: WallpaperSection_module_css_default.button,
-								type: "button",
-								onClick: () => {
-									toggleWallpaper();
-								},
-								children: wallpaperActive ? t("wallpaperModeOff") : t("wallpaperModeOn")
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								className: WallpaperSection_module_css_default.button,
-								type: "button",
-								onClick: () => {
-									toggleDesktop();
-								},
-								children: desktopActive ? t("desktopModeOff") : t("desktopModeOn")
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								className: WallpaperSection_module_css_default.button,
-								type: "button",
-								onClick: () => {
-									toggleIcons();
-								},
-								children: iconsVisible ? t("desktopIconsHide") : t("desktopIconsShow")
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								className: WallpaperSection_module_css_default.button,
-								type: "button",
-								onClick: () => {
-									controller.requestDesktopKeyboardFocus();
-								},
-								children: t("desktopModeFocus")
-							})
-						]
-					}),
-					error !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-						className: WallpaperSection_module_css_default.error,
-						children: error
 					})
 				]
 			});
@@ -904,6 +819,246 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
+		//#region ../src/client/DesktopCustomSection.tsx
+		/**
+		* Desktop customisation panel: presets and sliders that control the
+		* DSH app frame's opacity, blur, colour, radius, border, and shadow.
+		* Registered as the "Desktop" settings section.
+		*/
+		function DesktopCustomSection(props) {
+			if (props.controller === void 0 || props.useSnapshot === void 0 || props.t === void 0) return null;
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(LoadedDesktop, {
+				controller: props.controller,
+				useSnapshot: props.useSnapshot,
+				t: props.t
+			});
+		}
+		const PRESETS = [
+			{
+				key: "presetDefault",
+				style: { ...DEFAULT_CUSTOM_STYLE }
+			},
+			{
+				key: "presetGlass",
+				style: {
+					panelOpacity: .55,
+					panelBlur: 24,
+					sidebarOpacity: .4,
+					sidebarBlur: 16,
+					tintColor: "",
+					accentColor: "",
+					radius: 12,
+					borderWidth: 1,
+					borderColor: "rgba(255,255,255,0.15)",
+					shadowStrength: .3
+				}
+			},
+			{
+				key: "presetAcrylic",
+				style: {
+					panelOpacity: .7,
+					panelBlur: 8,
+					sidebarOpacity: .5,
+					sidebarBlur: 4,
+					tintColor: "",
+					accentColor: "",
+					radius: 8,
+					borderWidth: 1,
+					borderColor: "rgba(255,255,255,0.12)",
+					shadowStrength: .2
+				}
+			},
+			{
+				key: "presetTransparent",
+				style: {
+					panelOpacity: .2,
+					panelBlur: 0,
+					sidebarOpacity: .15,
+					sidebarBlur: 0,
+					tintColor: "",
+					accentColor: "",
+					radius: 0,
+					borderWidth: 0,
+					borderColor: "",
+					shadowStrength: 0
+				}
+			}
+		];
+		function LoadedDesktop({ controller, useSnapshot, t }) {
+			const cs = useSnapshot((s) => s).customStyle;
+			const set = (patch) => {
+				controller.store.actions.setCustomStyle({
+					...cs,
+					...patch
+				});
+			};
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+				className: WallpaperSection_module_css_default.section,
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: WallpaperSection_module_css_default.head,
+						children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", {
+							className: WallpaperSection_module_css_default.title,
+							children: t("desktopTitle")
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+							className: WallpaperSection_module_css_default.subtitle,
+							children: t("desktopSubtitle")
+						})] })
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: WallpaperSection_module_css_default.presets,
+						children: PRESETS.map((preset) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							className: WallpaperSection_module_css_default.presetBtn,
+							type: "button",
+							onClick: () => {
+								controller.store.actions.setCustomStyle(preset.style);
+							},
+							children: t(preset.key)
+						}, preset.key))
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: WallpaperSection_module_css_default.controls,
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("panelOpacity"),
+								value: cs.panelOpacity,
+								min: .1,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ panelOpacity: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("panelBlur"),
+								value: cs.panelBlur,
+								min: 0,
+								max: 40,
+								step: 1,
+								onChange: (v) => {
+									set({ panelBlur: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("sidebarOpacity"),
+								value: cs.sidebarOpacity,
+								min: .1,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ sidebarOpacity: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("sidebarBlur"),
+								value: cs.sidebarBlur,
+								min: 0,
+								max: 40,
+								step: 1,
+								onChange: (v) => {
+									set({ sidebarBlur: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(ColorRow, {
+								label: t("tintColor"),
+								value: cs.tintColor,
+								onChange: (v) => {
+									set({ tintColor: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(ColorRow, {
+								label: t("accentColor"),
+								value: cs.accentColor,
+								onChange: (v) => {
+									set({ accentColor: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("radius"),
+								value: cs.radius,
+								min: 0,
+								max: 24,
+								step: 1,
+								onChange: (v) => {
+									set({ radius: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("borderWidth"),
+								value: cs.borderWidth,
+								min: 0,
+								max: 4,
+								step: 1,
+								onChange: (v) => {
+									set({ borderWidth: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(ColorRow, {
+								label: t("borderColor"),
+								value: cs.borderColor,
+								onChange: (v) => {
+									set({ borderColor: v });
+								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("shadowStrength"),
+								value: cs.shadowStrength,
+								min: 0,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ shadowStrength: v });
+								}
+							})
+						]
+					})
+				]
+			});
+		}
+		function SliderRow({ label, value, min, max, step, onChange }) {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+				className: WallpaperSection_module_css_default.control,
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: label }),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+						type: "range",
+						min,
+						max,
+						step,
+						value,
+						onChange: (e) => {
+							onChange(Number(e.target.value));
+						}
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+						className: WallpaperSection_module_css_default.controlVal,
+						children: value
+					})
+				]
+			});
+		}
+		function ColorRow({ label, value, onChange }) {
+			const [current, setCurrent] = (0, react.useState)(value);
+			(0, react.useEffect)(() => {
+				setCurrent(value);
+			}, [value]);
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+				className: WallpaperSection_module_css_default.control,
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: label }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+					type: "text",
+					className: WallpaperSection_module_css_default.colorInput,
+					value: current,
+					placeholder: "rgba(255,255,255,0.15) 或 #3964fe",
+					onChange: (e) => {
+						setCurrent(e.target.value);
+					},
+					onBlur: () => {
+						onChange(current);
+					}
+				})]
+			});
+		}
+		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperBackground.module.css.mjs
 		const css = ".mm6n-q_host{z-index:-1;pointer-events:none;position:fixed;inset:0;overflow:hidden}.mm6n-q_layer{transition:opacity var(--ds-transition-duration-slow,.2s) var(--ds-ease-in-out,ease-in-out);position:absolute;inset:0;overflow:hidden}.mm6n-q_image,.mm6n-q_video{border:0;width:100%;height:100%;position:absolute;inset:0}.mm6n-q_image{background-position:50%;background-repeat:no-repeat}.mm6n-q_video{object-fit:cover}.mm6n-q_fill_cover.mm6n-q_image{background-size:cover}.mm6n-q_fill_contain.mm6n-q_image{background-size:contain}.mm6n-q_fill_fill.mm6n-q_image{background-size:100% 100%}.mm6n-q_fill_cover.mm6n-q_video{object-fit:cover}.mm6n-q_fill_contain.mm6n-q_video{object-fit:contain}.mm6n-q_fill_fill.mm6n-q_video{object-fit:fill}.mm6n-q_fallbackNote{color:#fff;pointer-events:none;background:#0000008c;border-radius:8px;max-width:480px;padding:6px 10px;font-size:12px;line-height:18px;position:absolute;bottom:12px;left:12px}";
 		const tagId = "dsh-wallpaper-engine/WallpaperBackground.module.css";
@@ -915,14 +1070,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fill_contain": "mm6n-q_fill_contain",
+			"fallbackNote": "mm6n-q_fallbackNote",
 			"video": "mm6n-q_video",
-			"host": "mm6n-q_host",
 			"layer": "mm6n-q_layer",
-			"fill_fill": "mm6n-q_fill_fill",
 			"image": "mm6n-q_image",
-			"fill_cover": "mm6n-q_fill_cover",
-			"fallbackNote": "mm6n-q_fallbackNote"
+			"host": "mm6n-q_host",
+			"fill_fill": "mm6n-q_fill_fill",
+			"fill_contain": "mm6n-q_fill_contain",
+			"fill_cover": "mm6n-q_fill_cover"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -936,7 +1091,7 @@ window.__ModuleLoader__.load({
 		* path and fall back to the preview image on any error.
 		*/
 		const TRANSPARENT_APP_STYLE_ID = "dsh-wallpaper-transparent-app";
-		const GLASS_STYLE_ID = "dsh-wallpaper-glass-mode";
+		const CUSTOM_STYLE_ID = "dsh-wallpaper-custom-style";
 		/** Capture one Chromium desktop source id into a MediaStream. */
 		async function captureDesktopSource(sourceId) {
 			return navigator.mediaDevices.getUserMedia({
@@ -1014,31 +1169,37 @@ window.__ModuleLoader__.load({
 				};
 			}, [selection.active]);
 			(0, react.useEffect)(() => {
-				if (!state.glassMode) {
-					const existing = document.getElementById(GLASS_STYLE_ID);
-					if (existing !== null) existing.remove();
-					return;
-				}
-				let style = document.getElementById(GLASS_STYLE_ID);
-				if (style === null) {
-					style = document.createElement("style");
-					style.id = GLASS_STYLE_ID;
-					style.textContent = [
-						"#root > div {",
-						"  background: rgba(15,17,21,0.55) !important;",
-						"  backdrop-filter: blur(24px) !important;",
-						"  -webkit-backdrop-filter: blur(24px) !important;",
-						"}",
-						"#root {",
-						"  --dsw-specific-sidebar-fill: rgba(15,17,21,0.4) !important;",
-						"}"
-					].join("\n");
-					document.head.appendChild(style);
-				}
-				return () => {
-					style.remove();
-				};
-			}, [state.glassMode]);
+				const cs = state.customStyle;
+				let style = document.getElementById(CUSTOM_STYLE_ID);
+				if (style !== null) style.remove();
+				if (isDefaultStyle(cs)) return;
+				style = document.createElement("style");
+				style.id = CUSTOM_STYLE_ID;
+				const vars = [];
+				if (cs.panelOpacity < 1) vars.push(`--dsh-custom-panel-opacity: ${cs.panelOpacity}`);
+				if (cs.panelBlur > 0) vars.push(`--dsh-custom-panel-blur: ${cs.panelBlur}px`);
+				if (cs.sidebarOpacity < 1) vars.push(`--dsh-custom-sidebar-opacity: ${cs.sidebarOpacity}`);
+				if (cs.sidebarBlur > 0) vars.push(`--dsh-custom-sidebar-blur: ${cs.sidebarBlur}px`);
+				if (cs.tintColor !== "") vars.push(`--dsh-custom-tint: ${cs.tintColor}`);
+				if (cs.accentColor !== "") vars.push(`--dsh-custom-accent: ${cs.accentColor}`);
+				if (cs.radius > 0) vars.push(`--dsh-custom-radius: ${cs.radius}px`);
+				if (cs.borderWidth > 0 && cs.borderColor !== "") vars.push(`--dsh-custom-border: ${cs.borderWidth}px solid ${cs.borderColor}`);
+				if (cs.shadowStrength > 0) vars.push(`--dsh-custom-shadow: 0 8px 32px rgba(0,0,0,${(cs.shadowStrength * .4).toFixed(2)})`);
+				if (vars.length === 0) return;
+				style.textContent = `#root { ${vars.join("; ")} }
+#root > div {
+  background: rgba(15,17,21, var(--dsh-custom-panel-opacity, 1)) !important;
+  backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
+  -webkit-backdrop-filter: blur(var(--dsh-custom-panel-blur, 0px)) !important;
+  border-radius: var(--dsh-custom-radius, 0px) !important;
+  box-shadow: var(--dsh-custom-shadow, none) !important;
+  border: var(--dsh-custom-border, none) !important;
+}
+#root {
+  --dsw-specific-sidebar-fill: rgba(15,17,21, var(--dsh-custom-sidebar-opacity, 1)) !important;
+}`;
+				document.head.appendChild(style);
+			}, [state.customStyle]);
 			(0, react.useEffect)(() => {
 				if (selection.kind !== "engine" || !selection.active) {
 					setEngineStream(null);
@@ -1148,11 +1309,31 @@ window.__ModuleLoader__.load({
 				})]
 			}), portalHost);
 		}
+		function isDefaultStyle(cs) {
+			return cs.panelOpacity === 1 && cs.panelBlur === 0 && cs.sidebarOpacity === 1 && cs.sidebarBlur === 0 && cs.tintColor === "" && cs.accentColor === "" && cs.radius === 0 && cs.borderWidth === 0 && cs.borderColor === "" && cs.shadowStrength === 0;
+		}
 		//#endregion
 		//#region ../src/client/locales.ts
 		/** Wallpaper Engine section copy (zh/en). Product copy is Chinese-first. */
 		const zh = {
-			nav: "桌面与壁纸",
+			desktopNav: "桌面",
+			wallpaperNav: "壁纸",
+			desktopTitle: "界面自定义",
+			desktopSubtitle: "调整 DSH 界面模块的透明度、模糊、颜色、圆角、边框和阴影，实时预览，一键预设。",
+			presetDefault: "默认",
+			presetGlass: "毛玻璃",
+			presetAcrylic: "亚克力",
+			presetTransparent: "透明",
+			panelOpacity: "主面板透明度",
+			panelBlur: "主面板模糊 (px)",
+			sidebarOpacity: "侧边栏透明度",
+			sidebarBlur: "侧边栏模糊 (px)",
+			tintColor: "背景色调",
+			accentColor: "强调色",
+			radius: "全局圆角 (px)",
+			borderWidth: "边框宽度 (px)",
+			borderColor: "边框颜色",
+			shadowStrength: "阴影强度",
 			title: "Wallpaper Engine 壁纸库",
 			desktopOnly: "当前为网页版。安装并启动 DSH 桌面版后，这里可以识别本地 Wallpaper Engine 项目并设为聊天背景。",
 			searchPlaceholder: "搜索壁纸项目",
@@ -1175,7 +1356,7 @@ window.__ModuleLoader__.load({
 			fillCover: "覆盖",
 			fillContain: "包含",
 			fillFill: "拉伸",
-			empty: "未发现 Wallpaper Engine 项目。点击“导入目录”选择一个包含 project.json 的目录，或点击右上角按钮导入单个项目文件。",
+			empty: "未发现 Wallpaper Engine 项目。点击\"导入目录\"选择一个包含 project.json 的目录，或点击右上角按钮导入单个项目文件。",
 			loading: "正在识别本地项目…",
 			errorPrefix: "识别失败",
 			runtimeAvailable: "已检测到 Wallpaper Engine",
@@ -1184,20 +1365,27 @@ window.__ModuleLoader__.load({
 			nativeSceneFailed: "WE Scene 启动失败，已回退到预览图",
 			windowParked: "播放窗口已移出屏幕，不遮挡桌面",
 			windowParkFailed: "播放窗口未能移出屏幕",
-			glassMode: "毛玻璃",
-			desktopHint: "桌面版支持",
-			desktopMode: "桌面模式",
-			desktopModeOn: "嵌入桌面",
-			desktopModeOff: "退出桌面",
-			wallpaperModeOn: "开启桌面壁纸",
-			wallpaperModeOff: "关闭桌面壁纸",
-			desktopIconsShow: "显示桌面图标",
-			desktopIconsHide: "隐藏桌面图标",
-			desktopModeFocus: "聚焦桌面",
-			desktopModeUnsupported: "当前系统不支持桌面模式（仅 Windows）"
+			desktopHint: "桌面版支持"
 		};
 		const en = {
-			nav: "Desktop & Wallpaper",
+			desktopNav: "Desktop",
+			wallpaperNav: "Wallpaper",
+			desktopTitle: "Appearance",
+			desktopSubtitle: "Customise opacity, blur, colour, radius, border, and shadow for the DSH interface. Changes apply instantly.",
+			presetDefault: "Default",
+			presetGlass: "Glass",
+			presetAcrylic: "Acrylic",
+			presetTransparent: "Transparent",
+			panelOpacity: "Panel opacity",
+			panelBlur: "Panel blur (px)",
+			sidebarOpacity: "Sidebar opacity",
+			sidebarBlur: "Sidebar blur (px)",
+			tintColor: "Tint",
+			accentColor: "Accent",
+			radius: "Corner radius (px)",
+			borderWidth: "Border width (px)",
+			borderColor: "Border colour",
+			shadowStrength: "Shadow",
 			title: "Wallpaper Engine Library",
 			desktopOnly: "You are using the web version. Install and launch the DSH desktop app to discover local Wallpaper Engine projects and set them as the chat background.",
 			searchPlaceholder: "Search wallpaper projects",
@@ -1229,29 +1417,12 @@ window.__ModuleLoader__.load({
 			nativeSceneFailed: "WE Scene failed to start, fell back to the preview image",
 			windowParked: "Playback window moved off-screen so it never covers the desktop",
 			windowParkFailed: "Could not move the playback window off-screen",
-			glassMode: "Glass",
-			desktopHint: "Desktop version",
-			desktopMode: "Desktop mode",
-			desktopModeOn: "Embed desktop",
-			desktopModeOff: "Exit desktop",
-			wallpaperModeOn: "Enable desktop wallpaper",
-			wallpaperModeOff: "Disable desktop wallpaper",
-			desktopIconsShow: "Show desktop icons",
-			desktopIconsHide: "Hide desktop icons",
-			desktopModeFocus: "Focus desktop",
-			desktopModeUnsupported: "Desktop mode is unsupported on this system (Windows only)"
+			desktopHint: "Desktop version"
 		};
 		//#endregion
 		//#region ../src/client/index.ts
-		/** Dictionary namespace owned by this plugin. */
 		const NS = "settings.wallpaper-engine";
-		/** Required services (cordis fiber inject). */
 		const inject = ["slots", "locale"];
-		/**
-		* Register the wallpaper dictionary, settings section, and background layer.
-		* Both entries share one controller (and therefore one store instance).
-		* @param ctx - client root context.
-		*/
 		function apply(ctx) {
 			ctx.effect(() => ctx.locale.register(NS, {
 				zh,
@@ -1261,7 +1432,13 @@ window.__ModuleLoader__.load({
 			const api = getDesktopWindowApi();
 			const controller = new WallpaperEngineController(api);
 			const useSnapshot = bindWallpaperSnapshot(controller);
-			const sectionInjected = () => ({
+			const libraryInjected = () => ({
+				controller,
+				useSnapshot,
+				isDesktop: api !== null,
+				t
+			});
+			const desktopInjected = () => ({
 				controller,
 				useSnapshot,
 				isDesktop: api !== null,
@@ -1274,10 +1451,17 @@ window.__ModuleLoader__.load({
 			});
 			ctx.slots.inject("settings.section", () => ctx.slots.register({
 				name: "settings.section",
-				id: "wallpaper-engine",
+				id: "wallpaper-desktop",
 				order: 900,
-				label: () => t("nav"),
-				inject: sectionInjected
+				label: () => t("desktopNav"),
+				inject: desktopInjected
+			}, DesktopCustomSection));
+			ctx.slots.inject("settings.section", () => ctx.slots.register({
+				name: "settings.section",
+				id: "wallpaper-library",
+				order: 910,
+				label: () => t("wallpaperNav"),
+				inject: libraryInjected
 			}, WallpaperSection));
 			ctx.slots.inject("shell.overlay", () => ctx.slots.register({
 				name: "shell.overlay",
