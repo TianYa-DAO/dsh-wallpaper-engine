@@ -45,12 +45,27 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
 
   const filtered = useMemo(() => {
     const query = state.search.trim().toLowerCase()
-    if (query === '') return state.projects
-    return state.projects.filter(item =>
+    let list = state.projects
+    if (state.dedupStrategy !== 'none') {
+      const seen = new Set<string>()
+      const preferred = state.dedupStrategy === 'manual' ? 'imported' : 'workshop'
+      list = list.filter((item) => {
+        if (item.workshopId === '') return true
+        if (seen.has(item.workshopId)) return false
+        const group = state.projects.filter((p) => p.workshopId === item.workshopId)
+        const preferredItem = group.find((p) => p.source === preferred) ?? group[0]
+        if (preferredItem === undefined) return false
+        if (item !== preferredItem) return false
+        seen.add(item.workshopId)
+        return true
+      })
+    }
+    if (query === '') return list
+    return list.filter(item =>
       item.title.toLowerCase().includes(query)
       || item.projectType.toLowerCase().includes(query)
       || item.sourceLabel.toLowerCase().includes(query))
-  }, [state.projects, state.search])
+  }, [state.projects, state.search, state.dedupStrategy])
 
   return (
     <div className={css.section}>

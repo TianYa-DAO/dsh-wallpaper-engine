@@ -496,42 +496,42 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"actions": "O_XpsG_actions",
+			"status": "O_XpsG_status",
+			"thumbImage": "O_XpsG_thumbImage",
+			"button": "O_XpsG_button",
 			"controlVal": "O_XpsG_controlVal",
 			"toolbar": "O_XpsG_toolbar",
-			"desktopMode": "O_XpsG_desktopMode",
-			"rootRemove": "O_XpsG_rootRemove",
-			"presets": "O_XpsG_presets",
-			"button": "O_XpsG_button",
-			"search": "O_XpsG_search",
-			"roots": "O_XpsG_roots",
-			"subtitle": "O_XpsG_subtitle",
-			"head": "O_XpsG_head",
-			"colorInput": "O_XpsG_colorInput",
-			"thumbImage": "O_XpsG_thumbImage",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"sceneNote": "O_XpsG_sceneNote",
-			"cardTitle": "O_XpsG_cardTitle",
-			"rootsLabel": "O_XpsG_rootsLabel",
 			"cardBody": "O_XpsG_cardBody",
-			"rootChip": "O_XpsG_rootChip",
-			"cardMeta": "O_XpsG_cardMeta",
-			"error": "O_XpsG_error",
-			"section": "O_XpsG_section",
-			"status": "O_XpsG_status",
-			"card": "O_XpsG_card",
-			"presetBtn": "O_XpsG_presetBtn",
-			"title": "O_XpsG_title",
-			"danger": "O_XpsG_danger",
-			"thumb": "O_XpsG_thumb",
-			"cardActions": "O_XpsG_cardActions",
-			"controls": "O_XpsG_controls",
-			"notice": "O_XpsG_notice",
+			"search": "O_XpsG_search",
+			"colorInput": "O_XpsG_colorInput",
 			"cardSelected": "O_XpsG_cardSelected",
+			"roots": "O_XpsG_roots",
+			"rootRemove": "O_XpsG_rootRemove",
 			"badge": "O_XpsG_badge",
-			"control": "O_XpsG_control",
+			"controls": "O_XpsG_controls",
+			"desktopMode": "O_XpsG_desktopMode",
+			"head": "O_XpsG_head",
+			"section": "O_XpsG_section",
+			"sceneNote": "O_XpsG_sceneNote",
 			"grid": "O_XpsG_grid",
-			"cardOpen": "O_XpsG_cardOpen"
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"rootChip": "O_XpsG_rootChip",
+			"danger": "O_XpsG_danger",
+			"title": "O_XpsG_title",
+			"card": "O_XpsG_card",
+			"cardTitle": "O_XpsG_cardTitle",
+			"subtitle": "O_XpsG_subtitle",
+			"cardActions": "O_XpsG_cardActions",
+			"error": "O_XpsG_error",
+			"notice": "O_XpsG_notice",
+			"presets": "O_XpsG_presets",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"thumb": "O_XpsG_thumb",
+			"presetBtn": "O_XpsG_presetBtn",
+			"cardMeta": "O_XpsG_cardMeta",
+			"control": "O_XpsG_control",
+			"cardOpen": "O_XpsG_cardOpen",
+			"actions": "O_XpsG_actions"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -557,9 +557,28 @@ window.__ModuleLoader__.load({
 			}, [controller, state.status]);
 			const filtered = (0, react.useMemo)(() => {
 				const query = state.search.trim().toLowerCase();
-				if (query === "") return state.projects;
-				return state.projects.filter((item) => item.title.toLowerCase().includes(query) || item.projectType.toLowerCase().includes(query) || item.sourceLabel.toLowerCase().includes(query));
-			}, [state.projects, state.search]);
+				let list = state.projects;
+				if (state.dedupStrategy !== "none") {
+					const seen = /* @__PURE__ */ new Set();
+					const preferred = state.dedupStrategy === "manual" ? "imported" : "workshop";
+					list = list.filter((item) => {
+						if (item.workshopId === "") return true;
+						if (seen.has(item.workshopId)) return false;
+						const group = state.projects.filter((p) => p.workshopId === item.workshopId);
+						const preferredItem = group.find((p) => p.source === preferred) ?? group[0];
+						if (preferredItem === void 0) return false;
+						if (item !== preferredItem) return false;
+						seen.add(item.workshopId);
+						return true;
+					});
+				}
+				if (query === "") return list;
+				return list.filter((item) => item.title.toLowerCase().includes(query) || item.projectType.toLowerCase().includes(query) || item.sourceLabel.toLowerCase().includes(query));
+			}, [
+				state.projects,
+				state.search,
+				state.dedupStrategy
+			]);
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 				className: WallpaperSection_module_css_default.section,
 				children: [
@@ -1113,14 +1132,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"image": "mm6n-q_image",
-			"fill_fill": "mm6n-q_fill_fill",
-			"video": "mm6n-q_video",
-			"host": "mm6n-q_host",
 			"fallbackNote": "mm6n-q_fallbackNote",
+			"fill_fill": "mm6n-q_fill_fill",
+			"fill_contain": "mm6n-q_fill_contain",
+			"host": "mm6n-q_host",
 			"layer": "mm6n-q_layer",
+			"image": "mm6n-q_image",
 			"fill_cover": "mm6n-q_fill_cover",
-			"fill_contain": "mm6n-q_fill_contain"
+			"video": "mm6n-q_video"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
