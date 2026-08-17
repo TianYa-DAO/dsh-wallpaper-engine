@@ -86,6 +86,11 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
             {state.selection.active && (
               <button className={clsx(css.button, css.danger)} type="button" onClick={() => { controller.clearSelection() }}>{t('restoreDefault')}</button>
             )}
+            <button
+              className={clsx(css.button, state.glassMode && css.buttonActive)}
+              type="button"
+              onClick={() => { controller.store.actions.setGlassMode(!state.glassMode) }}
+            >{t('glassMode')}</button>
           </div>
 
           {state.status === 'loading' && <div className={css.status}>{t('loading')}</div>}

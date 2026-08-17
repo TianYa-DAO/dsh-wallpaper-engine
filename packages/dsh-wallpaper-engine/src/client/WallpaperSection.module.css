@@ -49,6 +49,12 @@
   background: var(--dsw-alias-bg-hover, rgb(0 0 0 / 5%));
 }
 
+.buttonActive {
+  background: var(--dsw-specific-accent, #3964fe);
+  color: #fff;
+  border-color: transparent;
+}
+
 .danger {
   color: var(--dsw-specific-danger, #c0392b);
 }

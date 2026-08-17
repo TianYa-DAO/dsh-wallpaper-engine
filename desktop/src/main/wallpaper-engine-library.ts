@@ -968,6 +968,7 @@ export class WallpaperEngineLibrary {
 
     const projects: WallpaperProjectItem[] = []
     const nextIndex = new Map<string, WallpaperProjectRecord>()
+    const seenWorkshopIds = new Set<string>()
     for (const value of projectSources.values()) {
       if (this.disposed || generation !== this.generation) break
       let indexed: IndexedProject | null = null
@@ -981,6 +982,13 @@ export class WallpaperEngineLibrary {
         continue
       }
       if (indexed === null || nextIndex.has(indexed.item.id)) continue
+      // Deduplicate by workshop id: the same Steam workshop item may appear
+      // in both the auto-discovered workshop container and a manual-import
+      // root. Keep only the first occurrence (workshop sources are always
+      // scanned before manual roots, so the workshop copy wins).
+      const workshopId = indexed.item.workshopId
+      if (workshopId !== '' && seenWorkshopIds.has(workshopId)) continue
+      if (workshopId !== '') seenWorkshopIds.add(workshopId)
       projects.push(indexed.item)
       nextIndex.set(indexed.item.id, indexed.record)
     }

@@ -30,6 +30,7 @@ export interface WallpaperEngineState {
   search: string
   selection: WallpaperSelection
   scene: WallpaperSceneState
+  glassMode: boolean
   error: string
 }
 
@@ -46,6 +47,7 @@ export type WallpaperEngineActions = {
   setSearch: (draft: WallpaperEngineState, search: string) => void
   setSelection: (draft: WallpaperEngineState, selection: WallpaperSelection) => void
   setScene: (draft: WallpaperEngineState, scene: Partial<WallpaperSceneState>) => void
+  setGlassMode: (draft: WallpaperEngineState, enabled: boolean) => void
   clearSceneError: (draft: WallpaperEngineState) => void
 }
 
@@ -66,6 +68,7 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
       search: '',
       selection: readWallpaperSelection(),
       scene: { active: false, sessionId: '', sourceId: '', error: '', freeze: false, windowParked: false, parkError: '' },
+      glassMode: readGlassMode(),
       error: '',
     }),
     actions: {
@@ -95,9 +98,23 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
       setScene: (d, scene) => {
         d.scene = { ...d.scene, ...scene }
       },
+      setGlassMode: (d, enabled) => {
+        d.glassMode = enabled
+        writeGlassMode(enabled)
+      },
       clearSceneError: (d) => {
         d.scene.error = ''
       },
     },
   })
+}
+
+const GLASS_MODE_KEY = 'dsh.wallpaper-engine.glassMode'
+
+function readGlassMode(): boolean {
+  try { return localStorage.getItem(GLASS_MODE_KEY) === 'true' } catch { return false }
+}
+
+function writeGlassMode(enabled: boolean): void {
+  try { localStorage.setItem(GLASS_MODE_KEY, enabled ? 'true' : 'false') } catch { /* quota */ }
 }

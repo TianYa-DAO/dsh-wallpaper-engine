@@ -28,6 +28,7 @@ export interface WallpaperBackgroundInjected {
 export type WallpaperBackgroundProps = Partial<WallpaperBackgroundInjected>
 
 const TRANSPARENT_APP_STYLE_ID = 'dsh-wallpaper-transparent-app'
+const GLASS_STYLE_ID = 'dsh-wallpaper-glass-mode'
 
 /** Capture one Chromium desktop source id into a MediaStream. */
 async function captureDesktopSource(sourceId: string): Promise<MediaStream> {
@@ -119,6 +120,35 @@ function LoadedBackground({
       style.remove()
     }
   }, [selection.active])
+
+  // Glassmorphism mode: apply to the DSH app frame, sidebar, and panels.
+  // Based on the standard backdrop-filter technique (see README Acknowledgements).
+  useEffect(() => {
+    if (!state.glassMode) {
+      const existing = document.getElementById(GLASS_STYLE_ID)
+      if (existing !== null) existing.remove()
+      return
+    }
+    let style = document.getElementById(GLASS_STYLE_ID)
+    if (style === null) {
+      style = document.createElement('style')
+      style.id = GLASS_STYLE_ID
+      style.textContent = [
+        '#root > div {',
+        '  background: rgba(15,17,21,0.55) !important;',
+        '  backdrop-filter: blur(24px) !important;',
+        '  -webkit-backdrop-filter: blur(24px) !important;',
+        '}',
+        '#root {',
+        '  --dsw-specific-sidebar-fill: rgba(15,17,21,0.4) !important;',
+        '}',
+      ].join('\n')
+      document.head.appendChild(style)
+    }
+    return () => {
+      style.remove()
+    }
+  }, [state.glassMode])
 
   // WE native-scene lifecycle: start -> capture -> ACK, stop on cleanup.
   useEffect(() => {

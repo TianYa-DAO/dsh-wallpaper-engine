@@ -124,6 +124,7 @@ window.__ModuleLoader__.load({
 						windowParked: false,
 						parkError: ""
 					},
+					glassMode: readGlassMode(),
 					error: ""
 				}),
 				actions: {
@@ -156,11 +157,28 @@ window.__ModuleLoader__.load({
 							...scene
 						};
 					},
+					setGlassMode: (d, enabled) => {
+						d.glassMode = enabled;
+						writeGlassMode(enabled);
+					},
 					clearSceneError: (d) => {
 						d.scene.error = "";
 					}
 				}
 			});
+		}
+		const GLASS_MODE_KEY = "dsh.wallpaper-engine.glassMode";
+		function readGlassMode() {
+			try {
+				return localStorage.getItem(GLASS_MODE_KEY) === "true";
+			} catch {
+				return false;
+			}
+		}
+		function writeGlassMode(enabled) {
+			try {
+				localStorage.setItem(GLASS_MODE_KEY, enabled ? "true" : "false");
+			} catch {}
 		}
 		//#endregion
 		//#region ../src/client/controller.ts
@@ -416,7 +434,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_buttonActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -427,37 +445,38 @@ window.__ModuleLoader__.load({
 		}
 		var WallpaperSection_module_css_default = {
 			"button": "O_XpsG_button",
-			"cardTitle": "O_XpsG_cardTitle",
-			"card": "O_XpsG_card",
-			"toolbar": "O_XpsG_toolbar",
-			"badge": "O_XpsG_badge",
-			"control": "O_XpsG_control",
-			"cardSelected": "O_XpsG_cardSelected",
-			"error": "O_XpsG_error",
-			"sceneNote": "O_XpsG_sceneNote",
-			"grid": "O_XpsG_grid",
-			"title": "O_XpsG_title",
-			"head": "O_XpsG_head",
-			"cardBody": "O_XpsG_cardBody",
-			"status": "O_XpsG_status",
-			"section": "O_XpsG_section",
-			"cardMeta": "O_XpsG_cardMeta",
-			"thumbImage": "O_XpsG_thumbImage",
-			"controls": "O_XpsG_controls",
 			"rootChip": "O_XpsG_rootChip",
-			"cardOpen": "O_XpsG_cardOpen",
-			"roots": "O_XpsG_roots",
-			"subtitle": "O_XpsG_subtitle",
-			"rootRemove": "O_XpsG_rootRemove",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"cardActions": "O_XpsG_cardActions",
-			"search": "O_XpsG_search",
-			"actions": "O_XpsG_actions",
 			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"status": "O_XpsG_status",
+			"sceneNote": "O_XpsG_sceneNote",
+			"thumbImage": "O_XpsG_thumbImage",
+			"cardActions": "O_XpsG_cardActions",
+			"title": "O_XpsG_title",
+			"section": "O_XpsG_section",
 			"danger": "O_XpsG_danger",
-			"thumb": "O_XpsG_thumb",
+			"cardBody": "O_XpsG_cardBody",
+			"buttonActive": "O_XpsG_buttonActive",
+			"notice": "O_XpsG_notice",
+			"head": "O_XpsG_head",
+			"rootRemove": "O_XpsG_rootRemove",
+			"grid": "O_XpsG_grid",
+			"badge": "O_XpsG_badge",
+			"error": "O_XpsG_error",
+			"card": "O_XpsG_card",
+			"cardMeta": "O_XpsG_cardMeta",
+			"control": "O_XpsG_control",
 			"desktopMode": "O_XpsG_desktopMode",
-			"notice": "O_XpsG_notice"
+			"cardTitle": "O_XpsG_cardTitle",
+			"search": "O_XpsG_search",
+			"cardOpen": "O_XpsG_cardOpen",
+			"controls": "O_XpsG_controls",
+			"subtitle": "O_XpsG_subtitle",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"roots": "O_XpsG_roots",
+			"thumb": "O_XpsG_thumb",
+			"toolbar": "O_XpsG_toolbar",
+			"actions": "O_XpsG_actions",
+			"cardSelected": "O_XpsG_cardSelected"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -535,22 +554,33 @@ window.__ModuleLoader__.load({
 					isDesktop && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
 						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: WallpaperSection_module_css_default.toolbar,
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-								className: WallpaperSection_module_css_default.search,
-								type: "search",
-								placeholder: t("searchPlaceholder"),
-								value: state.search,
-								onChange: (event) => {
-									controller.store.actions.setSearch(event.target.value);
-								}
-							}), state.selection.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
-								type: "button",
-								onClick: () => {
-									controller.clearSelection();
-								},
-								children: t("restoreDefault")
-							})]
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									className: WallpaperSection_module_css_default.search,
+									type: "search",
+									placeholder: t("searchPlaceholder"),
+									value: state.search,
+									onChange: (event) => {
+										controller.store.actions.setSearch(event.target.value);
+									}
+								}),
+								state.selection.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
+									type: "button",
+									onClick: () => {
+										controller.clearSelection();
+									},
+									children: t("restoreDefault")
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									className: clsx(WallpaperSection_module_css_default.button, state.glassMode && WallpaperSection_module_css_default.buttonActive),
+									type: "button",
+									onClick: () => {
+										controller.store.actions.setGlassMode(!state.glassMode);
+									},
+									children: t("glassMode")
+								})
+							]
 						}),
 						state.status === "loading" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: WallpaperSection_module_css_default.status,
@@ -885,14 +915,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"video": "mm6n-q_video",
 			"fill_contain": "mm6n-q_fill_contain",
-			"layer": "mm6n-q_layer",
-			"image": "mm6n-q_image",
-			"fill_fill": "mm6n-q_fill_fill",
-			"fallbackNote": "mm6n-q_fallbackNote",
+			"video": "mm6n-q_video",
 			"host": "mm6n-q_host",
-			"fill_cover": "mm6n-q_fill_cover"
+			"layer": "mm6n-q_layer",
+			"fill_fill": "mm6n-q_fill_fill",
+			"image": "mm6n-q_image",
+			"fill_cover": "mm6n-q_fill_cover",
+			"fallbackNote": "mm6n-q_fallbackNote"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -906,6 +936,7 @@ window.__ModuleLoader__.load({
 		* path and fall back to the preview image on any error.
 		*/
 		const TRANSPARENT_APP_STYLE_ID = "dsh-wallpaper-transparent-app";
+		const GLASS_STYLE_ID = "dsh-wallpaper-glass-mode";
 		/** Capture one Chromium desktop source id into a MediaStream. */
 		async function captureDesktopSource(sourceId) {
 			return navigator.mediaDevices.getUserMedia({
@@ -982,6 +1013,32 @@ window.__ModuleLoader__.load({
 					style.remove();
 				};
 			}, [selection.active]);
+			(0, react.useEffect)(() => {
+				if (!state.glassMode) {
+					const existing = document.getElementById(GLASS_STYLE_ID);
+					if (existing !== null) existing.remove();
+					return;
+				}
+				let style = document.getElementById(GLASS_STYLE_ID);
+				if (style === null) {
+					style = document.createElement("style");
+					style.id = GLASS_STYLE_ID;
+					style.textContent = [
+						"#root > div {",
+						"  background: rgba(15,17,21,0.55) !important;",
+						"  backdrop-filter: blur(24px) !important;",
+						"  -webkit-backdrop-filter: blur(24px) !important;",
+						"}",
+						"#root {",
+						"  --dsw-specific-sidebar-fill: rgba(15,17,21,0.4) !important;",
+						"}"
+					].join("\n");
+					document.head.appendChild(style);
+				}
+				return () => {
+					style.remove();
+				};
+			}, [state.glassMode]);
 			(0, react.useEffect)(() => {
 				if (selection.kind !== "engine" || !selection.active) {
 					setEngineStream(null);
@@ -1127,6 +1184,7 @@ window.__ModuleLoader__.load({
 			nativeSceneFailed: "WE Scene 启动失败，已回退到预览图",
 			windowParked: "播放窗口已移出屏幕，不遮挡桌面",
 			windowParkFailed: "播放窗口未能移出屏幕",
+			glassMode: "毛玻璃",
 			desktopHint: "桌面版支持",
 			desktopMode: "桌面模式",
 			desktopModeOn: "嵌入桌面",
@@ -1171,6 +1229,7 @@ window.__ModuleLoader__.load({
 			nativeSceneFailed: "WE Scene failed to start, fell back to the preview image",
 			windowParked: "Playback window moved off-screen so it never covers the desktop",
 			windowParkFailed: "Could not move the playback window off-screen",
+			glassMode: "Glass",
 			desktopHint: "Desktop version",
 			desktopMode: "Desktop mode",
 			desktopModeOn: "Embed desktop",

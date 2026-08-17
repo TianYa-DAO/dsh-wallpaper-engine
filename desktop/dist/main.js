@@ -756,6 +756,7 @@ var WallpaperEngineLibrary = class {
 		}
 		const projects = [];
 		const nextIndex = /* @__PURE__ */ new Map();
+		const seenWorkshopIds = /* @__PURE__ */ new Set();
 		for (const value of projectSources.values()) {
 			if (this.disposed || generation !== this.generation) break;
 			let indexed = null;
@@ -765,6 +766,9 @@ var WallpaperEngineLibrary = class {
 				continue;
 			}
 			if (indexed === null || nextIndex.has(indexed.item.id)) continue;
+			const workshopId = indexed.item.workshopId;
+			if (workshopId !== "" && seenWorkshopIds.has(workshopId)) continue;
+			if (workshopId !== "") seenWorkshopIds.add(workshopId);
 			projects.push(indexed.item);
 			nextIndex.set(indexed.item.id, indexed.record);
 		}
