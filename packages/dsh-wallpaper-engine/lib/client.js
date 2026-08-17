@@ -496,42 +496,42 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"status": "O_XpsG_status",
 			"thumbImage": "O_XpsG_thumbImage",
-			"button": "O_XpsG_button",
-			"controlVal": "O_XpsG_controlVal",
-			"toolbar": "O_XpsG_toolbar",
-			"cardBody": "O_XpsG_cardBody",
-			"search": "O_XpsG_search",
 			"colorInput": "O_XpsG_colorInput",
-			"cardSelected": "O_XpsG_cardSelected",
-			"roots": "O_XpsG_roots",
-			"rootRemove": "O_XpsG_rootRemove",
-			"badge": "O_XpsG_badge",
-			"controls": "O_XpsG_controls",
-			"desktopMode": "O_XpsG_desktopMode",
-			"head": "O_XpsG_head",
-			"section": "O_XpsG_section",
-			"sceneNote": "O_XpsG_sceneNote",
+			"thumb": "O_XpsG_thumb",
 			"grid": "O_XpsG_grid",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"rootChip": "O_XpsG_rootChip",
+			"actions": "O_XpsG_actions",
+			"badge": "O_XpsG_badge",
+			"search": "O_XpsG_search",
+			"controlVal": "O_XpsG_controlVal",
+			"cardOpen": "O_XpsG_cardOpen",
+			"presets": "O_XpsG_presets",
+			"section": "O_XpsG_section",
+			"toolbar": "O_XpsG_toolbar",
+			"card": "O_XpsG_card",
+			"cardActions": "O_XpsG_cardActions",
+			"control": "O_XpsG_control",
+			"cardBody": "O_XpsG_cardBody",
+			"head": "O_XpsG_head",
+			"cardSelected": "O_XpsG_cardSelected",
+			"desktopMode": "O_XpsG_desktopMode",
+			"cardTitle": "O_XpsG_cardTitle",
 			"danger": "O_XpsG_danger",
 			"title": "O_XpsG_title",
-			"card": "O_XpsG_card",
-			"cardTitle": "O_XpsG_cardTitle",
-			"subtitle": "O_XpsG_subtitle",
-			"cardActions": "O_XpsG_cardActions",
-			"error": "O_XpsG_error",
-			"notice": "O_XpsG_notice",
-			"presets": "O_XpsG_presets",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"thumb": "O_XpsG_thumb",
-			"presetBtn": "O_XpsG_presetBtn",
 			"cardMeta": "O_XpsG_cardMeta",
-			"control": "O_XpsG_control",
-			"cardOpen": "O_XpsG_cardOpen",
-			"actions": "O_XpsG_actions"
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"subtitle": "O_XpsG_subtitle",
+			"button": "O_XpsG_button",
+			"sceneNote": "O_XpsG_sceneNote",
+			"status": "O_XpsG_status",
+			"notice": "O_XpsG_notice",
+			"rootChip": "O_XpsG_rootChip",
+			"controls": "O_XpsG_controls",
+			"rootRemove": "O_XpsG_rootRemove",
+			"roots": "O_XpsG_roots",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"error": "O_XpsG_error",
+			"presetBtn": "O_XpsG_presetBtn"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -559,18 +559,17 @@ window.__ModuleLoader__.load({
 				const query = state.search.trim().toLowerCase();
 				let list = state.projects;
 				if (state.dedupStrategy !== "none") {
-					const seen = /* @__PURE__ */ new Set();
 					const preferred = state.dedupStrategy === "manual" ? "imported" : "workshop";
-					list = list.filter((item) => {
-						if (item.workshopId === "") return true;
-						if (seen.has(item.workshopId)) return false;
-						const group = state.projects.filter((p) => p.workshopId === item.workshopId);
-						const preferredItem = group.find((p) => p.source === preferred) ?? group[0];
-						if (preferredItem === void 0) return false;
-						if (item !== preferredItem) return false;
-						seen.add(item.workshopId);
-						return true;
-					});
+					const map = /* @__PURE__ */ new Map();
+					for (const p of list) {
+						if (p.workshopId === "") {
+							map.set(p.id, p);
+							continue;
+						}
+						const existing = map.get(p.workshopId);
+						if (existing === void 0 || p.source === preferred && existing.source !== preferred || existing.source !== preferred && p.source === preferred) map.set(p.workshopId, p);
+					}
+					list = [...map.values()];
 				}
 				if (query === "") return list;
 				return list.filter((item) => item.title.toLowerCase().includes(query) || item.projectType.toLowerCase().includes(query) || item.sourceLabel.toLowerCase().includes(query));
@@ -1132,14 +1131,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fallbackNote": "mm6n-q_fallbackNote",
 			"fill_fill": "mm6n-q_fill_fill",
+			"fallbackNote": "mm6n-q_fallbackNote",
 			"fill_contain": "mm6n-q_fill_contain",
+			"image": "mm6n-q_image",
 			"host": "mm6n-q_host",
 			"layer": "mm6n-q_layer",
-			"image": "mm6n-q_image",
-			"fill_cover": "mm6n-q_fill_cover",
-			"video": "mm6n-q_video"
+			"video": "mm6n-q_video",
+			"fill_cover": "mm6n-q_fill_cover"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx

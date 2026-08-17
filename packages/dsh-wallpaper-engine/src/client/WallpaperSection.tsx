@@ -47,18 +47,18 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
     const query = state.search.trim().toLowerCase()
     let list = state.projects
     if (state.dedupStrategy !== 'none') {
-      const seen = new Set<string>()
       const preferred = state.dedupStrategy === 'manual' ? 'imported' : 'workshop'
-      list = list.filter((item) => {
-        if (item.workshopId === '') return true
-        if (seen.has(item.workshopId)) return false
-        const group = state.projects.filter((p) => p.workshopId === item.workshopId)
-        const preferredItem = group.find((p) => p.source === preferred) ?? group[0]
-        if (preferredItem === undefined) return false
-        if (item !== preferredItem) return false
-        seen.add(item.workshopId)
-        return true
-      })
+      const map = new Map<string, typeof list[0]>()
+      for (const p of list) {
+        if (p.workshopId === '') { map.set(p.id, p); continue }
+        const existing = map.get(p.workshopId)
+        if (existing === undefined
+          || (p.source === preferred && existing.source !== preferred)
+          || (existing.source !== preferred && p.source === preferred)) {
+          map.set(p.workshopId, p)
+        }
+      }
+      list = [...map.values()]
     }
     if (query === '') return list
     return list.filter(item =>
