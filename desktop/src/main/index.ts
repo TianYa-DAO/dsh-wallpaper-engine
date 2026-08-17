@@ -11,7 +11,7 @@ import { execFile, spawn } from 'node:child_process'
 import { existsSync, writeFileSync } from 'node:fs'
 import { connect } from 'node:net'
 import { app, BrowserWindow, desktopCapturer, dialog, ipcMain, Menu, nativeTheme, protocol, screen, shell, type IpcMainInvokeEvent, type IpcMainEvent } from 'electron'
-import { join } from 'node:path'
+import { join, parse } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { dshHomePath } from './home-paths.ts'
 import {
@@ -251,13 +251,15 @@ async function runDshInstall(): Promise<string> {
 
 /**
  * Start `dsh web` with a resolved command and wait for its port.
- * @param command - resolved dsh command path.
+ * @param command - resolved dsh command path or `{ file, args }` launch spec.
  */
-async function startDshWeb(command: string): Promise<void> {
+async function startDshWeb(command: string | { file: string; args: string[] }): Promise<void> {
   const port = Number(new URL(DESKTOP_WEB_URL).port || 3080)
   if (await isPortListening(port)) return
   try {
-    const child = spawn(command, ['web'], { detached: true, windowsHide: true, stdio: 'ignore' })
+    const file = typeof command === 'string' ? command : command.file
+    const args = typeof command === 'string' ? ['web'] : [...command.args, 'web']
+    const child = spawn(file, args, { detached: true, windowsHide: true, stdio: 'ignore' })
     child.on('error', () => {})
     child.unref()
   } catch {
@@ -270,8 +272,37 @@ async function startDshWeb(command: string): Promise<void> {
 }
 
 /**
- * Bring up dsh web, installing the CLI first when necessary. Returns the
- * resolved dsh command, an empty string when the installer window took over.
+ * Resolve a direct-node launch spec for the dsh web CLI of this checkout.
+ * Used as a fallback when no global `dsh` command exists: the desktop shell
+ * loads the dsh web UI from this repository, so it can run `dsh web`
+ * straight through node + tsx exactly like `重启DSH.cmd` does. The checkout
+ * location is probed from `DSH_REPOSITORY`, then the common D:\deepseek-harness
+ * path, then `deepseek-harness` beside the shell executable.
+ */
+function nodeWebCommand(): { file: string; args: string[] } | null {
+  const file = process.env.DSH_DESKTOP_NODE ?? 'node'
+  const binPath = process.env.DSH_DESKTOP_WEB_ENTRY
+  if (binPath !== undefined && binPath !== '') {
+    return { file, args: ['--import', 'tsx/esm', binPath] }
+  }
+  const driveRoot = parse(process.execPath).root
+  const candidates = [
+    process.env.DSH_REPOSITORY,
+    'D:\\deepseek-harness',
+    join(driveRoot, 'deepseek-harness'),
+  ].filter((value): value is string => value !== undefined && value !== '')
+  for (const repository of candidates) {
+    const entry = join(repository, 'apps', 'cli', 'src', 'bin.ts')
+    if (existsSync(entry)) return { file, args: ['--import', 'tsx/esm', entry] }
+  }
+  return null
+}
+
+/**
+ * Bring up dsh web. The preferred path is a direct node launch of this
+ * checkout's dsh web CLI (the same command `重启DSH.cmd` uses); a globally
+ * installed `dsh` is the fallback for distributed installs. Returns the
+ * resolved command, an empty string when the installer window took over.
  */
 async function ensureDshWebRunning(): Promise<string> {
   const port = Number(new URL(DESKTOP_WEB_URL).port || 3080)
@@ -280,6 +311,11 @@ async function ensureDshWebRunning(): Promise<string> {
     return ''
   }
   if (await isPortListening(port)) return 'already-running'
+  const nodeSpec = nodeWebCommand()
+  if (nodeSpec !== null) {
+    await startDshWeb(nodeSpec)
+    if (await isPortListening(port)) return 'node-direct'
+  }
   const command = findDshCommand()
   if (!(await dshCommandWorks(command))) {
     await showInstallerWindow('missing-dsh')
