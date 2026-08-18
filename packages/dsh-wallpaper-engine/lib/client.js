@@ -134,11 +134,11 @@ window.__ModuleLoader__.load({
 					inputBlur: clamp(raw.inputBlur, 0, 40, 0),
 					panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
 					panelBlur: clamp(raw.panelBlur, 0, 40, 0),
-					tintColor: hexColor(raw.tintColor),
-					accentColor: hexColor(raw.accentColor),
+					tintColor: colorValue(raw.tintColor),
+					accentColor: colorValue(raw.accentColor),
 					radius: clamp(raw.radius, 0, 24, 0),
 					borderWidth: clamp(raw.borderWidth, 0, 4, 0),
-					borderColor: hexColor(raw.borderColor),
+					borderColor: colorValue(raw.borderColor),
 					shadowStrength: clamp(raw.shadowStrength, 0, 1, 0),
 					scrimStrength: clamp(raw.scrimStrength, 0, 1, 0)
 				};
@@ -155,9 +155,11 @@ window.__ModuleLoader__.load({
 			const n = Number(value);
 			return Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : fallback;
 		}
-		function hexColor(value) {
-			const s = String(value ?? "");
-			return /^#[0-9a-f]{3,8}$/i.test(s) ? s.toLowerCase() : "";
+		function colorValue(value) {
+			const s = String(value ?? "").trim();
+			if (/^#[0-9a-f]{3,8}$/i.test(s)) return s.toLowerCase();
+			if (/^rgba?\([\d,.%\s]+\)$/i.test(s)) return s;
+			return "";
 		}
 		const DEDUP_KEY = "dsh.wallpaper-engine.dedupStrategy";
 		function readDedupStrategy() {
@@ -543,60 +545,60 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"presets": "O_XpsG_presets",
-			"title": "O_XpsG_title",
-			"dedupSelect": "O_XpsG_dedupSelect",
-			"rootChip": "O_XpsG_rootChip",
-			"card": "O_XpsG_card",
-			"grid": "O_XpsG_grid",
-			"thumb": "O_XpsG_thumb",
-			"subtitle": "O_XpsG_subtitle",
-			"cardOpen": "O_XpsG_cardOpen",
-			"controls": "O_XpsG_controls",
-			"error": "O_XpsG_error",
-			"search": "O_XpsG_search",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"controlLabel": "O_XpsG_controlLabel",
-			"desktopMode": "O_XpsG_desktopMode",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"button": "O_XpsG_button",
-			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"carousel": "O_XpsG_carousel",
-			"carouselBody": "O_XpsG_carouselBody",
-			"carouselImport": "O_XpsG_carouselImport",
-			"thumbImage": "O_XpsG_thumbImage",
-			"carouselItemActive": "O_XpsG_carouselItemActive",
-			"presetBtn": "O_XpsG_presetBtn",
-			"roots": "O_XpsG_roots",
-			"carouselEdit": "O_XpsG_carouselEdit",
-			"cardActions": "O_XpsG_cardActions",
 			"carouselGrid": "O_XpsG_carouselGrid",
-			"carouselStatus": "O_XpsG_carouselStatus",
-			"section": "O_XpsG_section",
 			"head": "O_XpsG_head",
-			"carouselNew": "O_XpsG_carouselNew",
-			"cardTitle": "O_XpsG_cardTitle",
-			"toolbar": "O_XpsG_toolbar",
-			"status": "O_XpsG_status",
-			"notice": "O_XpsG_notice",
-			"danger": "O_XpsG_danger",
-			"control": "O_XpsG_control",
-			"cardSelected": "O_XpsG_cardSelected",
-			"carouselHead": "O_XpsG_carouselHead",
-			"carouselItemHead": "O_XpsG_carouselItemHead",
-			"carouselToggle": "O_XpsG_carouselToggle",
-			"colorInput": "O_XpsG_colorInput",
-			"controlVal": "O_XpsG_controlVal",
-			"badge": "O_XpsG_badge",
+			"subtitle": "O_XpsG_subtitle",
 			"rootRemove": "O_XpsG_rootRemove",
-			"cardBody": "O_XpsG_cardBody",
+			"controlVal": "O_XpsG_controlVal",
+			"button": "O_XpsG_button",
+			"rootChip": "O_XpsG_rootChip",
+			"cardSelected": "O_XpsG_cardSelected",
 			"actions": "O_XpsG_actions",
-			"cardMeta": "O_XpsG_cardMeta",
-			"carouselItem": "O_XpsG_carouselItem",
-			"sceneNote": "O_XpsG_sceneNote",
-			"carouselWp": "O_XpsG_carouselWp",
+			"cardTitle": "O_XpsG_cardTitle",
+			"title": "O_XpsG_title",
+			"controlLabel": "O_XpsG_controlLabel",
+			"carouselWarn": "O_XpsG_carouselWarn",
+			"status": "O_XpsG_status",
+			"control": "O_XpsG_control",
+			"controls": "O_XpsG_controls",
+			"desktopMode": "O_XpsG_desktopMode",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"carouselHead": "O_XpsG_carouselHead",
+			"error": "O_XpsG_error",
+			"cardActions": "O_XpsG_cardActions",
+			"carouselToggle": "O_XpsG_carouselToggle",
+			"carouselBody": "O_XpsG_carouselBody",
 			"carouselWps": "O_XpsG_carouselWps",
-			"carouselWarn": "O_XpsG_carouselWarn"
+			"carouselWp": "O_XpsG_carouselWp",
+			"carouselStatus": "O_XpsG_carouselStatus",
+			"card": "O_XpsG_card",
+			"carouselEdit": "O_XpsG_carouselEdit",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"cardMeta": "O_XpsG_cardMeta",
+			"presetBtn": "O_XpsG_presetBtn",
+			"carousel": "O_XpsG_carousel",
+			"carouselImport": "O_XpsG_carouselImport",
+			"roots": "O_XpsG_roots",
+			"cardOpen": "O_XpsG_cardOpen",
+			"cardBody": "O_XpsG_cardBody",
+			"search": "O_XpsG_search",
+			"thumb": "O_XpsG_thumb",
+			"danger": "O_XpsG_danger",
+			"carouselItem": "O_XpsG_carouselItem",
+			"section": "O_XpsG_section",
+			"thumbImage": "O_XpsG_thumbImage",
+			"badge": "O_XpsG_badge",
+			"sceneNote": "O_XpsG_sceneNote",
+			"presetBtnActive": "O_XpsG_presetBtnActive",
+			"grid": "O_XpsG_grid",
+			"colorInput": "O_XpsG_colorInput",
+			"carouselItemHead": "O_XpsG_carouselItemHead",
+			"carouselNew": "O_XpsG_carouselNew",
+			"presets": "O_XpsG_presets",
+			"dedupSelect": "O_XpsG_dedupSelect",
+			"toolbar": "O_XpsG_toolbar",
+			"carouselItemActive": "O_XpsG_carouselItemActive",
+			"notice": "O_XpsG_notice"
 		};
 		//#endregion
 		//#region ../src/client/CarouselControls.tsx
@@ -1553,14 +1555,14 @@ window.__ModuleLoader__.load({
 		}
 		var WallpaperBackground_module_css_default = {
 			"fallbackNote": "mm6n-q_fallbackNote",
-			"image": "mm6n-q_image",
-			"video": "mm6n-q_video",
-			"scrim": "mm6n-q_scrim",
-			"host": "mm6n-q_host",
-			"layer": "mm6n-q_layer",
 			"fill_contain": "mm6n-q_fill_contain",
 			"fill_cover": "mm6n-q_fill_cover",
-			"fill_fill": "mm6n-q_fill_fill"
+			"video": "mm6n-q_video",
+			"layer": "mm6n-q_layer",
+			"fill_fill": "mm6n-q_fill_fill",
+			"scrim": "mm6n-q_scrim",
+			"host": "mm6n-q_host",
+			"image": "mm6n-q_image"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1715,7 +1717,6 @@ window.__ModuleLoader__.load({
   backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
   -webkit-backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
   border-radius: var(--dsh-custom-radius, 0px) !important;
-  box-shadow: var(--dsh-custom-shadow, none) !important;
   border: var(--dsh-custom-border, none) !important;
 }
 #root {
@@ -1725,7 +1726,13 @@ window.__ModuleLoader__.load({
    (dsh-client-ui-conversation rc.7 injects a sticky white gradient on the
    composer seat and a solid background on the detail panel). */
 #root [data-composer-seat] { background: transparent !important; }
-#root [data-slot="details"] > div { background: transparent !important; }`;
+#root [data-slot="details"] > div { background: transparent !important; }
+/* Tint overlays the main panel with the user's chosen colour via an
+   inner box-shadow; accent overrides the DSH theme accent variable. */
+#root > div {
+  box-shadow: var(--dsh-custom-shadow, none), inset 0 0 0 9999px var(--dsh-custom-tint, transparent) !important;
+}
+#root { --dsw-specific-accent: var(--dsh-custom-accent, #3964fe) !important; }`;
 				document.head.appendChild(style);
 			}, [state.customStyle]);
 			(0, react.useEffect)(() => {

@@ -189,7 +189,6 @@ function LoadedBackground({
   backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
   -webkit-backdrop-filter: blur(var(--dsh-custom-main-blur, 0px)) !important;
   border-radius: var(--dsh-custom-radius, 0px) !important;
-  box-shadow: var(--dsh-custom-shadow, none) !important;
   border: var(--dsh-custom-border, none) !important;
 }
 #root {
@@ -199,7 +198,13 @@ function LoadedBackground({
    (dsh-client-ui-conversation rc.7 injects a sticky white gradient on the
    composer seat and a solid background on the detail panel). */
 #root [data-composer-seat] { background: transparent !important; }
-#root [data-slot="details"] > div { background: transparent !important; }`
+#root [data-slot="details"] > div { background: transparent !important; }
+/* Tint overlays the main panel with the user's chosen colour via an
+   inner box-shadow; accent overrides the DSH theme accent variable. */
+#root > div {
+  box-shadow: var(--dsh-custom-shadow, none), inset 0 0 0 9999px var(--dsh-custom-tint, transparent) !important;
+}
+#root { --dsw-specific-accent: var(--dsh-custom-accent, #3964fe) !important; }`
     document.head.appendChild(style)
   }, [state.customStyle])
 

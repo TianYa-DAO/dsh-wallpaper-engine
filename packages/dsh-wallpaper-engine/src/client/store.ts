@@ -129,11 +129,11 @@ function readCustomStyle(): CustomStyle {
       inputBlur: clamp(raw.inputBlur, 0, 40, 0),
       panelOpacity: clamp(raw.panelOpacity, 0, 1, 1),
       panelBlur: clamp(raw.panelBlur, 0, 40, 0),
-      tintColor: hexColor(raw.tintColor),
-      accentColor: hexColor(raw.accentColor),
+      tintColor: colorValue(raw.tintColor),
+      accentColor: colorValue(raw.accentColor),
       radius: clamp(raw.radius, 0, 24, 0),
       borderWidth: clamp(raw.borderWidth, 0, 4, 0),
-      borderColor: hexColor(raw.borderColor),
+      borderColor: colorValue(raw.borderColor),
       shadowStrength: clamp(raw.shadowStrength, 0, 1, 0),
       scrimStrength: clamp(raw.scrimStrength, 0, 1, 0),
     }
@@ -151,9 +151,11 @@ function clamp(value: unknown, min: number, max: number, fallback: number): numb
   return Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : fallback
 }
 
-function hexColor(value: unknown): string {
-  const s = String(value ?? '')
-  return /^#[0-9a-f]{3,8}$/i.test(s) ? s.toLowerCase() : ''
+function colorValue(value: unknown): string {
+  const s = String(value ?? '').trim()
+  if (/^#[0-9a-f]{3,8}$/i.test(s)) return s.toLowerCase()
+  if (/^rgba?\([\d,.%\s]+\)$/i.test(s)) return s
+  return ''
 }
 
 const DEDUP_KEY = 'dsh.wallpaper-engine.dedupStrategy'
