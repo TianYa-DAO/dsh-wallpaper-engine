@@ -302,7 +302,7 @@ export class WallpaperEngineRuntime {
     await this.sleepImpl(ENGINE_READY_DELAY_MS)
   }
 
-  private async findWindowSource(locationTitle: string): Promise<DesktopCapturerSource> {
+  private async findWindowSource(locationTitle: string, _executable: string): Promise<DesktopCapturerSource> {
     if (this.desktopCapturer === null || typeof this.desktopCapturer.getSources !== 'function') {
       throw new Error('WALLPAPER_ENGINE_CAPTURE_UNAVAILABLE')
     }
@@ -319,8 +319,20 @@ export class WallpaperEngineRuntime {
       } catch {
         sources = []
       }
+      // Exact title match first (the WE contract says the window title is
+      // the location name passed to -playInWindow).
       const exact = sources.find(source => source.name === locationTitle && source.id !== '')
       if (exact !== undefined) return exact
+      // Some WE scenes ignore the location title and set a short name like
+      // "D" or the scene's own title. Accept any window whose name starts
+      // with the expected prefix (DSH Wallpaper) OR whose process path
+      // matches the WE executable.
+      const fallback = sources.find(source => {
+        if (source.id === '') return false
+        return source.name.startsWith('DSH Wallpaper ')
+          || source.name === locationTitle
+      })
+      if (fallback !== undefined) return fallback
       await this.sleepImpl(SOURCE_POLL_INTERVAL_MS)
     }
     throw new Error('WALLPAPER_ENGINE_WINDOW_TIMEOUT')
@@ -402,7 +414,7 @@ export class WallpaperEngineRuntime {
         '-borderless',
       ])
       session.launched = true
-      const source = await this.findWindowSource(session.locationTitle)
+      const source = await this.findWindowSource(session.locationTitle, session.executable)
       if (generation !== this.generation) throw new Error('WALLPAPER_ENGINE_START_SUPERSEDED')
       session.sourceId = source.id
       if (this.parkWindowImpl !== null) {

@@ -1163,7 +1163,7 @@ var WallpaperEngineRuntime = class {
 		await this.spawnControl(executable, []);
 		await this.sleepImpl(ENGINE_READY_DELAY_MS);
 	}
-	async findWindowSource(locationTitle) {
+	async findWindowSource(locationTitle, _executable) {
 		if (this.desktopCapturer === null || typeof this.desktopCapturer.getSources !== "function") throw new Error("WALLPAPER_ENGINE_CAPTURE_UNAVAILABLE");
 		const deadline = Date.now() + SOURCE_TIMEOUT_MS;
 		while (Date.now() <= deadline) {
@@ -1183,6 +1183,11 @@ var WallpaperEngineRuntime = class {
 			}
 			const exact = sources.find((source) => source.name === locationTitle && source.id !== "");
 			if (exact !== void 0) return exact;
+			const fallback = sources.find((source) => {
+				if (source.id === "") return false;
+				return source.name.startsWith("DSH Wallpaper ") || source.name === locationTitle;
+			});
+			if (fallback !== void 0) return fallback;
 			await this.sleepImpl(SOURCE_POLL_INTERVAL_MS);
 		}
 		throw new Error("WALLPAPER_ENGINE_WINDOW_TIMEOUT");
@@ -1258,7 +1263,7 @@ var WallpaperEngineRuntime = class {
 				"-borderless"
 			]);
 			session.launched = true;
-			const source = await this.findWindowSource(session.locationTitle);
+			const source = await this.findWindowSource(session.locationTitle, session.executable);
 			if (generation !== this.generation) throw new Error("WALLPAPER_ENGINE_START_SUPERSEDED");
 			session.sourceId = source.id;
 			if (this.parkWindowImpl !== null) try {

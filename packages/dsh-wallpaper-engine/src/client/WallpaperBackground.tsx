@@ -160,7 +160,12 @@ function LoadedBackground({
 }
 #root {
   --dsw-specific-sidebar-fill: rgba(15,17,21, var(--dsh-custom-sidebar-opacity, 1)) !important;
-}`
+}
+/* Clear the composer white gradient and detail-panel opaque background
+   (dsh-client-ui-conversation rc.7 injects a sticky white gradient on the
+   composer seat and a solid background on the detail panel). */
+#root [data-composer-seat] { background: transparent !important; }
+#root [data-slot="details"] > div { background: transparent !important; }`
     document.head.appendChild(style)
   }, [state.customStyle])
 
@@ -178,7 +183,11 @@ function LoadedBackground({
 
     const run = async (): Promise<void> => {
       const started = await controller.startScene(selection.id)
-      if (isCancelled() || !started.ok || started.sourceId === undefined || started.sessionId === undefined) return
+      if (isCancelled()) return
+      if (!started.ok || started.sourceId === undefined || started.sessionId === undefined) {
+        controller.store.actions.setScene({ active: false, sessionId: '', sourceId: '', error: started.error || 'WALLPAPER_ENGINE_START_FAILED', windowParked: false, parkError: '' })
+        return
+      }
       try {
         stream = await captureDesktopSource(started.sourceId)
       } catch {

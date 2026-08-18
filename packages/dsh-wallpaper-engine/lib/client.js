@@ -508,45 +508,45 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"dedupSelect": "O_XpsG_dedupSelect",
-			"head": "O_XpsG_head",
-			"control": "O_XpsG_control",
-			"controlLabel": "O_XpsG_controlLabel",
-			"toolbar": "O_XpsG_toolbar",
-			"cardSelected": "O_XpsG_cardSelected",
-			"button": "O_XpsG_button",
-			"thumbImage": "O_XpsG_thumbImage",
-			"presetBtn": "O_XpsG_presetBtn",
-			"rootChip": "O_XpsG_rootChip",
-			"roots": "O_XpsG_roots",
-			"title": "O_XpsG_title",
-			"cardMeta": "O_XpsG_cardMeta",
-			"subtitle": "O_XpsG_subtitle",
-			"desktopMode": "O_XpsG_desktopMode",
-			"actions": "O_XpsG_actions",
-			"colorInput": "O_XpsG_colorInput",
-			"search": "O_XpsG_search",
-			"thumb": "O_XpsG_thumb",
-			"controlVal": "O_XpsG_controlVal",
-			"rootRemove": "O_XpsG_rootRemove",
-			"controls": "O_XpsG_controls",
-			"cardOpen": "O_XpsG_cardOpen",
-			"card": "O_XpsG_card",
-			"notice": "O_XpsG_notice",
-			"grid": "O_XpsG_grid",
-			"badge": "O_XpsG_badge",
-			"danger": "O_XpsG_danger",
-			"presets": "O_XpsG_presets",
-			"error": "O_XpsG_error",
-			"status": "O_XpsG_status",
-			"rootsLabel": "O_XpsG_rootsLabel",
 			"cardBody": "O_XpsG_cardBody",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"roots": "O_XpsG_roots",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"cardMeta": "O_XpsG_cardMeta",
+			"presets": "O_XpsG_presets",
+			"controlLabel": "O_XpsG_controlLabel",
+			"section": "O_XpsG_section",
+			"presetBtn": "O_XpsG_presetBtn",
+			"title": "O_XpsG_title",
+			"rootRemove": "O_XpsG_rootRemove",
+			"thumb": "O_XpsG_thumb",
+			"thumbImage": "O_XpsG_thumbImage",
+			"cardOpen": "O_XpsG_cardOpen",
+			"rootChip": "O_XpsG_rootChip",
+			"control": "O_XpsG_control",
+			"head": "O_XpsG_head",
+			"colorInput": "O_XpsG_colorInput",
+			"error": "O_XpsG_error",
+			"dedupSelect": "O_XpsG_dedupSelect",
+			"subtitle": "O_XpsG_subtitle",
+			"presetBtnActive": "O_XpsG_presetBtnActive",
 			"sceneNote": "O_XpsG_sceneNote",
+			"status": "O_XpsG_status",
+			"card": "O_XpsG_card",
+			"badge": "O_XpsG_badge",
 			"cardTitle": "O_XpsG_cardTitle",
 			"cardActions": "O_XpsG_cardActions",
-			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"section": "O_XpsG_section"
+			"grid": "O_XpsG_grid",
+			"actions": "O_XpsG_actions",
+			"toolbar": "O_XpsG_toolbar",
+			"desktopMode": "O_XpsG_desktopMode",
+			"cardSelected": "O_XpsG_cardSelected",
+			"search": "O_XpsG_search",
+			"controls": "O_XpsG_controls",
+			"danger": "O_XpsG_danger",
+			"controlVal": "O_XpsG_controlVal",
+			"button": "O_XpsG_button",
+			"notice": "O_XpsG_notice"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
@@ -1234,14 +1234,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fallbackNote": "mm6n-q_fallbackNote",
-			"fill_fill": "mm6n-q_fill_fill",
 			"fill_cover": "mm6n-q_fill_cover",
 			"fill_contain": "mm6n-q_fill_contain",
-			"image": "mm6n-q_image",
-			"layer": "mm6n-q_layer",
+			"fill_fill": "mm6n-q_fill_fill",
 			"host": "mm6n-q_host",
-			"video": "mm6n-q_video"
+			"video": "mm6n-q_video",
+			"layer": "mm6n-q_layer",
+			"image": "mm6n-q_image",
+			"fallbackNote": "mm6n-q_fallbackNote"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1369,7 +1369,12 @@ window.__ModuleLoader__.load({
 }
 #root {
   --dsw-specific-sidebar-fill: rgba(15,17,21, var(--dsh-custom-sidebar-opacity, 1)) !important;
-}`;
+}
+/* Clear the composer white gradient and detail-panel opaque background
+   (dsh-client-ui-conversation rc.7 injects a sticky white gradient on the
+   composer seat and a solid background on the detail panel). */
+#root [data-composer-seat] { background: transparent !important; }
+#root [data-slot="details"] > div { background: transparent !important; }`;
 				document.head.appendChild(style);
 			}, [state.customStyle]);
 			(0, react.useEffect)(() => {
@@ -1384,7 +1389,18 @@ window.__ModuleLoader__.load({
 				setEngineStream(null);
 				const run = async () => {
 					const started = await controller.startScene(selection.id);
-					if (isCancelled() || !started.ok || started.sourceId === void 0 || started.sessionId === void 0) return;
+					if (isCancelled()) return;
+					if (!started.ok || started.sourceId === void 0 || started.sessionId === void 0) {
+						controller.store.actions.setScene({
+							active: false,
+							sessionId: "",
+							sourceId: "",
+							error: started.error || "WALLPAPER_ENGINE_START_FAILED",
+							windowParked: false,
+							parkError: ""
+						});
+						return;
+					}
 					try {
 						stream = await captureDesktopSource(started.sourceId);
 					} catch {
