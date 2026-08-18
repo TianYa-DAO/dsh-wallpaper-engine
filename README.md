@@ -94,3 +94,4 @@ MIT
 
 - 毛玻璃效果参考 [kevinbism/liquid-glass-effect](https://github.com/kevinbism/liquid-glass-effect)（MIT）和 [olii-dev/liquid-glass](https://github.com/olii-dev/liquid-glass)（MIT）的 CSS backdrop-filter 实现
 - Wallpaper Engine 本地库扫描与运行时设计参考 [Mineradio](https://github.com/nicepkg/mineradio)（GPL-3.0）的 wallpaper-engine-library 和 wallpaper-engine-runtime
+- 感谢 [more-bigotry-than-you](https://github.com/more-bigotry-than-you) 详细的 bug 反馈（#1），帮助定位了窗口发现、静默失败和白色块问题
