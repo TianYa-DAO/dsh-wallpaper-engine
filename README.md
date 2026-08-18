@@ -54,11 +54,21 @@ powershell -ExecutionPolicy Bypass -File desktop\scripts\create-shortcuts.ps1
 
 ## 安装插件
 
+**推荐：预构建 tarball（无需 allowBuilds）**
+
 ```sh
-dsh plugin --profile web add github:TianYa-DAO/dsh-wallpaper-engine
+dsh plugin --profile web add https://github.com/TianYa-DAO/dsh-wallpaper-engine/releases/download/dsh-0.1.2/dsh-wallpaper-engine-0.1.2.tgz
 ```
 
-然后打开 设置 → **桌面与壁纸**。
+**备选：GitHub 源码安装（需放行构建脚本）**
+
+```sh
+dsh plugin --profile web add github:TianYa-DAO/dsh-wallpaper-engine#path:/packages/dsh-wallpaper-engine
+```
+
+> GitHub 源码安装时 pnpm 会拦截 `prepare` 构建脚本。若提示 `allowBuilds`，在 `~\.dsh\profiles\web\pnpm-workspace.yaml` 中加上 `allowBuilds: true` 后重试。
+
+安装后打开 设置 → **桌面**（界面自定义）/ **壁纸**（壁纸库）。
 
 ## 从源码构建
 

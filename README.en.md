@@ -38,11 +38,21 @@ The packaged exe carries the product name `DeepSeek Harness桌面版`, the DSH w
 
 ## Install the plugin
 
+**Recommended: prebuilt tarball (no allowBuilds needed)**
+
 ```sh
-dsh plugin --profile web add github:TianYa-DAO/dsh-wallpaper-engine
+dsh plugin --profile web add https://github.com/TianYa-DAO/dsh-wallpaper-engine/releases/download/dsh-0.1.2/dsh-wallpaper-engine-0.1.2.tgz
 ```
 
-Then open Settings → **Desktop & Wallpaper**.
+**Alternative: GitHub source (requires allowBuilds)**
+
+```sh
+dsh plugin --profile web add github:TianYa-DAO/dsh-wallpaper-engine#path:/packages/dsh-wallpaper-engine
+```
+
+> When installing from GitHub source, pnpm blocks the `prepare` build script. If you see an `allowBuilds` error, add `allowBuilds: true` to `~\.dsh\profiles\web\pnpm-workspace.yaml` and retry.
+
+After installation, open Settings → **Desktop** (appearance) / **Wallpaper** (library).
 
 ## Build from source
 
