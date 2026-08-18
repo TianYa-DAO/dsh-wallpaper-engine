@@ -527,7 +527,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}.O_XpsG_carousel{border-top:1px solid var(--dsw-alias-border-l2);margin-top:16px;padding-top:16px}.O_XpsG_carouselHead{justify-content:space-between;align-items:center;display:flex}.O_XpsG_carouselToggle{cursor:pointer;color:var(--dsw-alias-label-primary);align-items:center;gap:8px;font-size:13px;display:flex}.O_XpsG_carouselBody{flex-direction:column;gap:10px;margin-top:12px;display:flex}.O_XpsG_carouselNew{gap:8px;display:flex}.O_XpsG_carouselItem{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;padding:10px}.O_XpsG_carouselItemActive{border-color:var(--dsw-specific-accent,#3964fe)}.O_XpsG_carouselItemHead{align-items:center;gap:8px;display:flex}.O_XpsG_carouselEdit{flex-direction:column;gap:10px;margin-top:10px;display:flex}.O_XpsG_carouselWps{flex-direction:column;gap:6px;display:flex}.O_XpsG_carouselGrid{flex-direction:column;gap:4px;max-height:180px;display:flex;overflow-y:auto}.O_XpsG_carouselWp{cursor:pointer;align-items:center;gap:6px;font-size:12px;display:flex}.O_XpsG_carouselStatus{color:var(--dsw-specific-accent,#3964fe);font-size:12px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}.O_XpsG_carousel{border-top:1px solid var(--dsw-alias-border-l2);margin-top:16px;padding-top:16px}.O_XpsG_carouselHead{justify-content:space-between;align-items:center;display:flex}.O_XpsG_carouselToggle{cursor:pointer;color:var(--dsw-alias-label-primary);align-items:center;gap:8px;font-size:13px;display:flex}.O_XpsG_carouselBody{flex-direction:column;gap:10px;margin-top:12px;display:flex}.O_XpsG_carouselNew,.O_XpsG_carouselImport{gap:8px;display:flex}.O_XpsG_carouselItem{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;padding:10px}.O_XpsG_carouselItemActive{border-color:var(--dsw-specific-accent,#3964fe)}.O_XpsG_carouselItemHead{align-items:center;gap:8px;display:flex}.O_XpsG_carouselEdit{flex-direction:column;gap:10px;margin-top:10px;display:flex}.O_XpsG_carouselWps{flex-direction:column;gap:6px;display:flex}.O_XpsG_carouselGrid{flex-direction:column;gap:4px;max-height:180px;display:flex;overflow-y:auto}.O_XpsG_carouselWp{cursor:pointer;align-items:center;gap:6px;font-size:12px;display:flex}.O_XpsG_carouselStatus{color:var(--dsw-specific-accent,#3964fe);font-size:12px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -537,58 +537,59 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"carouselToggle": "O_XpsG_carouselToggle",
-			"section": "O_XpsG_section",
-			"card": "O_XpsG_card",
-			"controlLabel": "O_XpsG_controlLabel",
-			"toolbar": "O_XpsG_toolbar",
-			"danger": "O_XpsG_danger",
-			"presets": "O_XpsG_presets",
-			"button": "O_XpsG_button",
-			"control": "O_XpsG_control",
-			"cardActions": "O_XpsG_cardActions",
-			"actions": "O_XpsG_actions",
-			"cardTitle": "O_XpsG_cardTitle",
 			"cardBody": "O_XpsG_cardBody",
-			"cardMeta": "O_XpsG_cardMeta",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"presetBtn": "O_XpsG_presetBtn",
-			"rootChip": "O_XpsG_rootChip",
-			"title": "O_XpsG_title",
-			"controls": "O_XpsG_controls",
-			"subtitle": "O_XpsG_subtitle",
-			"rootRemove": "O_XpsG_rootRemove",
-			"status": "O_XpsG_status",
-			"carouselNew": "O_XpsG_carouselNew",
-			"sceneNote": "O_XpsG_sceneNote",
-			"carouselEdit": "O_XpsG_carouselEdit",
-			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"error": "O_XpsG_error",
-			"grid": "O_XpsG_grid",
-			"desktopMode": "O_XpsG_desktopMode",
+			"carouselToggle": "O_XpsG_carouselToggle",
 			"head": "O_XpsG_head",
-			"cardOpen": "O_XpsG_cardOpen",
-			"carouselItemHead": "O_XpsG_carouselItemHead",
-			"carouselGrid": "O_XpsG_carouselGrid",
-			"carouselStatus": "O_XpsG_carouselStatus",
-			"colorInput": "O_XpsG_colorInput",
-			"cardSelected": "O_XpsG_cardSelected",
-			"controlVal": "O_XpsG_controlVal",
-			"thumb": "O_XpsG_thumb",
+			"subtitle": "O_XpsG_subtitle",
+			"dedupSelect": "O_XpsG_dedupSelect",
+			"section": "O_XpsG_section",
+			"rootRemove": "O_XpsG_rootRemove",
 			"thumbImage": "O_XpsG_thumbImage",
-			"carouselHead": "O_XpsG_carouselHead",
-			"carouselWp": "O_XpsG_carouselWp",
-			"carouselItem": "O_XpsG_carouselItem",
-			"notice": "O_XpsG_notice",
-			"carousel": "O_XpsG_carousel",
-			"carouselWps": "O_XpsG_carouselWps",
-			"carouselItemActive": "O_XpsG_carouselItemActive",
-			"roots": "O_XpsG_roots",
-			"badge": "O_XpsG_badge",
-			"carouselBody": "O_XpsG_carouselBody",
+			"carouselItemHead": "O_XpsG_carouselItemHead",
+			"cardMeta": "O_XpsG_cardMeta",
 			"search": "O_XpsG_search",
-			"dedupSelect": "O_XpsG_dedupSelect"
+			"thumb": "O_XpsG_thumb",
+			"presetBtnActive": "O_XpsG_presetBtnActive",
+			"carouselStatus": "O_XpsG_carouselStatus",
+			"grid": "O_XpsG_grid",
+			"error": "O_XpsG_error",
+			"carouselWp": "O_XpsG_carouselWp",
+			"controls": "O_XpsG_controls",
+			"carousel": "O_XpsG_carousel",
+			"controlLabel": "O_XpsG_controlLabel",
+			"roots": "O_XpsG_roots",
+			"carouselNew": "O_XpsG_carouselNew",
+			"presetBtn": "O_XpsG_presetBtn",
+			"carouselItemActive": "O_XpsG_carouselItemActive",
+			"carouselEdit": "O_XpsG_carouselEdit",
+			"status": "O_XpsG_status",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"controlVal": "O_XpsG_controlVal",
+			"title": "O_XpsG_title",
+			"colorInput": "O_XpsG_colorInput",
+			"sceneNote": "O_XpsG_sceneNote",
+			"badge": "O_XpsG_badge",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"carouselHead": "O_XpsG_carouselHead",
+			"card": "O_XpsG_card",
+			"rootChip": "O_XpsG_rootChip",
+			"button": "O_XpsG_button",
+			"carouselBody": "O_XpsG_carouselBody",
+			"carouselImport": "O_XpsG_carouselImport",
+			"notice": "O_XpsG_notice",
+			"cardOpen": "O_XpsG_cardOpen",
+			"cardTitle": "O_XpsG_cardTitle",
+			"cardActions": "O_XpsG_cardActions",
+			"desktopMode": "O_XpsG_desktopMode",
+			"toolbar": "O_XpsG_toolbar",
+			"carouselItem": "O_XpsG_carouselItem",
+			"control": "O_XpsG_control",
+			"carouselWps": "O_XpsG_carouselWps",
+			"carouselGrid": "O_XpsG_carouselGrid",
+			"actions": "O_XpsG_actions",
+			"cardSelected": "O_XpsG_cardSelected",
+			"danger": "O_XpsG_danger",
+			"presets": "O_XpsG_presets"
 		};
 		//#endregion
 		//#region ../src/client/CarouselControls.tsx
@@ -638,6 +639,23 @@ window.__ModuleLoader__.load({
 				});
 				setNewName("");
 				setEditing(id);
+			};
+			const importFromSource = (source, name) => {
+				const ids = state.projects.filter((p) => p.playable && p.source === source).map((p) => p.id);
+				if (ids.length === 0) return;
+				const id = Math.random().toString(36).slice(2, 10);
+				const list = {
+					id,
+					name,
+					wallpaperIds: ids,
+					interval: 300,
+					order: "sequence"
+				};
+				save({
+					...carousel,
+					playlists: [...carousel.playlists, list],
+					activePlaylistId: carousel.activePlaylistId || id
+				});
 			};
 			const updatePlaylist = (id, patch) => {
 				save({
@@ -698,6 +716,24 @@ window.__ModuleLoader__.load({
 								type: "button",
 								onClick: addPlaylist,
 								children: t("carouselAdd")
+							})]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: WallpaperSection_module_css_default.carouselImport,
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								className: WallpaperSection_module_css_default.button,
+								type: "button",
+								onClick: () => {
+									importFromSource("workshop", t("carouselImportWorkshop"));
+								},
+								children: t("carouselImportWorkshop")
+							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								className: WallpaperSection_module_css_default.button,
+								type: "button",
+								onClick: () => {
+									importFromSource("imported", t("carouselImportManual"));
+								},
+								children: t("carouselImportManual")
 							})]
 						}),
 						carousel.playlists.map((list) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
@@ -1514,14 +1550,14 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"fill_cover": "mm6n-q_fill_cover",
-			"fallbackNote": "mm6n-q_fallbackNote",
-			"host": "mm6n-q_host",
-			"video": "mm6n-q_video",
-			"fill_fill": "mm6n-q_fill_fill",
 			"layer": "mm6n-q_layer",
+			"fill_cover": "mm6n-q_fill_cover",
 			"fill_contain": "mm6n-q_fill_contain",
+			"fill_fill": "mm6n-q_fill_fill",
+			"host": "mm6n-q_host",
+			"fallbackNote": "mm6n-q_fallbackNote",
 			"scrim": "mm6n-q_scrim",
+			"video": "mm6n-q_video",
 			"image": "mm6n-q_image"
 		};
 		//#endregion
@@ -1574,10 +1610,11 @@ window.__ModuleLoader__.load({
 			if (props.controller === void 0 || props.useSnapshot === void 0) return null;
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(LoadedBackground, {
 				controller: props.controller,
-				useSnapshot: props.useSnapshot
+				useSnapshot: props.useSnapshot,
+				isDesktop: props.isDesktop === true
 			});
 		}
-		function LoadedBackground({ controller, useSnapshot }) {
+		function LoadedBackground({ controller, useSnapshot, isDesktop }) {
 			const state = useSnapshot((s) => s);
 			const [portalHost] = (0, react.useState)(() => {
 				const host = document.createElement("div");
@@ -1779,7 +1816,7 @@ window.__ModuleLoader__.load({
 			const showEngineVideo = selection.kind === "engine" && engineStream !== null;
 			const fallbackUrl = wallpaperMediaUrl(project?.hasPreview === true || project?.playable !== true ? "preview" : "media", project, token);
 			const mediaUrl = wallpaperMediaUrl("media", project, token);
-			const sourceUrl = showEngineVideo ? "" : selection.kind === "media" && mediaUrl !== "" ? mediaUrl : fallbackUrl;
+			const sourceUrl = showEngineVideo ? "" : selection.kind === "media" && isDesktop && mediaUrl !== "" ? mediaUrl : fallbackUrl;
 			const layerStyle = LayerStyle({ selection });
 			return (0, react_dom.createPortal)(/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 				className: WallpaperBackground_module_css_default.layer,
@@ -1858,6 +1895,8 @@ window.__ModuleLoader__.load({
 			carouselOrderRand: "随机",
 			carouselPick: "选择壁纸",
 			carouselActive: "轮播中",
+			carouselImportWorkshop: "从创意工坊导入",
+			carouselImportManual: "从手动导入创建",
 			close: "收起",
 			title: "Wallpaper Engine 壁纸库",
 			desktopOnly: "当前为网页版。安装并启动 DSH 桌面版后，这里可以识别本地 Wallpaper Engine 项目并设为聊天背景。",
@@ -1932,6 +1971,8 @@ window.__ModuleLoader__.load({
 			carouselOrderRand: "Random",
 			carouselPick: "Pick wallpapers",
 			carouselActive: "Rotating",
+			carouselImportWorkshop: "Import from Workshop",
+			carouselImportManual: "Import from Manual",
 			close: "Close",
 			title: "Wallpaper Engine Library",
 			desktopOnly: "You are using the web version. Install and launch the DSH desktop app to discover local Wallpaper Engine projects and set them as the chat background.",

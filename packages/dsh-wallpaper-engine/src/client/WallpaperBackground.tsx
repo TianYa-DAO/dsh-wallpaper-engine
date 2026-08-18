@@ -74,15 +74,17 @@ function LayerStyle({ selection }: { selection: WallpaperEngineState['selection'
  */
 export function WallpaperBackground(props: WallpaperBackgroundProps): ReactNode {
   if (props.controller === undefined || props.useSnapshot === undefined) return null
-  return <LoadedBackground controller={props.controller} useSnapshot={props.useSnapshot} />
+  return <LoadedBackground controller={props.controller} useSnapshot={props.useSnapshot} isDesktop={props.isDesktop === true} />
 }
 
 function LoadedBackground({
   controller,
   useSnapshot,
+  isDesktop,
 }: {
   controller: WallpaperEngineController
   useSnapshot: SnapshotSelectorHook<WallpaperEngineState>
+  isDesktop: boolean
 }): ReactNode {
   const state = useSnapshot((s: WallpaperEngineState) => s)
   const [portalHost] = useState(() => {
@@ -297,7 +299,9 @@ function LoadedBackground({
     token,
   )
   const mediaUrl = wallpaperMediaUrl('media', project, token)
-  const sourceUrl = showEngineVideo ? '' : (selection.kind === 'media' && mediaUrl !== '' ? mediaUrl : fallbackUrl)
+  // On the web version (no desktop shell), the dsh-wallpaper:// protocol is
+  // not available, so video wallpapers fall back to the preview image.
+  const sourceUrl = showEngineVideo ? '' : (selection.kind === 'media' && isDesktop && mediaUrl !== '' ? mediaUrl : fallbackUrl)
   const layerStyle = LayerStyle({ selection })
 
   return createPortal(

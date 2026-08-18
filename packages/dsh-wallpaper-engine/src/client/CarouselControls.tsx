@@ -46,6 +46,14 @@ export function CarouselControls({ controller, useSnapshot, t }: CarouselControl
     setEditing(id)
   }
 
+  const importFromSource = (source: string, name: string): void => {
+    const ids = state.projects.filter((p) => p.playable && p.source === source).map((p) => p.id)
+    if (ids.length === 0) return
+    const id = Math.random().toString(36).slice(2, 10)
+    const list: CarouselPlaylist = { id, name, wallpaperIds: ids, interval: 300, order: 'sequence' }
+    save({ ...carousel, playlists: [...carousel.playlists, list], activePlaylistId: carousel.activePlaylistId || id })
+  }
+
   const updatePlaylist = (id: string, patch: Partial<CarouselPlaylist>): void => {
     save({
       ...carousel,
@@ -86,6 +94,11 @@ export function CarouselControls({ controller, useSnapshot, t }: CarouselControl
           <div className={css.carouselNew}>
             <input className={css.colorInput} type="text" value={newName} placeholder={t('carouselNewPlaceholder')} onChange={(e) => { setNewName(e.target.value) }} />
             <button className={css.button} type="button" onClick={addPlaylist}>{t('carouselAdd')}</button>
+          </div>
+
+          <div className={css.carouselImport}>
+            <button className={css.button} type="button" onClick={() => { importFromSource('workshop', t('carouselImportWorkshop')) }}>{t('carouselImportWorkshop')}</button>
+            <button className={css.button} type="button" onClick={() => { importFromSource('imported', t('carouselImportManual')) }}>{t('carouselImportManual')}</button>
           </div>
 
           {carousel.playlists.map((list) => (

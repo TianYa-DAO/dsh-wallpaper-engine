@@ -379,6 +379,11 @@
   gap: 8px;
 }
 
+.carouselImport {
+  display: flex;
+  gap: 8px;
+}
+
 .carouselItem {
   padding: 10px;
   border: 1px solid var(--dsw-alias-border-l2);
