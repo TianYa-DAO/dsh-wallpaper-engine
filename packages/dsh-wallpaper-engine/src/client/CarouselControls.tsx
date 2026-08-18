@@ -49,6 +49,8 @@ export function CarouselControls({ controller, useSnapshot, t }: CarouselControl
   const importFromSource = (source: string, name: string): void => {
     const ids = state.projects.filter((p) => p.playable && p.source === source).map((p) => p.id)
     if (ids.length === 0) return
+    // Avoid duplicate imports: if a playlist with the same name already exists, skip.
+    if (carousel.playlists.some((p) => p.name === name)) return
     const id = Math.random().toString(36).slice(2, 10)
     const list: CarouselPlaylist = { id, name, wallpaperIds: ids, interval: 300, order: 'sequence' }
     save({ ...carousel, playlists: [...carousel.playlists, list], activePlaylistId: carousel.activePlaylistId || id })
@@ -142,9 +144,11 @@ export function CarouselControls({ controller, useSnapshot, t }: CarouselControl
             </div>
           ))}
 
-          {carousel.enabled && activeList && activeList.wallpaperIds.length > 0 && (
-            <div className={css.carouselStatus}>
-              {t('carouselActive')}: {activeList.name} — {activeList.interval >= 60 ? `${activeList.interval / 60} min` : `${activeList.interval} s`}
+          {carousel.enabled && activeList && (
+            <div className={activeList.wallpaperIds.length > 1 ? css.carouselStatus : css.carouselWarn}>
+              {activeList.wallpaperIds.length > 1
+                ? `${t('carouselActive')}: ${activeList.name} — ${activeList.interval >= 60 ? `${activeList.interval / 60} min` : `${activeList.interval} s`}`
+                : t('carouselNeedMore')}
             </div>
           )}
         </div>

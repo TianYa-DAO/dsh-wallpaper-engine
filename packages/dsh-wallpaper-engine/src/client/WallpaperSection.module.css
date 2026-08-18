@@ -429,6 +429,11 @@
   cursor: pointer;
 }
 
+.carouselWarn {
+  font-size: 12px;
+  color: var(--dsw-specific-danger, #c0392b);
+}
+
 .carouselStatus {
   font-size: 12px;
   color: var(--dsw-specific-accent, #3964fe);

@@ -245,7 +245,17 @@ function readCarousel(): CarouselState {
     return {
       enabled: raw.enabled === true,
       activePlaylistId: typeof raw.activePlaylistId === 'string' ? raw.activePlaylistId : '',
-      playlists: Array.isArray(raw.playlists) ? raw.playlists.filter((p: any) => p && p.id) : [],
+      playlists: Array.isArray(raw.playlists)
+        ? raw.playlists
+            .filter((p: any) => p && typeof p.id === 'string' && p.id)
+            .map((p: any) => ({
+              id: p.id,
+              name: typeof p.name === 'string' ? p.name : 'Playlist',
+              wallpaperIds: Array.isArray(p.wallpaperIds) ? p.wallpaperIds.filter((id: any) => typeof id === 'string' && id) : [],
+              interval: typeof p.interval === 'number' && p.interval >= 30 ? p.interval : 300,
+              order: p.order === 'random' ? 'random' as const : 'sequence' as const,
+            }))
+        : [],
     }
   } catch { return { enabled: false, activePlaylistId: '', playlists: [] } }
 }

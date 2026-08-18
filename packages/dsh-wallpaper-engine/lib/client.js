@@ -258,7 +258,13 @@ window.__ModuleLoader__.load({
 				return {
 					enabled: raw.enabled === true,
 					activePlaylistId: typeof raw.activePlaylistId === "string" ? raw.activePlaylistId : "",
-					playlists: Array.isArray(raw.playlists) ? raw.playlists.filter((p) => p && p.id) : []
+					playlists: Array.isArray(raw.playlists) ? raw.playlists.filter((p) => p && typeof p.id === "string" && p.id).map((p) => ({
+						id: p.id,
+						name: typeof p.name === "string" ? p.name : "Playlist",
+						wallpaperIds: Array.isArray(p.wallpaperIds) ? p.wallpaperIds.filter((id) => typeof id === "string" && id) : [],
+						interval: typeof p.interval === "number" && p.interval >= 30 ? p.interval : 300,
+						order: p.order === "random" ? "random" : "sequence"
+					})) : []
 				};
 			} catch {
 				return {
@@ -527,7 +533,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}.O_XpsG_carousel{border-top:1px solid var(--dsw-alias-border-l2);margin-top:16px;padding-top:16px}.O_XpsG_carouselHead{justify-content:space-between;align-items:center;display:flex}.O_XpsG_carouselToggle{cursor:pointer;color:var(--dsw-alias-label-primary);align-items:center;gap:8px;font-size:13px;display:flex}.O_XpsG_carouselBody{flex-direction:column;gap:10px;margin-top:12px;display:flex}.O_XpsG_carouselNew,.O_XpsG_carouselImport{gap:8px;display:flex}.O_XpsG_carouselItem{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;padding:10px}.O_XpsG_carouselItemActive{border-color:var(--dsw-specific-accent,#3964fe)}.O_XpsG_carouselItemHead{align-items:center;gap:8px;display:flex}.O_XpsG_carouselEdit{flex-direction:column;gap:10px;margin-top:10px;display:flex}.O_XpsG_carouselWps{flex-direction:column;gap:6px;display:flex}.O_XpsG_carouselGrid{flex-direction:column;gap:4px;max-height:180px;display:flex;overflow-y:auto}.O_XpsG_carouselWp{cursor:pointer;align-items:center;gap:6px;font-size:12px;display:flex}.O_XpsG_carouselStatus{color:var(--dsw-specific-accent,#3964fe);font-size:12px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}.O_XpsG_carousel{border-top:1px solid var(--dsw-alias-border-l2);margin-top:16px;padding-top:16px}.O_XpsG_carouselHead{justify-content:space-between;align-items:center;display:flex}.O_XpsG_carouselToggle{cursor:pointer;color:var(--dsw-alias-label-primary);align-items:center;gap:8px;font-size:13px;display:flex}.O_XpsG_carouselBody{flex-direction:column;gap:10px;margin-top:12px;display:flex}.O_XpsG_carouselNew,.O_XpsG_carouselImport{gap:8px;display:flex}.O_XpsG_carouselItem{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;padding:10px}.O_XpsG_carouselItemActive{border-color:var(--dsw-specific-accent,#3964fe)}.O_XpsG_carouselItemHead{align-items:center;gap:8px;display:flex}.O_XpsG_carouselEdit{flex-direction:column;gap:10px;margin-top:10px;display:flex}.O_XpsG_carouselWps{flex-direction:column;gap:6px;display:flex}.O_XpsG_carouselGrid{flex-direction:column;gap:4px;max-height:180px;display:flex;overflow-y:auto}.O_XpsG_carouselWp{cursor:pointer;align-items:center;gap:6px;font-size:12px;display:flex}.O_XpsG_carouselWarn{color:var(--dsw-specific-danger,#c0392b);font-size:12px}.O_XpsG_carouselStatus{color:var(--dsw-specific-accent,#3964fe);font-size:12px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -537,59 +543,60 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"carouselNew": "O_XpsG_carouselNew",
-			"error": "O_XpsG_error",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"presetBtn": "O_XpsG_presetBtn",
-			"controlVal": "O_XpsG_controlVal",
-			"carouselToggle": "O_XpsG_carouselToggle",
-			"grid": "O_XpsG_grid",
-			"section": "O_XpsG_section",
+			"presets": "O_XpsG_presets",
+			"title": "O_XpsG_title",
 			"dedupSelect": "O_XpsG_dedupSelect",
+			"rootChip": "O_XpsG_rootChip",
+			"card": "O_XpsG_card",
+			"grid": "O_XpsG_grid",
+			"thumb": "O_XpsG_thumb",
+			"subtitle": "O_XpsG_subtitle",
+			"cardOpen": "O_XpsG_cardOpen",
+			"controls": "O_XpsG_controls",
+			"error": "O_XpsG_error",
+			"search": "O_XpsG_search",
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"controlLabel": "O_XpsG_controlLabel",
+			"desktopMode": "O_XpsG_desktopMode",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
 			"button": "O_XpsG_button",
 			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"cardMeta": "O_XpsG_cardMeta",
-			"controls": "O_XpsG_controls",
-			"notice": "O_XpsG_notice",
-			"carouselGrid": "O_XpsG_carouselGrid",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"thumbImage": "O_XpsG_thumbImage",
-			"carouselImport": "O_XpsG_carouselImport",
-			"carouselWps": "O_XpsG_carouselWps",
-			"danger": "O_XpsG_danger",
-			"rootChip": "O_XpsG_rootChip",
-			"control": "O_XpsG_control",
-			"head": "O_XpsG_head",
-			"actions": "O_XpsG_actions",
-			"cardSelected": "O_XpsG_cardSelected",
-			"toolbar": "O_XpsG_toolbar",
-			"thumb": "O_XpsG_thumb",
-			"presets": "O_XpsG_presets",
-			"rootRemove": "O_XpsG_rootRemove",
-			"cardOpen": "O_XpsG_cardOpen",
-			"cardActions": "O_XpsG_cardActions",
-			"desktopMode": "O_XpsG_desktopMode",
-			"status": "O_XpsG_status",
 			"carousel": "O_XpsG_carousel",
 			"carouselBody": "O_XpsG_carouselBody",
+			"carouselImport": "O_XpsG_carouselImport",
+			"thumbImage": "O_XpsG_thumbImage",
 			"carouselItemActive": "O_XpsG_carouselItemActive",
-			"subtitle": "O_XpsG_subtitle",
+			"presetBtn": "O_XpsG_presetBtn",
+			"roots": "O_XpsG_roots",
+			"carouselEdit": "O_XpsG_carouselEdit",
+			"cardActions": "O_XpsG_cardActions",
+			"carouselGrid": "O_XpsG_carouselGrid",
+			"carouselStatus": "O_XpsG_carouselStatus",
+			"section": "O_XpsG_section",
+			"head": "O_XpsG_head",
+			"carouselNew": "O_XpsG_carouselNew",
+			"cardTitle": "O_XpsG_cardTitle",
+			"toolbar": "O_XpsG_toolbar",
+			"status": "O_XpsG_status",
+			"notice": "O_XpsG_notice",
+			"danger": "O_XpsG_danger",
+			"control": "O_XpsG_control",
+			"cardSelected": "O_XpsG_cardSelected",
+			"carouselHead": "O_XpsG_carouselHead",
+			"carouselItemHead": "O_XpsG_carouselItemHead",
+			"carouselToggle": "O_XpsG_carouselToggle",
+			"colorInput": "O_XpsG_colorInput",
+			"controlVal": "O_XpsG_controlVal",
+			"badge": "O_XpsG_badge",
+			"rootRemove": "O_XpsG_rootRemove",
+			"cardBody": "O_XpsG_cardBody",
+			"actions": "O_XpsG_actions",
+			"cardMeta": "O_XpsG_cardMeta",
+			"carouselItem": "O_XpsG_carouselItem",
 			"sceneNote": "O_XpsG_sceneNote",
 			"carouselWp": "O_XpsG_carouselWp",
-			"title": "O_XpsG_title",
-			"colorInput": "O_XpsG_colorInput",
-			"card": "O_XpsG_card",
-			"carouselItem": "O_XpsG_carouselItem",
-			"search": "O_XpsG_search",
-			"roots": "O_XpsG_roots",
-			"badge": "O_XpsG_badge",
-			"controlLabel": "O_XpsG_controlLabel",
-			"cardBody": "O_XpsG_cardBody",
-			"cardTitle": "O_XpsG_cardTitle",
-			"carouselHead": "O_XpsG_carouselHead",
-			"carouselEdit": "O_XpsG_carouselEdit",
-			"carouselStatus": "O_XpsG_carouselStatus",
-			"carouselItemHead": "O_XpsG_carouselItemHead"
+			"carouselWps": "O_XpsG_carouselWps",
+			"carouselWarn": "O_XpsG_carouselWarn"
 		};
 		//#endregion
 		//#region ../src/client/CarouselControls.tsx
@@ -643,6 +650,7 @@ window.__ModuleLoader__.load({
 			const importFromSource = (source, name) => {
 				const ids = state.projects.filter((p) => p.playable && p.source === source).map((p) => p.id);
 				if (ids.length === 0) return;
+				if (carousel.playlists.some((p) => p.name === name)) return;
 				const id = Math.random().toString(36).slice(2, 10);
 				const list = {
 					id,
@@ -834,15 +842,9 @@ window.__ModuleLoader__.load({
 								]
 							})]
 						}, list.id)),
-						carousel.enabled && activeList && activeList.wallpaperIds.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-							className: WallpaperSection_module_css_default.carouselStatus,
-							children: [
-								t("carouselActive"),
-								": ",
-								activeList.name,
-								" — ",
-								activeList.interval >= 60 ? `${activeList.interval / 60} min` : `${activeList.interval} s`
-							]
+						carousel.enabled && activeList && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+							className: activeList.wallpaperIds.length > 1 ? WallpaperSection_module_css_default.carouselStatus : WallpaperSection_module_css_default.carouselWarn,
+							children: activeList.wallpaperIds.length > 1 ? `${t("carouselActive")}: ${activeList.name} — ${activeList.interval >= 60 ? `${activeList.interval / 60} min` : `${activeList.interval} s`}` : t("carouselNeedMore")
 						})
 					]
 				})]
@@ -1550,15 +1552,15 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"host": "mm6n-q_host",
 			"fallbackNote": "mm6n-q_fallbackNote",
-			"fill_cover": "mm6n-q_fill_cover",
-			"video": "mm6n-q_video",
-			"fill_fill": "mm6n-q_fill_fill",
 			"image": "mm6n-q_image",
+			"video": "mm6n-q_video",
 			"scrim": "mm6n-q_scrim",
+			"host": "mm6n-q_host",
+			"layer": "mm6n-q_layer",
 			"fill_contain": "mm6n-q_fill_contain",
-			"layer": "mm6n-q_layer"
+			"fill_cover": "mm6n-q_fill_cover",
+			"fill_fill": "mm6n-q_fill_fill"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1896,6 +1898,7 @@ window.__ModuleLoader__.load({
 			carouselOrderRand: "随机",
 			carouselPick: "选择壁纸",
 			carouselActive: "轮播中",
+			carouselNeedMore: "至少需要 2 张壁纸才能轮播",
 			carouselImportWorkshop: "从创意工坊导入",
 			carouselImportManual: "从手动导入创建",
 			close: "收起",
@@ -1972,6 +1975,7 @@ window.__ModuleLoader__.load({
 			carouselOrderRand: "Random",
 			carouselPick: "Pick wallpapers",
 			carouselActive: "Rotating",
+			carouselNeedMore: "Need at least 2 wallpapers",
 			carouselImportWorkshop: "Import from Workshop",
 			carouselImportManual: "Import from Manual",
 			close: "Close",
