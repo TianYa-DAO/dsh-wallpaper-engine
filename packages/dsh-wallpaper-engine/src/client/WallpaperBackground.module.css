@@ -68,3 +68,10 @@
   line-height: 18px;
   pointer-events: none;
 }
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}

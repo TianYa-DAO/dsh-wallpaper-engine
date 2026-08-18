@@ -37,7 +37,7 @@ const PRESETS: Array<{ key: WallpaperKey; style: CustomStyle }> = [
       chatOpacity: 0.45, chatBlur: 20, inputOpacity: 0.4, inputBlur: 12,
       panelOpacity: 0.5, panelBlur: 18,
       tintColor: '', accentColor: '', radius: 12, borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.15)', shadowStrength: 0.3,
+      borderColor: 'rgba(255,255,255,0.15)', shadowStrength: 0.3, scrimStrength: 0.15,
     },
   },
   {
@@ -71,6 +71,7 @@ function stylesEqual(a: CustomStyle, b: CustomStyle): boolean {
     && a.tintColor === b.tintColor && a.accentColor === b.accentColor
     && a.radius === b.radius && a.borderWidth === b.borderWidth
     && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength
+    && a.scrimStrength === b.scrimStrength
 }
 
 function LoadedDesktop({ controller, useSnapshot, t }: {
@@ -123,6 +124,7 @@ function LoadedDesktop({ controller, useSnapshot, t }: {
         <SliderRow label={t('borderWidth')} value={cs.borderWidth} min={0} max={4} step={1} onChange={(v) => { set({ borderWidth: v }) }} />
         <ColorRow label={t('borderColor')} value={cs.borderColor} onChange={(v) => { set({ borderColor: v }) }} />
         <SliderRow label={t('shadowStrength')} value={cs.shadowStrength} min={0} max={1} step={0.05} onChange={(v) => { set({ shadowStrength: v }) }} />
+        <SliderRow label={t('scrimStrength')} value={cs.scrimStrength} min={0} max={1} step={0.05} onChange={(v) => { set({ scrimStrength: v }) }} />
       </div>
     </div>
   )

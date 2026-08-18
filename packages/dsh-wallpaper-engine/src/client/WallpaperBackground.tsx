@@ -121,6 +121,33 @@ function LoadedBackground({
     }
   }, [selection.active])
 
+  // Carousel auto-rotation timer: when a wallpaper is active and the
+  // carousel is enabled, switch to the next wallpaper in the active
+  // playlist after the configured interval.
+  useEffect(() => {
+    const c = state.carousel
+    if (!selection.active || !c.enabled) return
+    const list = c.playlists.find((p) => p.id === c.activePlaylistId)
+    if (!list || list.wallpaperIds.length === 0) return
+    const intervalMs = list.interval * 1000
+    let cancelled = false
+    const timer = setTimeout(() => {
+      if (cancelled) return
+      const ids = list.wallpaperIds
+      const nextId = list.order === 'random'
+        ? ids[Math.floor(Math.random() * ids.length)]
+        : ids[(ids.indexOf(selection.id) + 1) % ids.length]
+      if (nextId !== selection.id) {
+        const project = state.projects.find((p) => p.id === nextId)
+        if (project) controller.selectProject(project)
+      }
+    }, intervalMs)
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [controller, selection.active, selection.id, state.carousel.enabled, state.carousel.activePlaylistId, state.carousel.playlists, state.projects])
+
   // Desktop customisation: generate CSS variables from the CustomStyle
   // object and inject them into #root. Every value is reflected in real
   // time so the sliders in the "Desktop" settings section have instant
@@ -149,6 +176,7 @@ function LoadedBackground({
     if (cs.radius > 0) addVar('radius', `${cs.radius}px`)
     if (cs.borderWidth > 0 && cs.borderColor !== '') addVar('border', `${cs.borderWidth}px solid ${cs.borderColor}`)
     if (cs.shadowStrength > 0) addVar('shadow', `0 8px 32px rgba(0,0,0,${(cs.shadowStrength * 0.4).toFixed(2)})`)
+    if (cs.scrimStrength > 0) addVar('scrim', cs.scrimStrength)
     style.textContent = `#root { ${v.join('; ')} }
 #root > div {
   background: rgba(15,17,21, var(--dsh-custom-main-opacity, 1)) !important;
@@ -305,6 +333,9 @@ function LoadedBackground({
             )
         )}
       {selection.kind === 'engine' && scene.error !== '' && <div className={css.fallbackNote}>{scene.error}</div>}
+      {state.customStyle.scrimStrength > 0 && (
+        <div className={css.scrim} style={{ opacity: state.customStyle.scrimStrength }} />
+      )}
     </div>,
     portalHost,
   )
@@ -319,4 +350,5 @@ function isDefaultStyle(cs: CustomStyle): boolean {
     && cs.tintColor === '' && cs.accentColor === ''
     && cs.radius === 0 && cs.borderWidth === 0
     && cs.borderColor === '' && cs.shadowStrength === 0
+    && cs.scrimStrength === 0
 }

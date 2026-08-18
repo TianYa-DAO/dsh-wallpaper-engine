@@ -15,6 +15,7 @@ import { wallpaperMediaUrl } from './api.ts'
 import type { WallpaperProjectItem } from './api.ts'
 import type { WallpaperFillMode } from './selection.ts'
 import type { WallpaperKey } from './locales.ts'
+import { CarouselControls } from './CarouselControls.tsx'
 import css from './WallpaperSection.module.css'
 
 export interface WallpaperSectionInjected {
@@ -162,6 +163,8 @@ function LoadedSection({ controller, useSnapshot, isDesktop, t }: {
                 : (state.scene.parkError !== '' ? `${t('windowParkFailed')}（${state.scene.parkError}）` : t('engineRun'))}
             </div>
           )}
+
+          <CarouselControls controller={controller} useSnapshot={useSnapshot} t={t} />
         </>
       )}
     </div>

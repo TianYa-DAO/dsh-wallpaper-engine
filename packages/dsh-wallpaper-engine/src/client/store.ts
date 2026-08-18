@@ -40,9 +40,24 @@ export interface CustomStyle {
   borderWidth: number
   borderColor: string
   shadowStrength: number
+  scrimStrength: number
 }
 
 export type DedupStrategy = 'workshop' | 'manual' | 'none'
+
+export interface CarouselPlaylist {
+  id: string
+  name: string
+  wallpaperIds: string[]
+  interval: number
+  order: 'sequence' | 'random'
+}
+
+export interface CarouselState {
+  enabled: boolean
+  activePlaylistId: string
+  playlists: CarouselPlaylist[]
+}
 
 export interface WallpaperEngineState {
   status: WallpaperLibraryStatus
@@ -55,6 +70,7 @@ export interface WallpaperEngineState {
   scene: WallpaperSceneState
   customStyle: CustomStyle
   dedupStrategy: DedupStrategy
+  carousel: CarouselState
   error: string
 }
 
@@ -73,6 +89,7 @@ export type WallpaperEngineActions = {
   setScene: (draft: WallpaperEngineState, scene: Partial<WallpaperSceneState>) => void
   setCustomStyle: (draft: WallpaperEngineState, style: CustomStyle) => void
   setDedupStrategy: (draft: WallpaperEngineState, strategy: DedupStrategy) => void
+  setCarousel: (draft: WallpaperEngineState, carousel: CarouselState) => void
   clearSceneError: (draft: WallpaperEngineState) => void
 }
 
@@ -95,6 +112,7 @@ export const DEFAULT_CUSTOM_STYLE: CustomStyle = Object.freeze({
   borderWidth: 0,
   borderColor: '',
   shadowStrength: 0,
+  scrimStrength: 0,
 })
 
 function readCustomStyle(): CustomStyle {
@@ -117,6 +135,7 @@ function readCustomStyle(): CustomStyle {
       borderWidth: clamp(raw.borderWidth, 0, 4, 0),
       borderColor: hexColor(raw.borderColor),
       shadowStrength: clamp(raw.shadowStrength, 0, 1, 0),
+      scrimStrength: clamp(raw.scrimStrength, 0, 1, 0),
     }
   } catch {
     return { ...DEFAULT_CUSTOM_STYLE }
@@ -169,6 +188,7 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
       scene: { active: false, sessionId: '', sourceId: '', error: '', freeze: false, windowParked: false, parkError: '' },
       customStyle: readCustomStyle(),
       dedupStrategy: readDedupStrategy(),
+      carousel: readCarousel(),
       error: '',
     }),
     actions: {
@@ -206,9 +226,30 @@ export function createWallpaperEngineStore(): EngineStoreHandle<WallpaperEngineS
         d.dedupStrategy = strategy
         writeDedupStrategy(strategy)
       },
+      setCarousel: (d, carousel) => {
+        d.carousel = carousel
+        writeCarousel(carousel)
+      },
       clearSceneError: (d) => {
         d.scene.error = ''
       },
     },
   })
+}
+
+const CAROUSEL_KEY = 'dsh.wallpaper-engine.carousel'
+
+function readCarousel(): CarouselState {
+  try {
+    const raw = JSON.parse(localStorage.getItem(CAROUSEL_KEY) ?? '{}')
+    return {
+      enabled: raw.enabled === true,
+      activePlaylistId: typeof raw.activePlaylistId === 'string' ? raw.activePlaylistId : '',
+      playlists: Array.isArray(raw.playlists) ? raw.playlists.filter((p: any) => p && p.id) : [],
+    }
+  } catch { return { enabled: false, activePlaylistId: '', playlists: [] } }
+}
+
+function writeCarousel(carousel: CarouselState): void {
+  try { localStorage.setItem(CAROUSEL_KEY, JSON.stringify(carousel)) } catch { /* quota */ }
 }

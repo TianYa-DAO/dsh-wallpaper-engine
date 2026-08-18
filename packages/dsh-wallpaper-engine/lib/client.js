@@ -117,7 +117,8 @@ window.__ModuleLoader__.load({
 			radius: 0,
 			borderWidth: 0,
 			borderColor: "",
-			shadowStrength: 0
+			shadowStrength: 0,
+			scrimStrength: 0
 		});
 		function readCustomStyle() {
 			try {
@@ -138,7 +139,8 @@ window.__ModuleLoader__.load({
 					radius: clamp(raw.radius, 0, 24, 0),
 					borderWidth: clamp(raw.borderWidth, 0, 4, 0),
 					borderColor: hexColor(raw.borderColor),
-					shadowStrength: clamp(raw.shadowStrength, 0, 1, 0)
+					shadowStrength: clamp(raw.shadowStrength, 0, 1, 0),
+					scrimStrength: clamp(raw.scrimStrength, 0, 1, 0)
 				};
 			} catch {
 				return { ...DEFAULT_CUSTOM_STYLE };
@@ -198,6 +200,7 @@ window.__ModuleLoader__.load({
 					},
 					customStyle: readCustomStyle(),
 					dedupStrategy: readDedupStrategy(),
+					carousel: readCarousel(),
 					error: ""
 				}),
 				actions: {
@@ -238,11 +241,37 @@ window.__ModuleLoader__.load({
 						d.dedupStrategy = strategy;
 						writeDedupStrategy(strategy);
 					},
+					setCarousel: (d, carousel) => {
+						d.carousel = carousel;
+						writeCarousel(carousel);
+					},
 					clearSceneError: (d) => {
 						d.scene.error = "";
 					}
 				}
 			});
+		}
+		const CAROUSEL_KEY = "dsh.wallpaper-engine.carousel";
+		function readCarousel() {
+			try {
+				const raw = JSON.parse(localStorage.getItem(CAROUSEL_KEY) ?? "{}");
+				return {
+					enabled: raw.enabled === true,
+					activePlaylistId: typeof raw.activePlaylistId === "string" ? raw.activePlaylistId : "",
+					playlists: Array.isArray(raw.playlists) ? raw.playlists.filter((p) => p && p.id) : []
+				};
+			} catch {
+				return {
+					enabled: false,
+					activePlaylistId: "",
+					playlists: []
+				};
+			}
+		}
+		function writeCarousel(carousel) {
+			try {
+				localStorage.setItem(CAROUSEL_KEY, JSON.stringify(carousel));
+			} catch {}
 		}
 		//#endregion
 		//#region ../src/client/controller.ts
@@ -498,7 +527,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperSection.module.css.mjs
-		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}";
+		const css$1 = ".O_XpsG_section{flex-direction:column;gap:16px;min-width:0;display:flex}.O_XpsG_head{justify-content:space-between;align-items:flex-start;gap:16px;display:flex}.O_XpsG_title{color:var(--dsw-alias-label-primary);margin:0;font-size:15px;font-weight:600;line-height:22px}.O_XpsG_subtitle{color:var(--dsw-alias-label-tertiary);margin:4px 0 0;font-size:12px;line-height:18px}.O_XpsG_actions{flex-wrap:wrap;justify-content:flex-end;gap:8px;display:flex}.O_XpsG_button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_button:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presets{flex-wrap:wrap;gap:8px;margin-bottom:16px;display:flex}.O_XpsG_presetBtn{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:20px;padding:6px 16px;font-size:13px;line-height:20px;transition:background .15s,color .15s,border-color .15s}.O_XpsG_presetBtn:hover{background:var(--dsw-alias-bg-hover,#0000000d)}.O_XpsG_presetBtnActive{background:var(--dsw-specific-accent,#3964fe);color:#fff;border-color:#0000}.O_XpsG_control{align-items:center;gap:10px;margin-bottom:12px;display:flex}.O_XpsG_controlLabel{min-width:100px;color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_control input[type=range]{height:6px;accent-color:var(--dsw-specific-accent,#3964fe);cursor:pointer;flex:1}.O_XpsG_controlVal{color:var(--dsw-alias-label-primary);text-align:right;min-width:40px;font-size:13px}.O_XpsG_colorInput{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:5px 10px;font-size:13px;line-height:20px}.O_XpsG_dedupSelect{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:8px;padding:6px 10px;font-size:12px;line-height:18px}.O_XpsG_danger{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_notice{border:1px dashed var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:12px;padding:16px;font-size:13px;line-height:20px}.O_XpsG_toolbar{align-items:center;gap:8px;display:flex}.O_XpsG_search{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:0;color:var(--dsw-alias-label-primary);border-radius:8px;flex:1;padding:7px 10px;font-size:13px;line-height:18px}.O_XpsG_status{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:20px}.O_XpsG_sceneNote{color:var(--dsw-alias-label-secondary);margin-top:10px;font-size:13px;line-height:20px}.O_XpsG_error{color:var(--dsw-specific-danger,#c0392b)}.O_XpsG_roots{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.O_XpsG_rootsLabel{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.O_XpsG_rootChip{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);border-radius:999px;align-items:center;gap:6px;padding:3px 8px;font-size:12px;line-height:18px;display:inline-flex}.O_XpsG_rootRemove{color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:0;padding:0;font-size:14px;line-height:14px}.O_XpsG_grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;display:grid}.O_XpsG_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;display:flex;overflow:hidden}.O_XpsG_cardSelected{border-color:var(--dsw-alias-brand-primary);box-shadow:0 0 0 1px var(--dsw-alias-brand-primary)}.O_XpsG_thumb{aspect-ratio:16/9;background:#0000001f;position:relative;overflow:hidden}.O_XpsG_thumbImage{object-fit:cover;width:100%;height:100%;display:block}.O_XpsG_badge{color:#fff;background:#0000009e;border-radius:999px;padding:2px 8px;font-size:11px;line-height:16px;position:absolute;top:8px;left:8px}.O_XpsG_cardOpen{color:#0f1115;cursor:pointer;background:#ffffffd6;border:0;border-radius:6px;padding:2px 8px;font-size:10px;line-height:16px;position:absolute;top:8px;right:8px}.O_XpsG_cardBody{flex-direction:column;gap:6px;padding:10px;display:flex}.O_XpsG_cardTitle{color:var(--dsw-alias-label-primary);white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:600;line-height:18px;overflow:hidden}.O_XpsG_cardMeta{color:var(--dsw-alias-label-tertiary);font-size:11px;line-height:16px}.O_XpsG_cardActions{gap:8px;margin-top:2px;display:flex}.O_XpsG_desktopMode{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-direction:column;gap:10px;padding:12px;display:flex}.O_XpsG_desktopModeTitle{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:600;line-height:18px}.O_XpsG_controls{border:1px solid var(--dsw-alias-border-l2);border-radius:12px;flex-wrap:wrap;gap:16px;padding:12px;display:flex}.O_XpsG_control{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;line-height:18px;display:flex}.O_XpsG_control input[type=range]{width:140px}.O_XpsG_control select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px}.O_XpsG_carousel{border-top:1px solid var(--dsw-alias-border-l2);margin-top:16px;padding-top:16px}.O_XpsG_carouselHead{justify-content:space-between;align-items:center;display:flex}.O_XpsG_carouselToggle{cursor:pointer;color:var(--dsw-alias-label-primary);align-items:center;gap:8px;font-size:13px;display:flex}.O_XpsG_carouselBody{flex-direction:column;gap:10px;margin-top:12px;display:flex}.O_XpsG_carouselNew{gap:8px;display:flex}.O_XpsG_carouselItem{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;padding:10px}.O_XpsG_carouselItemActive{border-color:var(--dsw-specific-accent,#3964fe)}.O_XpsG_carouselItemHead{align-items:center;gap:8px;display:flex}.O_XpsG_carouselEdit{flex-direction:column;gap:10px;margin-top:10px;display:flex}.O_XpsG_carouselWps{flex-direction:column;gap:6px;display:flex}.O_XpsG_carouselGrid{flex-direction:column;gap:4px;max-height:180px;display:flex;overflow-y:auto}.O_XpsG_carouselWp{cursor:pointer;align-items:center;gap:6px;font-size:12px;display:flex}.O_XpsG_carouselStatus{color:var(--dsw-specific-accent,#3964fe);font-size:12px}";
 		const tagId$1 = "dsh-wallpaper-engine/WallpaperSection.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -508,46 +537,281 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
+			"rootsLabel": "O_XpsG_rootsLabel",
+			"carouselToggle": "O_XpsG_carouselToggle",
+			"section": "O_XpsG_section",
+			"card": "O_XpsG_card",
+			"controlLabel": "O_XpsG_controlLabel",
+			"toolbar": "O_XpsG_toolbar",
+			"danger": "O_XpsG_danger",
+			"presets": "O_XpsG_presets",
+			"button": "O_XpsG_button",
+			"control": "O_XpsG_control",
+			"cardActions": "O_XpsG_cardActions",
+			"actions": "O_XpsG_actions",
+			"cardTitle": "O_XpsG_cardTitle",
+			"cardBody": "O_XpsG_cardBody",
+			"cardMeta": "O_XpsG_cardMeta",
 			"desktopModeTitle": "O_XpsG_desktopModeTitle",
 			"presetBtn": "O_XpsG_presetBtn",
-			"sceneNote": "O_XpsG_sceneNote",
 			"rootChip": "O_XpsG_rootChip",
+			"title": "O_XpsG_title",
+			"controls": "O_XpsG_controls",
+			"subtitle": "O_XpsG_subtitle",
 			"rootRemove": "O_XpsG_rootRemove",
-			"danger": "O_XpsG_danger",
-			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"cardTitle": "O_XpsG_cardTitle",
-			"colorInput": "O_XpsG_colorInput",
-			"control": "O_XpsG_control",
-			"cardSelected": "O_XpsG_cardSelected",
 			"status": "O_XpsG_status",
-			"rootsLabel": "O_XpsG_rootsLabel",
-			"actions": "O_XpsG_actions",
-			"controlLabel": "O_XpsG_controlLabel",
+			"carouselNew": "O_XpsG_carouselNew",
+			"sceneNote": "O_XpsG_sceneNote",
+			"carouselEdit": "O_XpsG_carouselEdit",
+			"presetBtnActive": "O_XpsG_presetBtnActive",
+			"error": "O_XpsG_error",
+			"grid": "O_XpsG_grid",
+			"desktopMode": "O_XpsG_desktopMode",
+			"head": "O_XpsG_head",
+			"cardOpen": "O_XpsG_cardOpen",
+			"carouselItemHead": "O_XpsG_carouselItemHead",
+			"carouselGrid": "O_XpsG_carouselGrid",
+			"carouselStatus": "O_XpsG_carouselStatus",
+			"colorInput": "O_XpsG_colorInput",
+			"cardSelected": "O_XpsG_cardSelected",
+			"controlVal": "O_XpsG_controlVal",
 			"thumb": "O_XpsG_thumb",
 			"thumbImage": "O_XpsG_thumbImage",
-			"cardActions": "O_XpsG_cardActions",
-			"button": "O_XpsG_button",
-			"head": "O_XpsG_head",
-			"subtitle": "O_XpsG_subtitle",
-			"badge": "O_XpsG_badge",
-			"cardMeta": "O_XpsG_cardMeta",
-			"controls": "O_XpsG_controls",
-			"search": "O_XpsG_search",
-			"grid": "O_XpsG_grid",
+			"carouselHead": "O_XpsG_carouselHead",
+			"carouselWp": "O_XpsG_carouselWp",
+			"carouselItem": "O_XpsG_carouselItem",
 			"notice": "O_XpsG_notice",
-			"card": "O_XpsG_card",
-			"toolbar": "O_XpsG_toolbar",
+			"carousel": "O_XpsG_carousel",
+			"carouselWps": "O_XpsG_carouselWps",
+			"carouselItemActive": "O_XpsG_carouselItemActive",
 			"roots": "O_XpsG_roots",
-			"dedupSelect": "O_XpsG_dedupSelect",
-			"section": "O_XpsG_section",
-			"presets": "O_XpsG_presets",
-			"title": "O_XpsG_title",
-			"error": "O_XpsG_error",
-			"cardOpen": "O_XpsG_cardOpen",
-			"cardBody": "O_XpsG_cardBody",
-			"desktopMode": "O_XpsG_desktopMode",
-			"controlVal": "O_XpsG_controlVal"
+			"badge": "O_XpsG_badge",
+			"carouselBody": "O_XpsG_carouselBody",
+			"search": "O_XpsG_search",
+			"dedupSelect": "O_XpsG_dedupSelect"
 		};
+		//#endregion
+		//#region ../src/client/CarouselControls.tsx
+		/**
+		* Carousel (auto-rotation) controls: create and manage wallpaper playlists
+		* that auto-switch at a configurable interval.
+		*/
+		const INTERVALS = [
+			30,
+			60,
+			120,
+			300,
+			600,
+			1800,
+			3600
+		];
+		function CarouselControls({ controller, useSnapshot, t }) {
+			const state = useSnapshot((s) => s);
+			const carousel = state.carousel;
+			const [open, setOpen] = (0, react.useState)(false);
+			const [editing, setEditing] = (0, react.useState)(null);
+			const [newName, setNewName] = (0, react.useState)("");
+			const activeList = carousel.playlists.find((p) => p.id === carousel.activePlaylistId) ?? null;
+			const save = (c) => {
+				controller.store.actions.setCarousel(c);
+			};
+			const toggleEnabled = () => {
+				save({
+					...carousel,
+					enabled: !carousel.enabled
+				});
+			};
+			const addPlaylist = () => {
+				if (newName.trim() === "") return;
+				const id = Math.random().toString(36).slice(2, 10);
+				const list = {
+					id,
+					name: newName.trim(),
+					wallpaperIds: [],
+					interval: 300,
+					order: "sequence"
+				};
+				save({
+					...carousel,
+					playlists: [...carousel.playlists, list],
+					activePlaylistId: carousel.activePlaylistId || id
+				});
+				setNewName("");
+				setEditing(id);
+			};
+			const updatePlaylist = (id, patch) => {
+				save({
+					...carousel,
+					playlists: carousel.playlists.map((p) => p.id === id ? {
+						...p,
+						...patch
+					} : p)
+				});
+			};
+			const deletePlaylist = (id) => {
+				save({
+					...carousel,
+					playlists: carousel.playlists.filter((p) => p.id !== id),
+					activePlaylistId: carousel.activePlaylistId === id ? "" : carousel.activePlaylistId
+				});
+				if (editing === id) setEditing(null);
+			};
+			const toggleWallpaper = (listId, wpId) => {
+				const list = carousel.playlists.find((p) => p.id === listId);
+				if (!list) return;
+				updatePlaylist(listId, { wallpaperIds: list.wallpaperIds.includes(wpId) ? list.wallpaperIds.filter((id) => id !== wpId) : [...list.wallpaperIds, wpId] });
+			};
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+				className: WallpaperSection_module_css_default.carousel,
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: WallpaperSection_module_css_default.carouselHead,
+					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+						className: WallpaperSection_module_css_default.carouselToggle,
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+							type: "checkbox",
+							checked: carousel.enabled,
+							onChange: toggleEnabled
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("carousel") })]
+					}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+						className: WallpaperSection_module_css_default.button,
+						type: "button",
+						onClick: () => {
+							setOpen(!open);
+						},
+						children: open ? t("close") : t("carouselManage")
+					})]
+				}), open && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: WallpaperSection_module_css_default.carouselBody,
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: WallpaperSection_module_css_default.carouselNew,
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								className: WallpaperSection_module_css_default.colorInput,
+								type: "text",
+								value: newName,
+								placeholder: t("carouselNewPlaceholder"),
+								onChange: (e) => {
+									setNewName(e.target.value);
+								}
+							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								className: WallpaperSection_module_css_default.button,
+								type: "button",
+								onClick: addPlaylist,
+								children: t("carouselAdd")
+							})]
+						}),
+						carousel.playlists.map((list) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: clsx(WallpaperSection_module_css_default.carouselItem, list.id === carousel.activePlaylistId && WallpaperSection_module_css_default.carouselItemActive),
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: WallpaperSection_module_css_default.carouselItemHead,
+								children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+										className: clsx(WallpaperSection_module_css_default.button, list.id === carousel.activePlaylistId && WallpaperSection_module_css_default.presetBtnActive),
+										type: "button",
+										onClick: () => {
+											save({
+												...carousel,
+												activePlaylistId: list.id
+											});
+										},
+										children: [
+											list.name,
+											" (",
+											list.wallpaperIds.length,
+											")"
+										]
+									}),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										className: WallpaperSection_module_css_default.button,
+										type: "button",
+										onClick: () => {
+											setEditing(editing === list.id ? null : list.id);
+										},
+										children: t("carouselEdit")
+									}),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										className: clsx(WallpaperSection_module_css_default.button, WallpaperSection_module_css_default.danger),
+										type: "button",
+										onClick: () => {
+											deletePlaylist(list.id);
+										},
+										children: t("remove")
+									})
+								]
+							}), editing === list.id && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: WallpaperSection_module_css_default.carouselEdit,
+								children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+										className: WallpaperSection_module_css_default.control,
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+											className: WallpaperSection_module_css_default.controlLabel,
+											children: t("carouselInterval")
+										}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("select", {
+											value: list.interval,
+											onChange: (e) => {
+												updatePlaylist(list.id, { interval: Number(e.target.value) });
+											},
+											children: INTERVALS.map((v) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+												value: v,
+												children: v >= 60 ? `${v / 60} min` : `${v} s`
+											}, v))
+										})]
+									}),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+										className: WallpaperSection_module_css_default.control,
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+											className: WallpaperSection_module_css_default.controlLabel,
+											children: t("carouselOrder")
+										}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+											value: list.order,
+											onChange: (e) => {
+												updatePlaylist(list.id, { order: e.target.value });
+											},
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+												value: "sequence",
+												children: t("carouselOrderSeq")
+											}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+												value: "random",
+												children: t("carouselOrderRand")
+											})]
+										})]
+									}),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+										className: WallpaperSection_module_css_default.carouselWps,
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+											className: WallpaperSection_module_css_default.controlLabel,
+											children: t("carouselPick")
+										}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+											className: WallpaperSection_module_css_default.carouselGrid,
+											children: state.projects.filter((p) => p.playable).map((p) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+												className: WallpaperSection_module_css_default.carouselWp,
+												children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+													type: "checkbox",
+													checked: list.wallpaperIds.includes(p.id),
+													onChange: () => {
+														toggleWallpaper(list.id, p.id);
+													}
+												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: p.title.slice(0, 30) })]
+											}, p.id))
+										})]
+									})
+								]
+							})]
+						}, list.id)),
+						carousel.enabled && activeList && activeList.wallpaperIds.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: WallpaperSection_module_css_default.carouselStatus,
+							children: [
+								t("carouselActive"),
+								": ",
+								activeList.name,
+								" — ",
+								activeList.interval >= 60 ? `${activeList.interval / 60} min` : `${activeList.interval} s`
+							]
+						})
+					]
+				})]
+			});
+		}
 		//#endregion
 		//#region ../src/client/WallpaperSection.tsx
 		/**
@@ -760,6 +1024,11 @@ window.__ModuleLoader__.load({
 						state.scene.active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: state.scene.windowParked ? WallpaperSection_module_css_default.sceneNote : clsx(WallpaperSection_module_css_default.sceneNote, WallpaperSection_module_css_default.error),
 							children: state.scene.windowParked ? t("windowParked") : state.scene.parkError !== "" ? `${t("windowParkFailed")}（${state.scene.parkError}）` : t("engineRun")
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)(CarouselControls, {
+							controller,
+							useSnapshot,
+							t
 						})
 					] })
 				]
@@ -932,7 +1201,8 @@ window.__ModuleLoader__.load({
 					radius: 12,
 					borderWidth: 1,
 					borderColor: "rgba(255,255,255,0.15)",
-					shadowStrength: .3
+					shadowStrength: .3,
+					scrimStrength: .15
 				}
 			},
 			{
@@ -979,7 +1249,7 @@ window.__ModuleLoader__.load({
 			}
 		];
 		function stylesEqual(a, b) {
-			return a.mainOpacity === b.mainOpacity && a.mainBlur === b.mainBlur && a.sidebarOpacity === b.sidebarOpacity && a.sidebarBlur === b.sidebarBlur && a.chatOpacity === b.chatOpacity && a.chatBlur === b.chatBlur && a.inputOpacity === b.inputOpacity && a.inputBlur === b.inputBlur && a.panelOpacity === b.panelOpacity && a.panelBlur === b.panelBlur && a.tintColor === b.tintColor && a.accentColor === b.accentColor && a.radius === b.radius && a.borderWidth === b.borderWidth && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength;
+			return a.mainOpacity === b.mainOpacity && a.mainBlur === b.mainBlur && a.sidebarOpacity === b.sidebarOpacity && a.sidebarBlur === b.sidebarBlur && a.chatOpacity === b.chatOpacity && a.chatBlur === b.chatBlur && a.inputOpacity === b.inputOpacity && a.inputBlur === b.inputBlur && a.panelOpacity === b.panelOpacity && a.panelBlur === b.panelBlur && a.tintColor === b.tintColor && a.accentColor === b.accentColor && a.radius === b.radius && a.borderWidth === b.borderWidth && a.borderColor === b.borderColor && a.shadowStrength === b.shadowStrength && a.scrimStrength === b.scrimStrength;
 		}
 		function LoadedDesktop({ controller, useSnapshot, t }) {
 			const cs = useSnapshot((s) => s).customStyle;
@@ -1167,6 +1437,16 @@ window.__ModuleLoader__.load({
 								onChange: (v) => {
 									set({ shadowStrength: v });
 								}
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SliderRow, {
+								label: t("scrimStrength"),
+								value: cs.scrimStrength,
+								min: 0,
+								max: 1,
+								step: .05,
+								onChange: (v) => {
+									set({ scrimStrength: v });
+								}
 							})
 						]
 					})
@@ -1224,7 +1504,7 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:D:\deepseek-harness\plugin-package\dsh-wallpaper-engine\packages\dsh-wallpaper-engine\src\client\WallpaperBackground.module.css.mjs
-		const css = ".mm6n-q_host{z-index:-1;pointer-events:none;position:fixed;inset:0;overflow:hidden}.mm6n-q_layer{transition:opacity var(--ds-transition-duration-slow,.2s) var(--ds-ease-in-out,ease-in-out);position:absolute;inset:0;overflow:hidden}.mm6n-q_image,.mm6n-q_video{border:0;width:100%;height:100%;position:absolute;inset:0}.mm6n-q_image{background-position:50%;background-repeat:no-repeat}.mm6n-q_video{object-fit:cover}.mm6n-q_fill_cover.mm6n-q_image{background-size:cover}.mm6n-q_fill_contain.mm6n-q_image{background-size:contain}.mm6n-q_fill_fill.mm6n-q_image{background-size:100% 100%}.mm6n-q_fill_cover.mm6n-q_video{object-fit:cover}.mm6n-q_fill_contain.mm6n-q_video{object-fit:contain}.mm6n-q_fill_fill.mm6n-q_video{object-fit:fill}.mm6n-q_fallbackNote{color:#fff;pointer-events:none;background:#0000008c;border-radius:8px;max-width:480px;padding:6px 10px;font-size:12px;line-height:18px;position:absolute;bottom:12px;left:12px}";
+		const css = ".mm6n-q_host{z-index:-1;pointer-events:none;position:fixed;inset:0;overflow:hidden}.mm6n-q_layer{transition:opacity var(--ds-transition-duration-slow,.2s) var(--ds-ease-in-out,ease-in-out);position:absolute;inset:0;overflow:hidden}.mm6n-q_image,.mm6n-q_video{border:0;width:100%;height:100%;position:absolute;inset:0}.mm6n-q_image{background-position:50%;background-repeat:no-repeat}.mm6n-q_video{object-fit:cover}.mm6n-q_fill_cover.mm6n-q_image{background-size:cover}.mm6n-q_fill_contain.mm6n-q_image{background-size:contain}.mm6n-q_fill_fill.mm6n-q_image{background-size:100% 100%}.mm6n-q_fill_cover.mm6n-q_video{object-fit:cover}.mm6n-q_fill_contain.mm6n-q_video{object-fit:contain}.mm6n-q_fill_fill.mm6n-q_video{object-fit:fill}.mm6n-q_fallbackNote{color:#fff;pointer-events:none;background:#0000008c;border-radius:8px;max-width:480px;padding:6px 10px;font-size:12px;line-height:18px;position:absolute;bottom:12px;left:12px}.mm6n-q_scrim{pointer-events:none;background:#000;position:absolute;inset:0}";
 		const tagId = "dsh-wallpaper-engine/WallpaperBackground.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -1234,14 +1514,15 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"host": "mm6n-q_host",
-			"fallbackNote": "mm6n-q_fallbackNote",
 			"fill_cover": "mm6n-q_fill_cover",
-			"image": "mm6n-q_image",
+			"fallbackNote": "mm6n-q_fallbackNote",
+			"host": "mm6n-q_host",
+			"video": "mm6n-q_video",
+			"fill_fill": "mm6n-q_fill_fill",
 			"layer": "mm6n-q_layer",
 			"fill_contain": "mm6n-q_fill_contain",
-			"fill_fill": "mm6n-q_fill_fill",
-			"video": "mm6n-q_video"
+			"scrim": "mm6n-q_scrim",
+			"image": "mm6n-q_image"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1333,6 +1614,35 @@ window.__ModuleLoader__.load({
 				};
 			}, [selection.active]);
 			(0, react.useEffect)(() => {
+				const c = state.carousel;
+				if (!selection.active || !c.enabled) return;
+				const list = c.playlists.find((p) => p.id === c.activePlaylistId);
+				if (!list || list.wallpaperIds.length === 0) return;
+				const intervalMs = list.interval * 1e3;
+				let cancelled = false;
+				const timer = setTimeout(() => {
+					if (cancelled) return;
+					const ids = list.wallpaperIds;
+					const nextId = list.order === "random" ? ids[Math.floor(Math.random() * ids.length)] : ids[(ids.indexOf(selection.id) + 1) % ids.length];
+					if (nextId !== selection.id) {
+						const project = state.projects.find((p) => p.id === nextId);
+						if (project) controller.selectProject(project);
+					}
+				}, intervalMs);
+				return () => {
+					cancelled = true;
+					clearTimeout(timer);
+				};
+			}, [
+				controller,
+				selection.active,
+				selection.id,
+				state.carousel.enabled,
+				state.carousel.activePlaylistId,
+				state.carousel.playlists,
+				state.projects
+			]);
+			(0, react.useEffect)(() => {
 				const cs = state.customStyle;
 				let style = document.getElementById(CUSTOM_STYLE_ID);
 				if (style !== null) style.remove();
@@ -1358,6 +1668,7 @@ window.__ModuleLoader__.load({
 				if (cs.radius > 0) addVar("radius", `${cs.radius}px`);
 				if (cs.borderWidth > 0 && cs.borderColor !== "") addVar("border", `${cs.borderWidth}px solid ${cs.borderColor}`);
 				if (cs.shadowStrength > 0) addVar("shadow", `0 8px 32px rgba(0,0,0,${(cs.shadowStrength * .4).toFixed(2)})`);
+				if (cs.scrimStrength > 0) addVar("scrim", cs.scrimStrength);
 				style.textContent = `#root { ${v.join("; ")} }
 #root > div {
   background: rgba(15,17,21, var(--dsh-custom-main-opacity, 1)) !important;
@@ -1474,31 +1785,38 @@ window.__ModuleLoader__.load({
 				className: WallpaperBackground_module_css_default.layer,
 				style: layerStyle,
 				"data-kind": selection.kind,
-				children: [showEngineVideo ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("video", {
-					ref: videoRef,
-					className: clsx(WallpaperBackground_module_css_default.video, WallpaperBackground_module_css_default[`fill_${selection.fill}`]),
-					autoPlay: true,
-					muted: true,
-					loop: true,
-					playsInline: true
-				}) : sourceUrl !== "" && (selection.kind === "media" && selection.mediaType === "video" ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("video", {
-					className: clsx(WallpaperBackground_module_css_default.video, WallpaperBackground_module_css_default[`fill_${selection.fill}`]),
-					src: sourceUrl,
-					autoPlay: true,
-					muted: true,
-					loop: true,
-					playsInline: true
-				}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-					className: clsx(WallpaperBackground_module_css_default.image, WallpaperBackground_module_css_default[`fill_${selection.fill}`]),
-					style: { backgroundImage: `url("${sourceUrl}")` }
-				})), selection.kind === "engine" && scene.error !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-					className: WallpaperBackground_module_css_default.fallbackNote,
-					children: scene.error
-				})]
+				children: [
+					showEngineVideo ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("video", {
+						ref: videoRef,
+						className: clsx(WallpaperBackground_module_css_default.video, WallpaperBackground_module_css_default[`fill_${selection.fill}`]),
+						autoPlay: true,
+						muted: true,
+						loop: true,
+						playsInline: true
+					}) : sourceUrl !== "" && (selection.kind === "media" && selection.mediaType === "video" ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("video", {
+						className: clsx(WallpaperBackground_module_css_default.video, WallpaperBackground_module_css_default[`fill_${selection.fill}`]),
+						src: sourceUrl,
+						autoPlay: true,
+						muted: true,
+						loop: true,
+						playsInline: true
+					}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: clsx(WallpaperBackground_module_css_default.image, WallpaperBackground_module_css_default[`fill_${selection.fill}`]),
+						style: { backgroundImage: `url("${sourceUrl}")` }
+					})),
+					selection.kind === "engine" && scene.error !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: WallpaperBackground_module_css_default.fallbackNote,
+						children: scene.error
+					}),
+					state.customStyle.scrimStrength > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: WallpaperBackground_module_css_default.scrim,
+						style: { opacity: state.customStyle.scrimStrength }
+					})
+				]
 			}), portalHost);
 		}
 		function isDefaultStyle(cs) {
-			return cs.mainOpacity === 1 && cs.mainBlur === 0 && cs.sidebarOpacity === 1 && cs.sidebarBlur === 0 && cs.chatOpacity === 1 && cs.chatBlur === 0 && cs.inputOpacity === 1 && cs.inputBlur === 0 && cs.panelOpacity === 1 && cs.panelBlur === 0 && cs.tintColor === "" && cs.accentColor === "" && cs.radius === 0 && cs.borderWidth === 0 && cs.borderColor === "" && cs.shadowStrength === 0;
+			return cs.mainOpacity === 1 && cs.mainBlur === 0 && cs.sidebarOpacity === 1 && cs.sidebarBlur === 0 && cs.chatOpacity === 1 && cs.chatBlur === 0 && cs.inputOpacity === 1 && cs.inputBlur === 0 && cs.panelOpacity === 1 && cs.panelBlur === 0 && cs.tintColor === "" && cs.accentColor === "" && cs.radius === 0 && cs.borderWidth === 0 && cs.borderColor === "" && cs.shadowStrength === 0 && cs.scrimStrength === 0;
 		}
 		//#endregion
 		//#region ../src/client/locales.ts
@@ -1528,6 +1846,19 @@ window.__ModuleLoader__.load({
 			borderWidth: "边框宽度",
 			borderColor: "边框颜色",
 			shadowStrength: "阴影强度",
+			scrimStrength: "遮罩强度",
+			carousel: "自动轮播",
+			carouselManage: "管理列表",
+			carouselNewPlaceholder: "新列表名称",
+			carouselAdd: "新建",
+			carouselEdit: "编辑",
+			carouselInterval: "切换间隔",
+			carouselOrder: "播放顺序",
+			carouselOrderSeq: "顺序",
+			carouselOrderRand: "随机",
+			carouselPick: "选择壁纸",
+			carouselActive: "轮播中",
+			close: "收起",
 			title: "Wallpaper Engine 壁纸库",
 			desktopOnly: "当前为网页版。安装并启动 DSH 桌面版后，这里可以识别本地 Wallpaper Engine 项目并设为聊天背景。",
 			searchPlaceholder: "搜索壁纸项目",
@@ -1589,6 +1920,19 @@ window.__ModuleLoader__.load({
 			borderWidth: "Border width",
 			borderColor: "Border colour",
 			shadowStrength: "Shadow",
+			scrimStrength: "Scrim",
+			carousel: "Auto-rotate",
+			carouselManage: "Manage",
+			carouselNewPlaceholder: "New playlist name",
+			carouselAdd: "Create",
+			carouselEdit: "Edit",
+			carouselInterval: "Switch interval",
+			carouselOrder: "Order",
+			carouselOrderSeq: "Sequence",
+			carouselOrderRand: "Random",
+			carouselPick: "Pick wallpapers",
+			carouselActive: "Rotating",
+			close: "Close",
 			title: "Wallpaper Engine Library",
 			desktopOnly: "You are using the web version. Install and launch the DSH desktop app to discover local Wallpaper Engine projects and set them as the chat background.",
 			searchPlaceholder: "Search wallpaper projects",

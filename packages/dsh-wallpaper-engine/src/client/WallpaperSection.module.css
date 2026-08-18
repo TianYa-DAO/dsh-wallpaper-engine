@@ -345,3 +345,86 @@
   background: var(--dsw-alias-bg-base);
   color: var(--dsw-alias-label-primary);
 }
+
+.carousel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dsw-alias-border-l2);
+}
+
+.carouselHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carouselToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--dsw-alias-label-primary);
+}
+
+.carouselBody {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.carouselNew {
+  display: flex;
+  gap: 8px;
+}
+
+.carouselItem {
+  padding: 10px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+}
+
+.carouselItemActive {
+  border-color: var(--dsw-specific-accent, #3964fe);
+}
+
+.carouselItemHead {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.carouselEdit {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.carouselWps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.carouselGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.carouselWp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.carouselStatus {
+  font-size: 12px;
+  color: var(--dsw-specific-accent, #3964fe);
+}
