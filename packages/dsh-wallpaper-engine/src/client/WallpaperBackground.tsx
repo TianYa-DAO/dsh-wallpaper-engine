@@ -130,25 +130,29 @@ function LoadedBackground({
     const c = state.carousel
     if (!selection.active || !c.enabled) return
     const list = c.playlists.find((p) => p.id === c.activePlaylistId)
-    if (!list || list.wallpaperIds.length === 0) return
-    const intervalMs = list.interval * 1000
+    if (!list || list.wallpaperIds.length <= 1) return
+    const ids = list.wallpaperIds
+    // Capture the current selection id and the project lookup so the
+    // timer closure does not depend on state.projects changing.
+    const currentId = selection.id
+    const projects = state.projects
     let cancelled = false
     const timer = setTimeout(() => {
       if (cancelled) return
-      const ids = list.wallpaperIds
+      const idx = ids.indexOf(currentId)
+      if (idx < 0) return  // manually selected a wallpaper not in the playlist
       const nextId = list.order === 'random'
         ? ids[Math.floor(Math.random() * ids.length)]
-        : ids[(ids.indexOf(selection.id) + 1) % ids.length]
-      if (nextId !== selection.id) {
-        const project = state.projects.find((p) => p.id === nextId)
-        if (project) controller.selectProject(project)
-      }
-    }, intervalMs)
+        : ids[(idx + 1) % ids.length]
+      if (nextId === currentId) return
+      const project = projects.find((p) => p.id === nextId)
+      if (project) controller.selectProject(project)
+    }, list.interval * 1000)
     return () => {
       cancelled = true
       clearTimeout(timer)
     }
-  }, [controller, selection.active, selection.id, state.carousel.enabled, state.carousel.activePlaylistId, state.carousel.playlists, state.projects])
+  }, [controller, selection.active, selection.id, state.carousel.enabled, state.carousel.activePlaylistId, state.carousel.playlists])
 
   // Desktop customisation: generate CSS variables from the CustomStyle
   // object and inject them into #root. Every value is reflected in real
@@ -338,7 +342,7 @@ function LoadedBackground({
         )}
       {selection.kind === 'engine' && scene.error !== '' && <div className={css.fallbackNote}>{scene.error}</div>}
       {state.customStyle.scrimStrength > 0 && (
-        <div className={css.scrim} style={{ opacity: state.customStyle.scrimStrength }} />
+        <div className={css.scrim} style={{ background: `rgba(0,0,0,${state.customStyle.scrimStrength})` }} />
       )}
     </div>,
     portalHost,

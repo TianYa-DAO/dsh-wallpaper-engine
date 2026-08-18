@@ -537,59 +537,59 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperSection_module_css_default = {
-			"cardBody": "O_XpsG_cardBody",
-			"carouselToggle": "O_XpsG_carouselToggle",
-			"head": "O_XpsG_head",
-			"subtitle": "O_XpsG_subtitle",
-			"dedupSelect": "O_XpsG_dedupSelect",
-			"section": "O_XpsG_section",
-			"rootRemove": "O_XpsG_rootRemove",
-			"thumbImage": "O_XpsG_thumbImage",
-			"carouselItemHead": "O_XpsG_carouselItemHead",
-			"cardMeta": "O_XpsG_cardMeta",
-			"search": "O_XpsG_search",
-			"thumb": "O_XpsG_thumb",
-			"presetBtnActive": "O_XpsG_presetBtnActive",
-			"carouselStatus": "O_XpsG_carouselStatus",
-			"grid": "O_XpsG_grid",
-			"error": "O_XpsG_error",
-			"carouselWp": "O_XpsG_carouselWp",
-			"controls": "O_XpsG_controls",
-			"carousel": "O_XpsG_carousel",
-			"controlLabel": "O_XpsG_controlLabel",
-			"roots": "O_XpsG_roots",
 			"carouselNew": "O_XpsG_carouselNew",
-			"presetBtn": "O_XpsG_presetBtn",
-			"carouselItemActive": "O_XpsG_carouselItemActive",
-			"carouselEdit": "O_XpsG_carouselEdit",
-			"status": "O_XpsG_status",
+			"error": "O_XpsG_error",
 			"rootsLabel": "O_XpsG_rootsLabel",
+			"presetBtn": "O_XpsG_presetBtn",
 			"controlVal": "O_XpsG_controlVal",
-			"title": "O_XpsG_title",
-			"colorInput": "O_XpsG_colorInput",
-			"sceneNote": "O_XpsG_sceneNote",
-			"badge": "O_XpsG_badge",
-			"desktopModeTitle": "O_XpsG_desktopModeTitle",
-			"carouselHead": "O_XpsG_carouselHead",
-			"card": "O_XpsG_card",
-			"rootChip": "O_XpsG_rootChip",
+			"carouselToggle": "O_XpsG_carouselToggle",
+			"grid": "O_XpsG_grid",
+			"section": "O_XpsG_section",
+			"dedupSelect": "O_XpsG_dedupSelect",
 			"button": "O_XpsG_button",
-			"carouselBody": "O_XpsG_carouselBody",
-			"carouselImport": "O_XpsG_carouselImport",
+			"presetBtnActive": "O_XpsG_presetBtnActive",
+			"cardMeta": "O_XpsG_cardMeta",
+			"controls": "O_XpsG_controls",
 			"notice": "O_XpsG_notice",
-			"cardOpen": "O_XpsG_cardOpen",
-			"cardTitle": "O_XpsG_cardTitle",
-			"cardActions": "O_XpsG_cardActions",
-			"desktopMode": "O_XpsG_desktopMode",
-			"toolbar": "O_XpsG_toolbar",
-			"carouselItem": "O_XpsG_carouselItem",
-			"control": "O_XpsG_control",
-			"carouselWps": "O_XpsG_carouselWps",
 			"carouselGrid": "O_XpsG_carouselGrid",
+			"desktopModeTitle": "O_XpsG_desktopModeTitle",
+			"thumbImage": "O_XpsG_thumbImage",
+			"carouselImport": "O_XpsG_carouselImport",
+			"carouselWps": "O_XpsG_carouselWps",
+			"danger": "O_XpsG_danger",
+			"rootChip": "O_XpsG_rootChip",
+			"control": "O_XpsG_control",
+			"head": "O_XpsG_head",
 			"actions": "O_XpsG_actions",
 			"cardSelected": "O_XpsG_cardSelected",
-			"danger": "O_XpsG_danger",
-			"presets": "O_XpsG_presets"
+			"toolbar": "O_XpsG_toolbar",
+			"thumb": "O_XpsG_thumb",
+			"presets": "O_XpsG_presets",
+			"rootRemove": "O_XpsG_rootRemove",
+			"cardOpen": "O_XpsG_cardOpen",
+			"cardActions": "O_XpsG_cardActions",
+			"desktopMode": "O_XpsG_desktopMode",
+			"status": "O_XpsG_status",
+			"carousel": "O_XpsG_carousel",
+			"carouselBody": "O_XpsG_carouselBody",
+			"carouselItemActive": "O_XpsG_carouselItemActive",
+			"subtitle": "O_XpsG_subtitle",
+			"sceneNote": "O_XpsG_sceneNote",
+			"carouselWp": "O_XpsG_carouselWp",
+			"title": "O_XpsG_title",
+			"colorInput": "O_XpsG_colorInput",
+			"card": "O_XpsG_card",
+			"carouselItem": "O_XpsG_carouselItem",
+			"search": "O_XpsG_search",
+			"roots": "O_XpsG_roots",
+			"badge": "O_XpsG_badge",
+			"controlLabel": "O_XpsG_controlLabel",
+			"cardBody": "O_XpsG_cardBody",
+			"cardTitle": "O_XpsG_cardTitle",
+			"carouselHead": "O_XpsG_carouselHead",
+			"carouselEdit": "O_XpsG_carouselEdit",
+			"carouselStatus": "O_XpsG_carouselStatus",
+			"carouselItemHead": "O_XpsG_carouselItemHead"
 		};
 		//#endregion
 		//#region ../src/client/CarouselControls.tsx
@@ -1550,15 +1550,15 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var WallpaperBackground_module_css_default = {
-			"layer": "mm6n-q_layer",
-			"fill_cover": "mm6n-q_fill_cover",
-			"fill_contain": "mm6n-q_fill_contain",
-			"fill_fill": "mm6n-q_fill_fill",
 			"host": "mm6n-q_host",
 			"fallbackNote": "mm6n-q_fallbackNote",
-			"scrim": "mm6n-q_scrim",
+			"fill_cover": "mm6n-q_fill_cover",
 			"video": "mm6n-q_video",
-			"image": "mm6n-q_image"
+			"fill_fill": "mm6n-q_fill_fill",
+			"image": "mm6n-q_image",
+			"scrim": "mm6n-q_scrim",
+			"fill_contain": "mm6n-q_fill_contain",
+			"layer": "mm6n-q_layer"
 		};
 		//#endregion
 		//#region ../src/client/WallpaperBackground.tsx
@@ -1654,18 +1654,20 @@ window.__ModuleLoader__.load({
 				const c = state.carousel;
 				if (!selection.active || !c.enabled) return;
 				const list = c.playlists.find((p) => p.id === c.activePlaylistId);
-				if (!list || list.wallpaperIds.length === 0) return;
-				const intervalMs = list.interval * 1e3;
+				if (!list || list.wallpaperIds.length <= 1) return;
+				const ids = list.wallpaperIds;
+				const currentId = selection.id;
+				const projects = state.projects;
 				let cancelled = false;
 				const timer = setTimeout(() => {
 					if (cancelled) return;
-					const ids = list.wallpaperIds;
-					const nextId = list.order === "random" ? ids[Math.floor(Math.random() * ids.length)] : ids[(ids.indexOf(selection.id) + 1) % ids.length];
-					if (nextId !== selection.id) {
-						const project = state.projects.find((p) => p.id === nextId);
-						if (project) controller.selectProject(project);
-					}
-				}, intervalMs);
+					const idx = ids.indexOf(currentId);
+					if (idx < 0) return;
+					const nextId = list.order === "random" ? ids[Math.floor(Math.random() * ids.length)] : ids[(idx + 1) % ids.length];
+					if (nextId === currentId) return;
+					const project = projects.find((p) => p.id === nextId);
+					if (project) controller.selectProject(project);
+				}, list.interval * 1e3);
 				return () => {
 					cancelled = true;
 					clearTimeout(timer);
@@ -1676,8 +1678,7 @@ window.__ModuleLoader__.load({
 				selection.id,
 				state.carousel.enabled,
 				state.carousel.activePlaylistId,
-				state.carousel.playlists,
-				state.projects
+				state.carousel.playlists
 			]);
 			(0, react.useEffect)(() => {
 				const cs = state.customStyle;
@@ -1847,7 +1848,7 @@ window.__ModuleLoader__.load({
 					}),
 					state.customStyle.scrimStrength > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: WallpaperBackground_module_css_default.scrim,
-						style: { opacity: state.customStyle.scrimStrength }
+						style: { background: `rgba(0,0,0,${state.customStyle.scrimStrength})` }
 					})
 				]
 			}), portalHost);
