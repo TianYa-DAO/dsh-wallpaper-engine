@@ -1,7 +1,12 @@
 {
   "name": "dsh-wallpaper-engine",
-  "description": "Wallpaper Engine local library, background layer, and native-scene panel for the DSH desktop shell",
+  "description": "Turn your Wallpaper Engine collection into DSH chat backgrounds. Auto-discovers Steam Workshop and local projects, plays video/image/scene wallpapers live, with glassmorphism UI customisation and carousel auto-rotation.",
   "version": "0.1.3",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TianYa-DAO/dsh-wallpaper-engine.git",
+    "directory": "packages/dsh-wallpaper-engine"
+  },
   "publishConfig": {
     "access": "public"
   },
